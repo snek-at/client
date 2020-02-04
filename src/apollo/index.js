@@ -17,7 +17,7 @@ class Apollo {
 
     let link = null;
     let cache = null;
-    this.client = null;
+    let client = null;
 
     try {
       cache = new InMemoryCache({ fragmentMatcher });
@@ -37,20 +37,21 @@ class Apollo {
     }
 
     try {
-      this.client = new ApolloClient({
+      client = new ApolloClient({
         cache,
         link
       });
     } catch {
       throw new Error("An error occurred when initializing headers!");
     }
-  }
 
-  async send(query, variables) {
-    return await this.client.query({
-      query,
-      variables
-    });
+    this.send = (query, variables) => {
+      return client.query({
+        errorPolicy: "ignore",
+        query,
+        variables
+      });
+    };
   }
 }
 
