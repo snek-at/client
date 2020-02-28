@@ -26,8 +26,6 @@ class Apollo {
     }
 
     try {
-      console.log(options.headers)
-      
       link = new HttpLink({
         uri,
         headers: options.headers
