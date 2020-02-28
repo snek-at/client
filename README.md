@@ -11,14 +11,14 @@ The SNEK project is an attempt to create a transparent, open-source non-profit p
 This repository serves as an entry point for future packages of the SNEK team.
   <br>
   <br>
-  <a href="https://github.com/snek-at/package-template/issues/new?template=bug_report.md">Report bug</a>
+  <a href="https://github.com/snek-at/client/issues/new?template=bug_report.md">Report bug</a>
   ·
-  <a href="https://github.com/snek-at/package-template/issues/new?template=feature_request.md">Request feature</a>
+  <a href="https://github.com/snek-at/client/issues/new?template=feature_request.md">Request feature</a>
   ·
   <a href="https://www.overleaf.com/read/bcxwhwbhrmps">Documentation</a>
   <br>
   <br>
-  <a href="https://www.codacy.com/app/kleberbaum/package-template">
+  <a href="https://www.codacy.com/app/kleberbaum/client">
     <img src="https://api.codacy.com/project/badge/Grade/20d80a1790c44c90a3376e77d34a99ff" />
   </a>
 </p>
