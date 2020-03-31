@@ -1,0 +1,8 @@
+tsconfig.json
+src
+.vscode
+.github
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+PULL_REQUEST_TEMPLATE
+README.md
