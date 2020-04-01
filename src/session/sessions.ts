@@ -5,11 +5,17 @@ import { SnekGqlAuthTasks } from '../templates/snek/gql/tasks/auth';
 import { cookieChecker, getCookie, setCookie, deleteCookie } from './cookie-utils';
 import { Endpoint } from '../../src/endpoints/index';
 import { SnekTasks } from '../templates/snek/gql/tasks/index';
+import { DocumentNode } from 'graphql';
+
+export class GithubSession extends Session {
+  constructor(sId: string, ep: Endpoint, template: IMainTemplate) {
+    super(sId, ep, template)
+  }
+}
 
 export class SnekSession extends Session {
   public refreshToken: string | undefined = "";
   public refreshTokenName: string = "refresh";
-
   public sessionTemplate: SnekTemplate;
   /**
    * Define tasks

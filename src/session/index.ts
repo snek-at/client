@@ -1,6 +1,8 @@
 import { Endpoint } from '../endpoints';
 import { cookieChecker, getCookie, setCookie, deleteCookie } from './cookie-utils';
 import { IMainTemplate } from '../templates/index';
+import { GithubSession } from './sessions';
+import { DocumentNode } from 'graphql';
 
 export interface UserData {
   firstName?: string;
@@ -25,7 +27,7 @@ export interface ISession {
   sessions: { [id: string]: ISession; };
   token: string | undefined;
   tokenName: string;
-
+  send(token: string, data: DocumentNode, variables?: object): Promise<object>;  
 }
 
 export class Session implements ISession {
@@ -52,14 +54,21 @@ export class Session implements ISession {
    */
   addSubSession(childSId: string, type: any = Session) {
     let session: ISession;
-    session = new type(this.sId + "_" + childSId, this.ep, this.template);
-
+    if(type === "githubsession"){
+      session = new GithubSession(this.sId + "_" + childSId, this.ep, this.template);
+    }else{
+      session = new type(this.sId + "_" + childSId, this.ep, this.template);
+    }
     this.sessions[childSId] = session;
   }
 
-  // initTasks(taskclass: SnekGqlNpSessionTasks){
-  //   // init ne task
-  // }
+  async send(token: string, data: DocumentNode, variables?: object) {
+    let headers = {
+      authorization: token
+    };
+
+    return this.ep.send("query", data, variables, headers)
+  }
 
   /**
   * Is alive check.

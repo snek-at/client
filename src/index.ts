@@ -1,7 +1,7 @@
 import { Endpoint, Apollo } from './endpoints/index';
 import { Session } from './session/index';
 import { IMainTemplate, MainTemplate } from './templates/index';
-import { SnekSession } from './session/sessions';
+import { SnekSession, GithubSession } from './session/sessions';
 
 
 interface IEndpoint {
@@ -50,7 +50,12 @@ export class Client implements IClient {
       this.endpoint = new Apollo(ep.url, { headers: this._headers });
 
       this.template = new MainTemplate();
-      this.session = new SnekSession("snek-jwt", this.endpoint, this.template)
+      if(ep.url == "https://engine.snek.at/api/graphiql"){
+        this.session = new SnekSession("snek-jwt", this.endpoint, this.template)
+      } else if( ep.url = "https://api.github.com/graphql"){
+        this.session = new GithubSession("github", this.endpoint, this.template)
+      }
+      
 
     } else if (ep.type === "rest") {
       // init rest

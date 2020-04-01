@@ -53,7 +53,7 @@ export class Apollo implements Endpoint {
     }
   }
 
-  public async send(type: string, data: DocumentNode, variables?: object) {
+  public async send(type: string, data: DocumentNode, variables?: object, headers?: object) {
     switch (type) {
       case "query":
         return this.client.query({
@@ -61,7 +61,7 @@ export class Apollo implements Endpoint {
           errorPolicy: "ignore",
           variables,
           context: {
-            headers: this.headers
+            headers: {...this.headers, ...headers}
           }
         });
 

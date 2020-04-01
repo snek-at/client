@@ -7,7 +7,7 @@ import gql from 'graphql-tag';
  * @param {string} JWT A users JWT
  * @return {string} A serialized JSON object with a list of GitLab server
  */
-const queryGitlabServer = gql`
+const gitlabServer = gql`
   query gitLabServers($token: String!) {
     page(url: "/registration", token: $token) {
       ... on RegistrationRegistrationFormPage {
@@ -23,4 +23,4 @@ const queryGitlabServer = gql`
   }
 `;
 
-export { queryGitlabServer }
+export { gitlabServer }

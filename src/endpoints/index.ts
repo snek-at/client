@@ -9,7 +9,7 @@ export interface Endpoint {
     headers: {};
     desc: string;
     send:
-    ((type: string, data: DocumentNode, variables?: object) => Promise<object>)
+    ((type: string, data: DocumentNode, variables?: object, headers?: object) => Promise<object>)
 }
 
 export { Apollo }
