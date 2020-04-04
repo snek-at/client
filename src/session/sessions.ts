@@ -22,6 +22,22 @@ export class GithubSession extends Session {
      */
     super(sId)
   }
+
+  /**
+   * Sned query:
+   * 
+   * @description Send a query to the endpoint.
+   * @param {string} token A authentication token.
+   * @param {DocumentNode} data A DocumentNode with a query.
+   * @param {object} variables A abject with variables.
+   */
+  async send(token: string, data: DocumentNode, variables?: object) {
+    let headers = {
+      authorization: token
+    };
+
+    return this.ep.send("query", data, variables, headers)
+  }
 }
 
 /**@description A Snek subSession  */
@@ -50,7 +66,7 @@ export class SnekSession extends Session {
     this.tasks = new SnekTasks(this);
   }
 
-    /**
+  /**
    * Sned query:
    * 
    * @description Send a query to the endpoint.
