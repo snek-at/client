@@ -1,34 +1,51 @@
 import { Session, IAuth, User, UserData } from './index';
 import { IMainTemplate } from '../templates/index';
 import { SnekTemplate } from '../templates/snek/index';
-import { SnekGqlAuthTasks } from '../templates/snek/gql/tasks/auth';
 import { cookieChecker, getCookie, setCookie, deleteCookie } from './cookie-utils';
 import { Endpoint } from '../../src/endpoints/index';
 import { SnekTasks } from '../templates/snek/gql/tasks/index';
-import { DocumentNode } from 'graphql';
 
+/**@description A Github subSession  */
 export class GithubSession extends Session {
-  constructor(sId: string, ep: Endpoint, template: IMainTemplate) {
-    super(sId, ep, template)
+  /**
+   * Creates an instance of a GithubSession.
+   * 
+   * @constructor
+   * @param {string} sId A session name
+   * @param {Endpoint} ep A endpoint
+   * @param {IMainTemplate} template A template set 
+   */
+  constructor(sId: string, ep: Endpoint, public template: IMainTemplate) {
+    /**
+     * TODO: Change template set to github
+     */
+    super(sId, ep)
   }
 }
 
+/**@description A Snek subSession  */
 export class SnekSession extends Session {
   public refreshToken: string | undefined = "";
   public refreshTokenName: string = "refresh";
-  public sessionTemplate: SnekTemplate;
+
   /**
    * Define tasks
    */
-  public tasks!: SnekTasks;
+  public tasks: SnekTasks;
 
-  constructor(sId: string, ep: Endpoint, template: IMainTemplate) {
-    super(sId, ep, template)
-
+  /**
+   * Creates an instance of a SnekSession.
+   * 
+   * @constructor
+   * @param {string} sId A session name
+   * @param {Endpoint} ep A endpoint
+   * @param {SnekTemplate} template A template set 
+   */
+  constructor(sId: string, ep: Endpoint, public template: SnekTemplate) {
+    super(sId, ep)
     this.tokenName = sId + "-" + this.tokenName;
     this.refreshTokenName = sId + "-" + this.refreshTokenName;
 
-    this.sessionTemplate = <SnekTemplate>template.snek;
     this.tasks = new SnekTasks(this);
   }
 
@@ -88,8 +105,14 @@ export class SnekSession extends Session {
       /**
        * Set tokens
        */
-      console.log(response, response.data.auth);
-      this.initTokens(<IAuth>response.data.auth);
+
+      console.log(response, <IAuth>response.data.auth);
+      if (response.errors) {
+        throw new Error(JSON.stringify(response.errors))
+      }
+
+      this.initTokens(response.data.auth);
+      console.log(response.data.auth.user, response.data)
       return <UserData>response.data.auth.user;
     }
 
@@ -97,10 +120,24 @@ export class SnekSession extends Session {
      * Whoami
      * Get user data
      */
-    response = await this.tasks.auth.whoami();
-    return <UserData>await response.data.whoami;
+    console.log("start whoami")
+    response = await this.tasks.user.whoami();
+    console.log(response)
+    return <UserData>response.data;
 
   }
+
+  // JEDEN TASK IMPLEMENTIEREN????
+  // /**
+  //  * Register user
+  //  * 
+  //  * @param {string} user A User defined by username and password.
+  //  * @return {boolean} status
+  // */
+  // async register(values: object) {
+  //   let response = await this.tasks.user.registration(values);
+  //   return response.registration;
+  // }
 
   /**
    * Refresh cookie:
