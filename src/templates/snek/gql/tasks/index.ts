@@ -3,6 +3,14 @@ import { SnekSession } from '../../../../session/sessions';
 import { SnekGqlGeneralTasks } from './general';
 import { SnekGqlUserTasks } from './user';
 
+
+export interface IResponse {
+  errors: []
+}
+
+/**
+ * @description A Template with initializes all tasks.
+ */
 export class SnekTasks {
   public general!: SnekGqlGeneralTasks
   public auth!: SnekGqlAuthTasks
