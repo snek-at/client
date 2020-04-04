@@ -6,12 +6,12 @@ import {
   NormalizedCacheObject
 } from "apollo-cache-inmemory";
 import { DocumentNode } from "graphql";
-import { Endpoint, IOptions } from './index';
+import { ApolloEndpoint, IOptions } from './index';
 
 /**
  * @description A Apollo client.
  */
-export class Apollo implements Endpoint {
+export class Apollo implements ApolloEndpoint {
   private link: HttpLink;
   private cache: InMemoryCache;
   private client: ApolloClient<NormalizedCacheObject>;

@@ -2,7 +2,7 @@ import { Session, IAuth, User, UserData } from './index';
 import { IMainTemplate } from '../templates/index';
 import { SnekTemplate } from '../templates/snek/index';
 import { cookieChecker, getCookie, setCookie, deleteCookie } from './cookie-utils';
-import { Endpoint } from '../../src/endpoints/index';
+import { ApolloEndpoint } from '../../src/endpoints/index';
 import { SnekTasks } from '../templates/snek/gql/tasks/index';
 
 /**@description A Github subSession  */
@@ -15,7 +15,7 @@ export class GithubSession extends Session {
    * @param {Endpoint} ep A endpoint
    * @param {IMainTemplate} template A template set 
    */
-  constructor(sId: string, ep: Endpoint, public template: IMainTemplate) {
+  constructor(sId: string, public ep: ApolloEndpoint, public template: IMainTemplate) {
     /**
      * TODO: Change template set to github
      */
@@ -41,7 +41,7 @@ export class SnekSession extends Session {
    * @param {Endpoint} ep A endpoint
    * @param {SnekTemplate} template A template set 
    */
-  constructor(sId: string, ep: Endpoint, public template: SnekTemplate) {
+  constructor(sId: string, public ep: ApolloEndpoint, public template: SnekTemplate) {
     super(sId, ep)
     this.tokenName = sId + "-" + this.tokenName;
     this.refreshTokenName = sId + "-" + this.refreshTokenName;

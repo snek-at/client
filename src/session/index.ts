@@ -1,4 +1,4 @@
-import { Endpoint } from '../endpoints';
+import { ApolloEndpoint } from '../endpoints';
 import { cookieChecker, getCookie, setCookie, deleteCookie } from './cookie-utils';
 import { IMainTemplate } from '../templates/index';
 import { GithubSession } from './sessions';

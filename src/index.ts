@@ -1,4 +1,4 @@
-import { Endpoint, Apollo } from './endpoints/index';
+import { Apollo, ScraperEndpoint, ApolloEndpoint } from './endpoints/index';
 import { Session } from './session/index';
 import { IMainTemplate, MainTemplate } from './templates/index';
 import { SnekSession, GithubSession } from './session/sessions';
@@ -44,7 +44,7 @@ export class Client implements IClient {
 
 /**@class A client implementation for snek interaction */
 export class SnekClient extends Client {
-  public endpoint: Endpoint;
+  public endpoint: ApolloEndpoint;
   public template: IMainTemplate;
   public session: SnekSession;
 
@@ -64,7 +64,7 @@ export class SnekClient extends Client {
  * @description
  */
 export class GithubClient extends Client {
-  public endpoint: Endpoint;
+  public endpoint: ApolloEndpoint;
   public template: IMainTemplate;
   public session: GithubSession;
 
