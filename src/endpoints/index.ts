@@ -16,7 +16,7 @@ export interface ScraperEndpoint {
     headers: {};
     desc: string;
     getJson<T>(url: string): Promise<T>;
-    getDom(url: string): Promise<object>;
+    getDom(url: string): Promise<Document>;
 }
 
 export { Apollo }

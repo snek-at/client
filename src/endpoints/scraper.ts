@@ -27,7 +27,6 @@ export class Scraper implements ScraperEndpoint {
         if (!response.ok) {
           throw new Error(response.statusText)
         }
-
         return response.json().then(data => data as T);
       })
   }
@@ -37,14 +36,15 @@ export class Scraper implements ScraperEndpoint {
    * @return {object} DOM object.
    * @description Get DOM object from specified path.
    */
-  async getDom(path: string): Promise<object> {
+  async getDom(path: string): Promise<Document> {
     return fetch(this.root + path)
     .then(response => {
       if (!response.ok) {
         throw new Error(response.statusText)
       }
-
-      return response
+      return response.text();
+    }).then(text => {
+      return new DOMParser().parseFromString(text, "text/xml");
     })
   }
 }
