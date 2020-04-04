@@ -24,14 +24,15 @@ export class SnekGqlUserTasks {
    *
    * @return {Promise<IAuthResponse>} A JWT token.
    */
-  async cache(platformData: string) {
+  async whoami(): Promise<IWhoamiResponse> {
     /**
-     * Refresh if session is not alive
-     */
-    this.session.refresh();
+    * Refresh if session is not alive
+    */
+    await this.session.refresh();
 
-    let query = this.session.template.snek.snekGql.mutations.user.registration;
-    let response = <ICache>await this.session.ep.send("query", query, { token: this.session.token, platformData });
+    let query = this.template.queries.user.whoami;
+    let response = <IWhoamiResponse>await this.session.ep.send("query", query, { token: this.session.token });
+
     return response;
   }
 

@@ -109,23 +109,6 @@ export class SnekGqlAuthTasks {
   }
 
   /**
-   * Whoami check.
-   *
-   * @return {Promise<IWhoami>} The currently authenticated username.
-   */
-  async whoami() {
-    /**
-     * Refresh if session is not alive
-     */
-    this.session.refresh();
-
-    let query = this.session.sessionTemplate.snekGql.queries.user.whoami;
-    let response = <IWhoami>await this.session.ep.send("query", query, { token: this.session.token });
-
-    return response;
-  }
-
-  /**
    * Register a user
    */
 }
