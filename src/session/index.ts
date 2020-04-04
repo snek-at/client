@@ -55,30 +55,16 @@ export class Session implements ISession {
    * @param {any} type Specify the session (Session | string)
    * @param permanent True if not set.
    */
-  addSubSession(childSId: string, Type: any = Session, template: any) {
-    let session: ISession;
-    if (Type === "githubsession") {
-      session = new GithubSession(this.sId + "_" + childSId, this.ep, template);
-    } else {
-      session = new Type(this.sId + "_" + childSId, this.ep, template);
-    }
-    this.sessions[childSId] = session;
-  }
-
-  /**
-   * Sned query:
-   * 
-   * @description Send a query to the endpoint.
-   * @param {string} token A authentication token.
-   * @param {DocumentNode} data A DocumentNode with a query.
-   * @param {object} variables A abject with variables.
-   */
-  async send(token: string, data: DocumentNode, variables?: object) {
-    let headers = {
-      authorization: token
-    };
-
-    return this.ep.send("query", data, variables, headers)
+  addSubSession<S, E, T>(childSId: string, Cls: any, endpoint: E, template: T) {
+    let session: S = new Cls(this.sId + "_" + childSId, endpoint, template);
+    return session;
+    // let session: ISession;
+    // if (Type === "githubsession") {
+    //   session = new GithubSession(this.sId + "_" + childSId, this.ep, template);
+    // } else {
+    //   session = new Type(this.sId + "_" + childSId, this.ep, template);
+    // }
+    // this.sessions[childSId] = session;
   }
 
   /**

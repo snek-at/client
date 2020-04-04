@@ -42,11 +42,27 @@ export class SnekSession extends Session {
    * @param {SnekTemplate} template A template set 
    */
   constructor(sId: string, public ep: ApolloEndpoint, public template: SnekTemplate) {
-    super(sId, ep)
+    super(sId)
     this.tokenName = sId + "-" + this.tokenName;
     this.refreshTokenName = sId + "-" + this.refreshTokenName;
 
     this.tasks = new SnekTasks(this);
+  }
+
+    /**
+   * Sned query:
+   * 
+   * @description Send a query to the endpoint.
+   * @param {string} token A authentication token.
+   * @param {DocumentNode} data A DocumentNode with a query.
+   * @param {object} variables A abject with variables.
+   */
+  async send(token: string, data: DocumentNode, variables?: object) {
+    let headers = {
+      authorization: token
+    };
+
+    return this.ep.send("query", data, variables, headers)
   }
 
   /**
