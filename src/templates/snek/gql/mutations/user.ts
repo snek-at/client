@@ -10,7 +10,7 @@ import gql from 'graphql-tag';
 */
 const registration = gql`
   mutation registration($token: String!, $values: GenericScalar!) {
-    registration: registrationFormPage(token: $token, url: "/registration", values: $values) {
+    registration: registrationRegistrationFormPage(token: $token, url: "/registration", values: $values) {
       result
       errors {
         name
