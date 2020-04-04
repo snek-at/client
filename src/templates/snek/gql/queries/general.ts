@@ -23,4 +23,19 @@ const gitlabServer = gql`
   }
 `;
 
-export { gitlabServer }
+/**
+ * List of page urls:
+ * Query to fetch all pages urls
+ * 
+ * @param {string} JWT A users JWT
+ * @return {string} A serialized JSON object with a list of all page urls
+ */
+const allPageUrls = gql`
+  query pages($token: String!){
+    pages(token: $token){
+      urlPath
+    }
+  }
+`;
+
+export { gitlabServer, allPageUrls }

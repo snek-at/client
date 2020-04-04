@@ -9,6 +9,10 @@ interface GitlabServerData {
   supportedGitlabs: []
 }
 
+interface IAllPageUrlResponse {
+  data: { pages: [] }
+}
+
 /** @class A set of session aware Tasks */
 export class SnekGqlGeneralTasks {
   public template: ISnekGqlTemplate;
@@ -40,4 +44,20 @@ export class SnekGqlGeneralTasks {
     return response;
   }
 
+  /**
+   * All page url
+   * 
+   * @return {Promise<IAllPageUrlResponse>} A list of all page urls.
+   */
+  async allPageUrls(): Promise<IAllPageUrlResponse> {
+    /**
+     * Refresh if session is not alive
+     */
+    await this.session.refresh();
+
+    let query = this.template.queries.general.allPageUrls;
+    let response = <IAllPageUrlResponse>await this.session.ep.send("query", query, { token: this.session.token });
+
+    return response;
+  }
 }
