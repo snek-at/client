@@ -14,6 +14,7 @@ const auth = gql`
       token
       refreshToken
       user {
+        username
         firstName
         lastName
         email

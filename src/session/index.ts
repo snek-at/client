@@ -5,6 +5,7 @@ import { GithubSession } from './sessions';
 import { DocumentNode } from 'graphql';
 
 export interface UserData {
+  username?: string;
   firstName?: string;
   lastName?: string;
   ownedPages?: string;
