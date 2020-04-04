@@ -4,6 +4,7 @@ import { SnekTemplate } from '../templates/snek/index';
 import { cookieChecker, getCookie, setCookie, deleteCookie } from './cookie-utils';
 import { ApolloEndpoint } from '../../src/endpoints/index';
 import { SnekTasks } from '../templates/snek/gql/tasks/index';
+import { DocumentNode } from 'graphql';
 
 /**@description A Github subSession  */
 export class GithubSession extends Session {
@@ -19,7 +20,7 @@ export class GithubSession extends Session {
     /**
      * TODO: Change template set to github
      */
-    super(sId, ep)
+    super(sId)
   }
 }
 

@@ -28,7 +28,6 @@ export interface ISession {
   sessions: { [id: string]: ISession; };
   token: string | undefined;
   tokenName: string;
-  send(token: string, data: DocumentNode, variables?: object): Promise<object>;
 }
 
 /**@description A Session */
@@ -45,7 +44,7 @@ export class Session implements ISession {
    * @param {string} ep A endpoint
    * @param {string} template A template set
    */
-  constructor(private sId: string, public ep: Endpoint) { }
+  constructor(private sId: string) { }
 
   /**
    * Add a  subSession.
