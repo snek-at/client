@@ -1,7 +1,7 @@
 import { Apollo, ScraperEndpoint, ApolloEndpoint } from './endpoints/index';
-import { Session } from './session/index';
 import { IMainTemplate, MainTemplate } from './templates/index';
 import { SnekSession, GithubSession } from './session/sessions';
+import { Scraper } from './endpoints/scraper';
 
 interface IEndpoint {
   url: string;
@@ -72,10 +72,30 @@ export class GithubClient extends Client {
     url: string = "https://api.github.com/graphql",
     type: string = "graphql",
     headers: object = {}) {
-      console.log(url, type, headers)
-      super({ type, url, headers })
-      this.template = new MainTemplate();
-      this.endpoint = new Apollo(url, { headers });
-      this.session = new GithubSession("github", this.endpoint, this.template);
+    console.log(url, type, headers)
+    super({ type, url, headers })
+    this.template = new MainTemplate();
+    this.endpoint = new Apollo(url, { headers });
+    this.session = new GithubSession("github", this.endpoint, this.template);
+    /**
+     * Code snippet:
+     * Add sub session
+     */
+    // let s = this.session.addSubSession<GithubSession, ApolloEndpoint, MainTemplate>("github", GithubSession, this.endpoint, this.template)
+  }
+}
+
+/**
+ * @class A client implementation for gitlab interaction
+ */
+export class GitlabClient extends Client {
+  public endpointScraper: ScraperEndpoint;
+  constructor(
+    url: string = "https://gitlab.com",
+    type: string = "scraper",
+    headers: object = {}) {
+    super({ type, url, headers });
+    this.endpointScraper = new Scraper(url, { headers });
+    //this.endpointRest = new Rest(url, { headers });
   }
 }
