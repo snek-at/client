@@ -150,7 +150,16 @@ export class SnekSession extends Session {
        */
       this.refreshToken = getCookie(this.refreshTokenName);
       let response = await this.tasks.auth.refresh();
+      if (response.errors) {
+        //console.error(response.errors);
+        throw new Error(JSON.stringify(response.errors))
+      }
+      console.log(response)
       this.initTokens(response.data.refresh);
+    } else if (!this.token) {
+      if (cookieChecker(this.tokenName)) {
+        this.token = getCookie(this.tokenName);
+      }
     }
   }
 
