@@ -8,6 +8,9 @@ import {
 import { DocumentNode } from "graphql";
 import { Endpoint, IOptions } from './index';
 
+/**
+ * @description A Apollo client.
+ */
 export class Apollo implements Endpoint {
   private link: HttpLink;
   private cache: InMemoryCache;
@@ -81,4 +84,3 @@ export class Apollo implements Endpoint {
     return new Error("No valid query type specified!");
   }
 }
-
