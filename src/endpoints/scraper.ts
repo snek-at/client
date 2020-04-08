@@ -22,7 +22,13 @@ export class Scraper implements ScraperEndpoint {
    * @description Get JSON object<T> from specified path.
    */
   async getJson<T>(path: string): Promise<T> {
-    return fetch(this.root + path)
+    return fetch(this.root + path, {
+      headers: {
+        "x-requested-with": "XMLHttpRequest",
+        "accept": "application/json, text/plain, */*",
+        ... this.headers,
+      }
+    })
       .then(response => {
         if (!response.ok) {
           throw new Error(response.statusText)
@@ -37,14 +43,18 @@ export class Scraper implements ScraperEndpoint {
    * @description Get DOM object from specified path.
    */
   async getDom(path: string): Promise<Document> {
-    return fetch(this.root + path)
+    return fetch(this.root + path, {
+      headers: {
+        ... this.headers
+      }
+    })
     .then(response => {
       if (!response.ok) {
         throw new Error(response.statusText)
       }
       return response.text();
     }).then(text => {
-      return new DOMParser().parseFromString(text, "text/xml");
+      return new DOMParser().parseFromString(text, "text/html");
     })
   }
 }
