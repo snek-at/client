@@ -107,6 +107,19 @@ export class SnekSession extends Session {
   }
 
   /**
+   * Is alive check.
+   *
+   * @description Token and refresh token status check.
+   * @param {boolean} alive A status whether the token and refresh token is alive or not
+   */
+  isAlive() {
+    if (cookieChecker(this.refreshTokenName) && super.isAlive()) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
    * Begin session.
    *
    * @param {string} user A User defined by username and password.
