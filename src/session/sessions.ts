@@ -93,7 +93,8 @@ export class SnekSession extends Session {
     this.refreshToken = auth.refreshToken;
 
     setCookie(this.tokenName, this.token, 5 * 60);
-    setCookie(this.refreshTokenName, this.refreshToken, 7 * 24 * 60 * 60);
+    //setCookie(this.refreshTokenName, this.refreshToken, 7 * 24 * 60 * 60);
+    setCookie(this.refreshTokenName, this.refreshToken, 5 * 60);
   }
 
   /**
