@@ -50,7 +50,7 @@ export class SnekGqlUserTasks {
    * Creates an instance of a SessionTasks.
    *
    * @constructor
-   * @author: schettn
+   * @author Nico Schett <contact@schett.net>
    * @param {string} session A session for the tasks
    */
   constructor(private session: SnekSession) { 
@@ -60,7 +60,7 @@ export class SnekGqlUserTasks {
   /**
    * Register a user
    *
-   * @return {Promise<IRegistrationResponse>} A JWT token.
+   * @returns {Promise<IRegistrationResponse>} A JWT token.
    */
   async registration(values: object): Promise<IRegistrationResponse> {
     /**
@@ -77,7 +77,7 @@ export class SnekGqlUserTasks {
   /**
    * Cache a user
    *
-   * @return {Promise<ICacheResponse>} A JWT token.
+   * @returns {Promise<ICacheResponse>} A JWT token.
    */
   async cache(platformData: string): Promise<ICacheResponse> {
     /**
@@ -94,7 +94,7 @@ export class SnekGqlUserTasks {
    * Get profile.
    *
    * @param {string} url A url of a page.
-   * @return {Promise<IProfileResponse>} The page profile of a user.
+   * @returns {Promise<IProfileResponse>} The page profile of a user.
    */
   async profile(url: string): Promise<IProfileResponse> {
     /**
@@ -111,7 +111,7 @@ export class SnekGqlUserTasks {
   /**
    * Whoami check
    * 
-   * @return {Promise<IWhoamiResponse>} User data.
+   * @returns {Promise<IWhoamiResponse>} User data.
    */
   async whoami(): Promise<IWhoamiResponse> {
     /**

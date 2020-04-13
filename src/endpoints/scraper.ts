@@ -7,7 +7,7 @@ export class Scraper implements ScraperEndpoint {
 
   /**
    * @constructor
-   * @author: schettn
+   * @author Nico Schett <contact@schett.net>
    * @param root Root url of endpoint. Specify it like https://foo.bar. Correct slash setting is IMPORTANT!
    * @param options Specify options object to define e.g headers.
    * @description Creates a instance of Scraper.
@@ -18,7 +18,7 @@ export class Scraper implements ScraperEndpoint {
 
   /**
    * @param path Path to the endpoint. Specify it like "/foo/bar". Correct slash setting is IMPORTANT!
-   * @return {T} JSON object passed to given structure <T>.
+   * @returns {T} JSON object passed to given structure <T>.
    * @description Get JSON object<T> from specified path.
    */
   async getJson<T>(path: string): Promise<T> {
@@ -26,7 +26,7 @@ export class Scraper implements ScraperEndpoint {
       headers: {
         "x-requested-with": "XMLHttpRequest",
         "accept": "application/json, text/plain, */*",
-        ... this.headers,
+        ... this.headers
       }
     })
       .then(response => {
@@ -39,7 +39,7 @@ export class Scraper implements ScraperEndpoint {
   
   /**
    * @param path Path to the endpoint. Specify it like "/foo/bar". Correct slash setting is IMPORTANT!
-   * @return {object} DOM object.
+   * @returns {object} DOM object.
    * @description Get DOM object from specified path.
    */
   async getDom(path: string): Promise<Document> {

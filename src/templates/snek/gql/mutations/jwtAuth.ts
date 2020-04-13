@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
  * 
  * @param {string} username Username of a user
  * @param {string} password Password of a user
- * @return {string} JWT
+ * @returns {string} JWT
  */
 const auth = gql`
   mutation auth($username: String!, $password: String!) {
@@ -29,7 +29,7 @@ const auth = gql`
  * Mutation to refresh a JWT
  * 
  * @param {string} token A users JWT
- * @return {string} Refresh conformation
+ * @returns {string} Refresh conformation
  */
 const refresh = gql`
   mutation refresh($refreshToken: String!) {
@@ -45,7 +45,7 @@ const refresh = gql`
  * Mutation to verify a JWT
  * 
  * @param {string} token A users JWT
- * @return {string} Verify conformation
+ * @returns {string} Verify conformation
  */
 const verify = gql`
   mutation verify($token: String!) {
@@ -60,7 +60,7 @@ const verify = gql`
  * Mutation to verify a JWT
  * 
  * @param {string} token A users JWT
- * @return {string} Revoke conformation
+ * @returns {string} Revoke conformation
  */
 const revoke = gql`
   mutation revoke($refreshToken: String!) {

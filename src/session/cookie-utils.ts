@@ -20,7 +20,7 @@ export function setCookie(name: string, val: string, time: number) {
 /**
  * Get cookie
  * @param {string} name Name of cookie
- * @return {string} Value of cookie.
+ * @returns {string} Value of cookie.
  */
 export function getCookie(name: string) {
     const value = "; " + document.cookie;
@@ -48,7 +48,7 @@ export function deleteCookie(name: string) {
 /**
  * Check if cookie is alive.
  *
- * @return {boolean} Is the cookie alive?.
+ * @returns {boolean} Is the cookie alive?.
  */
 export function cookieChecker(name: string) {
     let cookie = getCookie(name);

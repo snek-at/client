@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
  * Query to fetch all available GitLab server
  * 
  * @param {string} JWT A users JWT
- * @return {string} A serialized JSON object with a list of GitLab server
+ * @returns {string} A serialized JSON object with a list of GitLab server
  */
 const gitlabServer = gql`
   query gitLabServers($token: String!) {
@@ -28,7 +28,7 @@ const gitlabServer = gql`
  * Query to fetch all pages urls
  * 
  * @param {string} JWT A users JWT
- * @return {string} A serialized JSON object with a list of all page urls
+ * @returns {string} A serialized JSON object with a list of all page urls
  */
 const allPageUrls = gql`
   query pages($token: String!){

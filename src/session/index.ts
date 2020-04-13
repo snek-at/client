@@ -40,7 +40,7 @@ export class Session implements ISession {
    * Creates an instance of a Session.
    *
    * @constructor
-   * @author: schettn
+   * @author Nico Schett <contact@schett.net>
    * @param {string} ep A endpoint
    * @param {string} template A template set
    */

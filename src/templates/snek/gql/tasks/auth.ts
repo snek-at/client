@@ -40,7 +40,7 @@ export class SnekGqlAuthTasks {
    * Creates an instance of a SessionTasks.
    *
    * @constructor
-   * @author: schettn
+   * @author Nico Schett <contact@schett.net>
    * @param {string} session A session for the tasks
    */
   constructor(private session: SnekSession) { }
@@ -48,7 +48,7 @@ export class SnekGqlAuthTasks {
   /**
    * Anonymous login.
    *
-   * @return {Promise<IAuthResponse>} A JWT token.
+   * @returns {Promise<IAuthResponse>} A JWT token.
    */
   async anon(): Promise<IAuthResponse> {
     let query = this.session.template.snekGql.mutations.jwtAuth.auth;
@@ -60,7 +60,7 @@ export class SnekGqlAuthTasks {
    * User login.
    *
    * @param {string} user A User defined by username and password
-   * @return {Promise<AuthData>} A JWT token,
+   * @returns {Promise<AuthData>} A JWT token,
    */
   async nonanon(user: User): Promise<IAuthResponse> {
     let query = this.session.template.snekGql.mutations.jwtAuth.auth;
@@ -76,7 +76,7 @@ export class SnekGqlAuthTasks {
    * Refresh token.
    *
    * @param {string} user A User defined by username and password
-   * @return {Promise<IRefreshResponse>} A JWT token,
+   * @returns {Promise<IRefreshResponse>} A JWT token,
    */
   async refresh(): Promise<IRefreshResponse> {
     let query = this.session.template.snekGql.mutations.jwtAuth.refresh;
@@ -92,7 +92,7 @@ export class SnekGqlAuthTasks {
    * Refresh token.
    *
    * @param {string} user A User defined by username and password
-   * @return {Promise<IRevokeResponse>} Revoke acknowledgment.
+   * @returns {Promise<IRevokeResponse>} Revoke acknowledgment.
    */
   async revoke(): Promise<IRevokeResponse> {
     let query = this.session.template.snekGql.mutations.jwtAuth.revoke;

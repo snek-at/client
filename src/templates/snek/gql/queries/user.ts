@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
  * 
  * @deprecated since 1.0 use jwtAuth instead
  * @param {string} token A users JWT
- * @return {string} Username
+ * @returns {string} Username
 */
 const whoami = gql`
   query whoami($token: String!) {
@@ -25,7 +25,7 @@ const whoami = gql`
  * 
  * @param {string} url PageUrl of a user profile
  * @param {string} token  A users JWT
- * @return {string} Profile page of a user
+ * @returns {string} Profile page of a user
 */
 const profile = gql`
   query profile($url: String!, $token: String!) {

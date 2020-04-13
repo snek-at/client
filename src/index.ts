@@ -33,7 +33,7 @@ export class Client implements IClient {
   //  * Creates an instance of Client.
   //  *
   //  * @constructor
-  //  * @author: schettn
+  //  * @author Nico Schett <contact@schett.net>
   //  * @param {IEndpoint} ep The desired endpoint.
   //  */
   // constructor(ep: IEndpoint) {

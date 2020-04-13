@@ -20,7 +20,7 @@ export class SnekGqlGeneralTasks {
    * Creates an instance of a SessionTasks.
    *
    * @constructor
-   * @author: schettn
+   * @author Nico Schett <contact@schett.net>
    * @param {string} session A session for the tasks
    */
   constructor(private session: SnekSession) {
@@ -30,7 +30,7 @@ export class SnekGqlGeneralTasks {
   /**
    * Gitlab Server
    *
-   * @return {Promise<IGitlabServerResponse>} A list of Gitlab server.
+   * @returns {Promise<IGitlabServerResponse>} A list of Gitlab server.
    */
   async gitlabServer(): Promise<IGitlabServerResponse> {
     /**
@@ -47,7 +47,7 @@ export class SnekGqlGeneralTasks {
   /**
    * All page url
    * 
-   * @return {Promise<IAllPageUrlResponse>} A list of all page urls.
+   * @returns {Promise<IAllPageUrlResponse>} A list of all page urls.
    */
   async allPageUrls(): Promise<IAllPageUrlResponse> {
     /**
