@@ -30,8 +30,8 @@ const registration = gql`
 const cache = gql`
   mutation cache ($token: String!, $platformData: String!) {
     cache: cacheUser(token: $token, platformData: $platformData){
-      user{
-        platformData
+      user {
+        id
       }
     }
   }

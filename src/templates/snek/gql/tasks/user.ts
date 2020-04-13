@@ -17,7 +17,7 @@ interface ICacheResponse extends IResponse {
 
 interface CacheData {
   user: {
-    platformData: string;
+    id: number;
   }
 }
 
