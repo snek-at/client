@@ -1,31 +1,40 @@
-import { Session, IAuth, User, UserData } from './index';
-import { IMainTemplate } from '../templates/index';
-import { SnekTemplate } from '../templates/snek/index';
-import { cookieChecker, getCookie, setCookie, deleteCookie } from './cookie-utils';
-import { ApolloEndpoint } from '../../src/endpoints/index';
-import { SnekTasks } from '../templates/snek/gql/tasks/index';
-import { DocumentNode } from 'graphql';
+import { Session, IAuth, User, UserData } from "./index";
+import { IMainTemplate } from "../templates/index";
+import { SnekTemplate } from "../templates/snek/index";
+import {
+  cookieChecker,
+  getCookie,
+  setCookie,
+  deleteCookie,
+} from "./cookie-utils";
+import { ApolloEndpoint } from "../../src/endpoints/index";
+import { SnekTasks } from "../templates/snek/gql/tasks/index";
+import { DocumentNode } from "graphql";
 
 /**@description A Github subSession  */
 export class GithubSession extends Session {
   /**
    * Creates an instance of a GithubSession.
-   * 
+   *
    * @constructor
    * @param {string} sId A session name
    * @param {Endpoint} ep A endpoint
-   * @param {IMainTemplate} template A template set 
+   * @param {IMainTemplate} template A template set
    */
-  constructor(sId: string, public ep: ApolloEndpoint, public template: IMainTemplate) {
+  constructor(
+    sId: string,
+    public ep: ApolloEndpoint,
+    public template: IMainTemplate
+  ) {
     /**
      * TODO: Change template set to github
      */
-    super(sId)
+    super(sId);
   }
 
   /**
    * Sned query:
-   * 
+   *
    * @description Send a query to the endpoint.
    * @param {string} token A authentication token.
    * @param {DocumentNode} data A DocumentNode with a query.
@@ -33,10 +42,10 @@ export class GithubSession extends Session {
    */
   async send(token: string, data: DocumentNode, variables?: object) {
     let headers = {
-      authorization: token
+      authorization: token,
     };
 
-    return this.ep.send("query", data, variables, headers)
+    return this.ep.send("query", data, variables, headers);
   }
 }
 
@@ -52,14 +61,18 @@ export class SnekSession extends Session {
 
   /**
    * Creates an instance of a SnekSession.
-   * 
+   *
    * @constructor
    * @param {string} sId A session name
    * @param {Endpoint} ep A endpoint
-   * @param {SnekTemplate} template A template set 
+   * @param {SnekTemplate} template A template set
    */
-  constructor(sId: string, public ep: ApolloEndpoint, public template: SnekTemplate) {
-    super(sId)
+  constructor(
+    sId: string,
+    public ep: ApolloEndpoint,
+    public template: SnekTemplate
+  ) {
+    super(sId);
     this.tokenName = sId + "-" + this.tokenName;
     this.refreshTokenName = sId + "-" + this.refreshTokenName;
 
@@ -68,7 +81,7 @@ export class SnekSession extends Session {
 
   /**
    * Sned query:
-   * 
+   *
    * @description Send a query to the endpoint.
    * @param {string} token A authentication token.
    * @param {DocumentNode} data A DocumentNode with a query.
@@ -76,10 +89,10 @@ export class SnekSession extends Session {
    */
   async send(token: string, data: DocumentNode, variables?: object) {
     let headers = {
-      authorization: token
+      authorization: token,
     };
 
-    return this.ep.send("query", data, variables, headers)
+    return this.ep.send("query", data, variables, headers);
   }
 
   /**
@@ -88,7 +101,7 @@ export class SnekSession extends Session {
    * @param {IAuth} auth A Auth object (token, refreshToken).
    */
   initTokens(auth: IAuth) {
-    console.log(auth)
+    console.log(auth);
     this.token = auth.token;
     this.refreshToken = auth.refreshToken;
 
@@ -99,9 +112,9 @@ export class SnekSession extends Session {
 
   /**
    * Was alive check.
-   * 
+   *
    * @description Refresh token status check.
-   * @param {boolean} alive A status whether the refresh token is alive or not 
+   * @param {boolean} alive A status whether the refresh token is alive or not
    */
   wasAlive() {
     return cookieChecker(this.refreshTokenName);
@@ -124,7 +137,7 @@ export class SnekSession extends Session {
    * Begin session.
    *
    * @param {string} user A User defined by username and password.
-   * @return {UserData} A UserData object.
+   * @returns {UserData} A UserData object.
    */
   async begin(user?: User) {
     let response;
@@ -146,7 +159,7 @@ export class SnekSession extends Session {
          * Nonanon login
          * Authenticate real user
          */
-        console.log("before ")
+        console.log("before ");
         response = await this.tasks.auth.nonanon(user);
       }
       /**
@@ -155,11 +168,11 @@ export class SnekSession extends Session {
 
       console.log(response, <IAuth>response.data.auth);
       if (response.errors) {
-        throw new Error(JSON.stringify(response.errors))
+        throw new Error(JSON.stringify(response.errors));
       }
 
       this.initTokens(response.data.auth);
-      console.log(response.data.auth.user, response.data)
+      console.log(response.data.auth.user, response.data);
       return <UserData>response.data.auth.user;
     }
 
@@ -167,24 +180,11 @@ export class SnekSession extends Session {
      * Whoami
      * Get user data
      */
-    console.log("start whoami")
+    console.log("start whoami");
     response = await this.tasks.user.whoami();
-    console.log(response)
+    console.log(response);
     return <UserData>response.data;
-
   }
-
-  // JEDEN TASK IMPLEMENTIEREN????
-  // /**
-  //  * Register user
-  //  * 
-  //  * @param {string} user A User defined by username and password.
-  //  * @return {boolean} status
-  // */
-  // async register(values: object) {
-  //   let response = await this.tasks.user.registration(values);
-  //   return response.registration;
-  // }
 
   /**
    * Refresh cookie:
@@ -192,20 +192,32 @@ export class SnekSession extends Session {
    */
   async refresh() {
     if (!this.isAlive()) {
-      /**
-       * Refresh token with refreshToken
-       */
-      this.refreshToken = getCookie(this.refreshTokenName);
-      let response = await this.tasks.auth.refresh();
-      if (response.errors) {
-        //console.error(response.errors);
-        throw new Error(JSON.stringify(response.errors))
+      if (this.wasAlive()) {
+        /**
+         * Refresh token with refreshToken
+         */
+        this.refreshToken = getCookie(this.refreshTokenName);
+        console.log("REFRESH", this.refreshToken);
+        let response = await this.tasks.auth.refresh();
+
+        if (response.errors) {
+          throw new Error(JSON.stringify(response.errors));
+        }
+
+        this.initTokens(response.data.refresh);
+      } else {
+        /**
+         * Begin new session
+         */
+        await this.end();
+        await this.begin();
       }
-      console.log(response)
-      this.initTokens(response.data.refresh);
-    } else if (!this.token) {
-      if (cookieChecker(this.tokenName)) {
-        this.token = getCookie(this.tokenName);
+    } else {
+      const token = getCookie(this.tokenName);
+      const refreshToken = getCookie(this.refreshTokenName);
+
+      if (token && refreshToken) {
+        this.initTokens({ token, refreshToken });
       }
     }
   }
@@ -216,10 +228,12 @@ export class SnekSession extends Session {
    */
   async end() {
     /**
-     * Revoke token
+     * Revoke token if it is set
      */
-    let response = await this.tasks.auth.revoke();
-    console.log(response.data.revoke.revoked);
+    if (this.refreshToken !== "") {
+      let response = await this.tasks.auth.revoke();
+      console.log(response.data.revoke.revoked);
+    }
     /**
      * Reset token
      */
@@ -228,7 +242,7 @@ export class SnekSession extends Session {
     /**
      * Delete cookie
      */
-    deleteCookie(this.tokenName)
-    deleteCookie("refresh-" + this.refreshToken)
+    deleteCookie(this.tokenName);
+    deleteCookie("refresh-" + this.refreshToken);
   }
 }

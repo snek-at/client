@@ -57,13 +57,6 @@ export class Session implements ISession {
   addSubSession<S, E, T>(childSId: string, Cls: any, endpoint: E, template: T) {
     let session: S = new Cls(this.sId + "_" + childSId, endpoint, template);
     return session;
-    // let session: ISession;
-    // if (Type === "githubsession") {
-    //   session = new GithubSession(this.sId + "_" + childSId, this.ep, template);
-    // } else {
-    //   session = new Type(this.sId + "_" + childSId, this.ep, template);
-    // }
-    // this.sessions[childSId] = session;
   }
 
   /**
