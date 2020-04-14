@@ -213,6 +213,7 @@ export class SnekSession extends Session {
          */
         await this.end();
         await this.begin();
+        /// USER!!!
       }
     } else {
       const token = getCookie(this.tokenName);
@@ -245,6 +246,6 @@ export class SnekSession extends Session {
      * Delete cookie
      */
     deleteCookie(this.tokenName);
-    deleteCookie("refresh-" + this.refreshToken);
+    deleteCookie(this.refreshTokenName);
   }
 }
