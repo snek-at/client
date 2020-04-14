@@ -11,6 +11,7 @@ import gql from 'graphql-tag';
 const whoami = gql`
   query whoami($token: String!) {
     whoami: me(token: $token) {
+      username
       firstName
       lastName
       email
