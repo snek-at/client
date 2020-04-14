@@ -13,7 +13,7 @@ export function setCookie(name: string, val: string, time: number) {
     // Set it expire in n(time) seconds
     date.setTime(date.getTime() + (time * 1000));
     // Set it
-    document.cookie = name + "=" + value + "; max-age=" + date.toUTCString() + "; path=/";
+    document.cookie = name + "=" + value + "; expires=" + date.toUTCString() + "; path=/";
 }
 
 /**
@@ -41,7 +41,7 @@ export function deleteCookie(name: string) {
     date.setTime(date.getTime() + (-1 * 24 * 60 * 60 * 1000));
 
     // Set it
-    document.cookie = name + "=; max-age=" + date.toUTCString() + "; path=/";
+    document.cookie = name + "=; expires=" + date.toUTCString() + "; path=/";
 }
 
 /**
