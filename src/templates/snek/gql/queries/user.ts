@@ -33,6 +33,9 @@ const profile = gql`
     profile: page(url: $url, token: $token) {
       ... on ProfileProfilePage {
         username
+        firstName
+        lastName
+        email
         verified
         platformData
         sources

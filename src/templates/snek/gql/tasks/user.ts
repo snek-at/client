@@ -27,6 +27,9 @@ interface IProfileResponse extends IResponse {
 
 interface ProfileData {
   username: string;
+  firstName: string;
+  lastName: string;
+  email: string;
   verified: string;
   platformData: string;
   sources: string;
