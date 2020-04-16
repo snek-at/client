@@ -25,6 +25,7 @@ const whoami = gql`
     }
   }
 `;
+
 /** 
  * Get user profile:
  * Query to fetch profile data

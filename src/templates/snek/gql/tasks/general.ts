@@ -83,6 +83,7 @@ class SnekGqlGeneralTasks {
 
 //#region > Exports
 export default SnekGqlGeneralTasks;
+//#endregion
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)

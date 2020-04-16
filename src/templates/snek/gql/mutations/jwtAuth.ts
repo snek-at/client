@@ -29,6 +29,7 @@ const auth = gql`
     }
   }
 `;
+
 /**
  * JWT Refresh:
  * Mutation to refresh a JWT
@@ -45,6 +46,7 @@ const refresh = gql`
     }
   }
 `;
+
 /**
  * JWT Verify:
  * Mutation to verify a JWT

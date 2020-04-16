@@ -27,6 +27,7 @@ import { ApolloEndpoint } from "../../src/endpoints/index";
 import { IAuth, User, UserData } from "./index";
 //#endregion
 
+//#region > Classes
 /** @class A Github SubSession  */
 class GithubSession extends Session {
   /**
@@ -49,7 +50,7 @@ class GithubSession extends Session {
   }
 
   /**
-   * Sned query:
+   * Send query:
    *
    * @description Send a query to the endpoint.
    * @param {string} token A authentication token.
@@ -102,7 +103,7 @@ class SnekSession extends Session {
    * @description Send a query to the endpoint.
    * @param {string} token A authentication token.
    * @param {DocumentNode} data A DocumentNode with a query.
-   * @param {object} variables A abject with variables.
+   * @param {object} variables A object with variables.
    */
   async send(token: string, data: DocumentNode, variables?: object) {
     let headers = {
@@ -133,7 +134,7 @@ class SnekSession extends Session {
    * Was alive check.
    *
    * @description Refresh token status check.
-   * @param {boolean} alive A status whether the refresh token is alive or not
+   * @param {boolean} alive A status whether the refresh token is alive or not.
    */
   wasAlive() {
     return cookieChecker(this.refreshTokenName);
@@ -143,7 +144,7 @@ class SnekSession extends Session {
    * Is alive check.
    *
    * @description Token and refresh token status check.
-   * @param {boolean} alive A status whether the token and refresh token is alive or not
+   * @param {boolean} alive A status whether the token and refresh token are alive or not.
    */
   isAlive() {
     if (cookieChecker(this.refreshTokenName) && super.isAlive()) {
@@ -219,7 +220,7 @@ class SnekSession extends Session {
     }
   }
 
-  /** @description End session by reset jwt and deleting cookie. */
+  /** @description End session by resetting jwt and deleting cookies. */
   async end() {
     /** Revoke token if it is set */
     if (this.refreshToken !== "") {
@@ -238,6 +239,7 @@ class SnekSession extends Session {
     deleteCookie(this.refreshTokenName);
   }
 }
+//#endregion
 
 //#region > Exports
 export { GithubSession, SnekSession };

@@ -80,6 +80,7 @@ class SnekGqlAuthTasks {
         password: "ciscocisco",
       }
     );
+    
     return response;
   }
 

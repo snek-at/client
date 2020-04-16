@@ -5,7 +5,7 @@ import * as _user from "./user";
 //#endregion
 
 //#region > Classes
-/** @class A template with initializes all SubTemplates. */
+/** @class A template which initializes all SubTemplates. */
 class SnekGqlQuery {
   public general = _general;
   public user = _user;
@@ -14,6 +14,7 @@ class SnekGqlQuery {
 
 //#region > Exports
 export { SnekGqlQuery };
+//#endregion
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)

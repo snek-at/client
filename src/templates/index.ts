@@ -11,7 +11,7 @@ interface IMainTemplate {
 //#endregion
 
 //#region > Classes
-/** @class A Template with initializes all SubTemplates. */
+/** @class A Template which initializes all SubTemplates. */
 class MainTemplate implements IMainTemplate {
   public snek = new SnekTemplate();
 }

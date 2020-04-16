@@ -28,6 +28,7 @@ const registration = gql`
     }
   }
 `;
+
 /**
  * Cache user:
  * Mutation to cache user information server side

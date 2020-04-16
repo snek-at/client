@@ -5,7 +5,7 @@ import { cookieChecker } from "./cookie-utils";
 //#endregion
 
 //#region > Interfaces
-/** @interface UserData defines the structure a profile objects. */
+/** @interface UserData defines the structure of profile objects. */
 interface UserData {
   username?: string;
   firstName?: string;
@@ -16,13 +16,13 @@ interface UserData {
   lastLogin?: string;
 }
 
-/** @interface UserData defines the structure a authentication object. */
+/** @interface UserData defines the structure of an authentication object. */
 interface IAuth {
   token: string;
   refreshToken: string;
 }
 
-/** @interface User defines the structure a basic user object. */
+/** @interface User defines the structure of a basic user object. */
 interface User {
   username: string;
   password: string;
@@ -54,7 +54,7 @@ class Session implements ISession {
 
   //> Methods
   /**
-   * Add a  subSession.
+   * Add a subSession.
    *
    * @param childSId The session name of the child.
    * @param {any} type Specify the session (Session | string)

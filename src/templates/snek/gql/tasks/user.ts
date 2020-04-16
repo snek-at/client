@@ -60,6 +60,7 @@ interface IWhoamiResponse extends IResponse {
 interface WhoamiData {
   username: string;
 }
+//#endregion
 
 //#region > Classes
 /** @class A set of session aware Tasks */

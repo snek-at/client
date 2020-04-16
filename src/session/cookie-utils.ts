@@ -1,3 +1,4 @@
+//#region > Functions
 /** @description General utils for managing cookies in Typescript. */
 //> Functions
 /**
@@ -61,6 +62,7 @@ function cookieChecker(name: string) {
   }
   return false;
 }
+//#endregion
 
 //#region > Exports
 export { setCookie, getCookie, deleteCookie, cookieChecker };

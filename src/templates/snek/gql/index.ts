@@ -14,7 +14,7 @@ interface ISnekGqlTemplate {
 //#endregion
 
 //#region > Classes
-/** @class A Template with initializes all SubTemplates. */
+/** @class A Template which initializes all SubTemplates. */
 class SnekGql {
   public queries = new SnekGqlQuery();
   public mutations = new SnekGqlMutation();
