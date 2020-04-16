@@ -1,10 +1,12 @@
-import { ApolloEndpoint } from '../endpoints';
-import { cookieChecker, getCookie, setCookie, deleteCookie } from './cookie-utils';
-import { IMainTemplate } from '../templates/index';
-import { GithubSession } from './sessions';
-import { DocumentNode } from 'graphql';
+//#region > Imports
+//> Cookie Utils
+// Contains a tool which can check if a cookie is still alive
+import { cookieChecker } from "./cookie-utils";
+//#endregion
 
-export interface UserData {
+//#region > Interfaces
+/** @interface UserData defines the structure a profile objects. */
+interface UserData {
   username?: string;
   firstName?: string;
   lastName?: string;
@@ -14,58 +16,75 @@ export interface UserData {
   lastLogin?: string;
 }
 
-export interface IAuth {
+/** @interface UserData defines the structure a authentication object. */
+interface IAuth {
   token: string;
   refreshToken: string;
 }
 
-export interface User {
+/** @interface User defines the structure a basic user object. */
+interface User {
   username: string;
   password: string;
 }
 
-export interface ISession {
-  sessions: { [id: string]: ISession; };
+/** @interface Session defines the session structure. */
+interface ISession {
+  sessions: { [id: string]: ISession };
   token: string | undefined;
   tokenName: string;
 }
+//#endregion
 
-/**@description A Session */
-export class Session implements ISession {
-  public sessions: { [id: string]: ISession; } = {};
-  public token: string | undefined = "";
-  public tokenName: string = "token";
+//#region > Classes
+/** @class A general Session with token functionality. */
+class Session implements ISession {
+  sessions: { [id: string]: ISession } = {};
+  token: string | undefined = "";
+  tokenName: string = "token";
 
   /**
    * Creates an instance of a Session.
    *
    * @constructor
    * @author Nico Schett <contact@schett.net>
-   * @param {string} ep A endpoint
-   * @param {string} template A template set
+   * @param {string} sId Session identifier.
    */
-  constructor(private sId: string) { }
+  constructor(private sId: string) {}
 
+  //> Methods
   /**
    * Add a  subSession.
-   * 
-   * @description Add a subSession to a session.
+   *
    * @param childSId The session name of the child.
    * @param {any} type Specify the session (Session | string)
    * @param permanent True if not set.
+   * @description Add a subSession to a session.
    */
   addSubSession<S, E, T>(childSId: string, Cls: any, endpoint: E, template: T) {
     let session: S = new Cls(this.sId + "_" + childSId, endpoint, template);
+
     return session;
   }
 
   /**
-  * Is alive check.
-  * 
-  * @description A status whether the token is alive or not.
-  * @param {boolean} alive A status.
-  */
+   * Is alive check.
+   *
+   * @description A status whether the token is alive or not.
+   * @param {boolean} alive A status.
+   */
   isAlive() {
     return cookieChecker(this.tokenName);
   }
 }
+//#endregion
+
+//#region > Exports
+export type { UserData, IAuth, User, ISession };
+export default Session;
+//#endregion
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © Simon Prast
+ */

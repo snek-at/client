@@ -1,20 +1,34 @@
-import { SnekSession } from '../../../../session/sessions';
-import { ISnekGqlTemplate } from '../index';
+//#region > Imports
+//> Sessions
+// Contains the snek session
+import { SnekSession } from "../../../../session/sessions";
+//> Interfaces
+// Contains a interface for a general response
+import { IResponse } from "./index";
+// Contains the user interface for authentication
+import { ISnekGqlTemplate } from "../index";
+//#endregion
 
-interface IGitlabServerResponse {
-  data: { page: GitlabServerData }
+//#region > Interfaces
+/** @interface GitlabServerResponse defines the structure of the gitlab server response. */
+interface IGitlabServerResponse extends IResponse {
+  data: { page: GitlabServerData };
 }
 
+/** @interface GitlabServerData defines the structure of the gitlab server data. */
 interface GitlabServerData {
-  supportedGitlabs: []
+  supportedGitlabs: [];
 }
 
-interface IAllPageUrlResponse {
-  data: { pages: [] }
+/** @interface AllPageUrlResponse defines the structure of the all page url response. */
+interface IAllPageUrlResponse extends IResponse {
+  data: { pages: [] };
 }
+//#endregion
 
+//#region > Classes
 /** @class A set of session aware Tasks */
-export class SnekGqlGeneralTasks {
+class SnekGqlGeneralTasks {
   public template: ISnekGqlTemplate;
   /**
    * Creates an instance of a SessionTasks.
@@ -39,14 +53,16 @@ export class SnekGqlGeneralTasks {
     await this.session.refresh();
 
     let query = this.template.queries.general.gitlabServer;
-    let response = <IGitlabServerResponse>await this.session.ep.send("query", query, { token: this.session.token });
+    let response = <IGitlabServerResponse>(
+      await this.session.ep.send("query", query, { token: this.session.token })
+    );
 
     return response;
   }
 
   /**
    * All page url
-   * 
+   *
    * @returns {Promise<IAllPageUrlResponse>} A list of all page urls.
    */
   async allPageUrls(): Promise<IAllPageUrlResponse> {
@@ -56,8 +72,19 @@ export class SnekGqlGeneralTasks {
     await this.session.refresh();
 
     let query = this.template.queries.general.allPageUrls;
-    let response = <IAllPageUrlResponse>await this.session.ep.send("query", query, { token: this.session.token });
+    let response = <IAllPageUrlResponse>(
+      await this.session.ep.send("query", query, { token: this.session.token })
+    );
 
     return response;
   }
 }
+//#endregion
+
+//#region > Exports
+export default SnekGqlGeneralTasks;
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © Simon Prast
+ */

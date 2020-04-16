@@ -1,9 +1,14 @@
-import { ScraperEndpoint, IOptions } from './index';
+//#region > Imports
+//> Interfaces
+// Contains the interface for the Apollo endpoint and the Apollo options
+import { ScraperEndpoint, IOptions } from "./index";
+//#endregion
 
 /**@class A endpoint to fetch website page data. */
-export class Scraper implements ScraperEndpoint {
-  public headers: object;
-  public desc: string = "A endpoint to fetch website page data.";
+class Scraper implements ScraperEndpoint {
+  //> Fields
+  headers: object;
+  desc: string = "A endpoint to fetch website page data.";
 
   /**
    * @constructor
@@ -16,6 +21,7 @@ export class Scraper implements ScraperEndpoint {
     this.headers = options.headers;
   }
 
+  //> Methods
   /**
    * @param path Path to the endpoint. Specify it like "/foo/bar". Correct slash setting is IMPORTANT!
    * @returns {T} JSON object passed to given structure <T>.
@@ -25,18 +31,18 @@ export class Scraper implements ScraperEndpoint {
     return fetch(this.root + path, {
       headers: {
         "x-requested-with": "XMLHttpRequest",
-        "accept": "application/json, text/plain, */*",
-        ... this.headers
+        accept: "application/json, text/plain, */*",
+        ...this.headers,
+      },
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
       }
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(response.statusText)
-        }
-        return response.json().then(data => data as T);
-      })
+
+      return response.json().then((data) => data as T);
+    });
   }
-  
+
   /**
    * @param path Path to the endpoint. Specify it like "/foo/bar". Correct slash setting is IMPORTANT!
    * @returns {object} DOM object.
@@ -45,16 +51,27 @@ export class Scraper implements ScraperEndpoint {
   async getDom(path: string): Promise<Document> {
     return fetch(this.root + path, {
       headers: {
-        ... this.headers
-      }
+        ...this.headers,
+      },
     })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(response.statusText)
-      }
-      return response.text();
-    }).then(text => {
-      return new DOMParser().parseFromString(text, "text/html");
-    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+
+        return response.text();
+      })
+      .then((text) => {
+        return new DOMParser().parseFromString(text, "text/html");
+      });
   }
 }
+
+//#region > Exports
+export default Scraper;
+//#endregion
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © Simon Prast
+ */

@@ -1,18 +1,34 @@
-import { Session, IAuth, User, UserData } from "./index";
+//#region > Imports
+//> Session
+// Contains the base session
+import Session from "./index";
+//> Templates
+// Contains the main template for the sessions
 import { IMainTemplate } from "../templates/index";
-import { SnekTemplate } from "../templates/snek/index";
+// Contains the snek template
+import SnekTemplate from "../templates/snek/index";
+//> Cookie Utils
+// Contains tools for cookie handeling
 import {
   cookieChecker,
   getCookie,
   setCookie,
   deleteCookie,
 } from "./cookie-utils";
-import { ApolloEndpoint } from "../../src/endpoints/index";
-import { SnekTasks } from "../templates/snek/gql/tasks/index";
+//> Tasks
+// Contains snek tasks
+import SnekTasks from "../templates/snek/gql/tasks/index";
+//> Interfaces
+// Contains the interface for gql queries, mutations and subscriptions
 import { DocumentNode } from "graphql";
+// Contains the interface for the apollo endpoint
+import { ApolloEndpoint } from "../../src/endpoints/index";
+// Contains basic session interfaces
+import { IAuth, User, UserData } from "./index";
+//#endregion
 
-/**@description A Github subSession  */
-export class GithubSession extends Session {
+/** @class A Github SubSession  */
+class GithubSession extends Session {
   /**
    * Creates an instance of a GithubSession.
    *
@@ -49,10 +65,10 @@ export class GithubSession extends Session {
   }
 }
 
-/**@description A Snek subSession  */
-export class SnekSession extends Session {
-  public refreshToken: string | undefined = "";
-  public refreshTokenName: string = "refresh";
+/** @class A Snek SubSession  */
+class SnekSession extends Session {
+  refreshToken: string | undefined = "";
+  refreshTokenName: string = "refresh";
 
   /**
    * Define tasks
@@ -73,14 +89,15 @@ export class SnekSession extends Session {
     public template: SnekTemplate
   ) {
     super(sId);
+
     this.tokenName = sId + "-" + this.tokenName;
     this.refreshTokenName = sId + "-" + this.refreshTokenName;
-
     this.tasks = new SnekTasks(this);
   }
 
+  //> Methods
   /**
-   * Sned query:
+   * Send query:
    *
    * @description Send a query to the endpoint.
    * @param {string} token A authentication token.
@@ -101,13 +118,13 @@ export class SnekSession extends Session {
    * @param {IAuth} auth A Auth object (token, refreshToken).
    */
   initTokens(auth: IAuth) {
-    console.log(auth);
     this.token = auth.token;
     this.refreshToken = auth.refreshToken;
 
+    /** Delte the token and refreshToken cookie. */
     deleteCookie(this.tokenName);
     deleteCookie(this.refreshTokenName);
-
+    /** Set the token and refreshToken cookie with expire times. */
     setCookie(this.tokenName, this.token, 2 * 60);
     setCookie(this.refreshTokenName, this.refreshToken, 6 * 24 * 60 * 60);
   }
@@ -132,6 +149,7 @@ export class SnekSession extends Session {
     if (cookieChecker(this.refreshTokenName) && super.isAlive()) {
       return true;
     }
+
     return false;
   }
 
@@ -145,53 +163,33 @@ export class SnekSession extends Session {
     let response;
 
     if (!user && this.wasAlive()) {
-      /**
-       * Refresh tokens
-       */
+      /** Refresh tokens. */
       this.refresh();
     } else {
       if (!user) {
-        /**
-         * Anon login
-         * Authenticate anonymous user
-         */
+        /** Authenticate anonymous user. */
         response = await this.tasks.auth.anon();
       } else {
-        /**
-         * Nonanon login
-         * Authenticate real user
-         */
-        console.log("before ");
+        /** Authenticate real user. */
         response = await this.tasks.auth.nonanon(user);
       }
-      /**
-       * Set tokens
-       */
-
-      console.log(response, <IAuth>response.data.auth);
       if (response.errors) {
         throw new Error(JSON.stringify(response.errors));
       }
 
+      /** Set tokens. */
       this.initTokens(response.data.auth);
-      console.log(response.data.auth.user, response.data);
+
       return <UserData>response.data.auth.user;
     }
 
-    /**
-     * Whoami
-     * Get user data
-     */
-    console.log("start whoami");
+    /** Get user data. */
     response = await this.tasks.user.whoami();
-    console.log(response);
+
     return <UserData>response.data;
   }
 
-  /**
-   * Refresh cookie:
-   * Refreshes the snek_jwt
-   */
+  /** @description Refreshes the cookies*/
   async refresh() {
     if (!this.isAlive()) {
       if (this.wasAlive()) {
@@ -199,7 +197,6 @@ export class SnekSession extends Session {
          * Refresh token with refreshToken
          */
         this.refreshToken = getCookie(this.refreshTokenName);
-        console.log("REFRESH", this.refreshToken);
         let response = await this.tasks.auth.refresh();
 
         if (response.errors) {
@@ -208,12 +205,9 @@ export class SnekSession extends Session {
 
         this.initTokens(response.data.refresh);
       } else {
-        /**
-         * Begin new session
-         */
+        /** Begin new session */
         await this.end();
         await this.begin();
-        /// USER!!!
       }
     } else {
       const token = getCookie(this.tokenName);
@@ -225,27 +219,31 @@ export class SnekSession extends Session {
     }
   }
 
-  /**
-   * End session:
-   * End session by reset jwt and deleting cookie
-   */
+  /** @description End session by reset jwt and deleting cookie. */
   async end() {
-    /**
-     * Revoke token if it is set
-     */
+    /** Revoke token if it is set */
     if (this.refreshToken !== "") {
       let response = await this.tasks.auth.revoke();
-      console.log(response.data.revoke.revoked);
+      /**
+       * TID: 1
+       */
+      console.log("TID-1(REVOKE)", response.data.revoke.revoked);
     }
-    /**
-     * Reset token
-     */
+    /** Reset token. */
     this.token = "";
     this.refreshToken = "";
-    /**
-     * Delete cookie
-     */
+
+    /** Delete cookie. */
     deleteCookie(this.tokenName);
     deleteCookie(this.refreshTokenName);
   }
 }
+
+//#region > Exports
+export { GithubSession, SnekSession };
+//#endregion
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © Simon Prast
+ */

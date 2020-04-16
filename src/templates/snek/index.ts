@@ -1,8 +1,19 @@
-import { SnekGql } from './gql';
+//#region > Imports
+import SnekGql from "./gql";
+//#endregion
+
+//#region > Classes
+/** @class A Template with initializes all SubTemplates. */
+class SnekTemplate {
+  public snekGql = new SnekGql();
+}
+//#endregion
+
+//#region > Exports
+export default SnekTemplate;
+//#endregion
 
 /**
- * @description A Template with initializes all SubTemplates
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © Simon Prast
  */
-export class SnekTemplate {
-    public snekGql = new SnekGql();
-}

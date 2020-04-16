@@ -1,13 +1,28 @@
-// import { GraphqlTemplate } from "./graphql";
-import { SnekTemplate } from './snek';
+//#region > Imports
+//> SNEK Templates
+import SnekTemplate from "./snek";
+//#endregion
 
-export interface IMainTemplate {
+//#region > Interfaces
+/** @interface MainTemplate define the strucutre of the base interfaces. */
+interface IMainTemplate {
   snek: SnekTemplate;
 }
+//#endregion
 
-/**
- * @description A Template with initializes all SubTemplates
- */
-export class MainTemplate implements IMainTemplate{
+//#region > Classes
+/** @class A Template with initializes all SubTemplates. */
+class MainTemplate implements IMainTemplate {
   public snek = new SnekTemplate();
 }
+//#endregion
+
+//#region > Exports
+export type { IMainTemplate };
+export { MainTemplate };
+//#endregion
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © Simon Prast
+ */

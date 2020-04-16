@@ -1,5 +1,10 @@
-import gql from 'graphql-tag';
+//#region > Imports
+//> Graphql
+// Contains a a gql tag for wrapping queries
+import gql from "graphql-tag";
+//#endregion
 
+//#region > Queries
 /** 
  * Whoami:
  * Query to fetch the username of the according token
@@ -45,5 +50,13 @@ const profile = gql`
     }
   }
 `;
+//#endregion
 
+//#region > Exports
 export { whoami, profile};
+//#endregion
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © Simon Prast
+ */

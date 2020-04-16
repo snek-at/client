@@ -1,62 +1,72 @@
-/** @description General utils for managing cookies in Typescript */
-
+/** @description General utils for managing cookies in Typescript. */
+//> Functions
 /**
- * Set cookie
- * @param {string} name Name of cookie
- * @param {string} value Value of cookie
- * @param {number} time Time in seconds
+ * @function
+ * @param {string} name Name of cookie.
+ * @param {string} value Value of cookie.
+ * @param {number} time Time in seconds.
+ * @description Set cookie.
  */
-export function setCookie(name: string, val: string, time: number) {
-    const date = new Date();
-    const value = val;
+function setCookie(name: string, val: string, time: number) {
+  const date = new Date();
+  const value = val;
 
-    // Set it expire in n(time) seconds
-    date.setTime(date.getTime() + (time * 1000));
-    // Set it
-    document.cookie = name + "=" + value + "; expires=" + date.toUTCString() + "; path=/";
+  // Set it expire in n(time) seconds
+  date.setTime(date.getTime() + time * 1000);
+  // Set it
+  document.cookie =
+    name + "=" + value + "; expires=" + date.toUTCString() + "; path=/";
 }
 
 /**
- * Get cookie
- * @param {string} name Name of cookie
+ * @function
+ * @param {string} name Name of cookie.
  * @returns {string} Value of cookie.
+ * @description Get cookie.
  */
-export function getCookie(name: string) {
-    const value = "; " + document.cookie;
-    const parts = value.split("; " + name + "=");
+function getCookie(name: string) {
+  const value = "; " + document.cookie;
+  const parts = value.split("; " + name + "=");
 
-    if (parts.length == 2) {
-        return parts.pop()?.split(";").shift();
-    }
+  if (parts.length == 2) {
+    return parts.pop()?.split(";").shift();
+  }
 }
 
 /**
- * Delete cookie
+ * @function
  * @param {string} name Name of cookie
+ * @description Delete cookie
  */
-export function deleteCookie(name: string) {
-    const date = new Date();
+function deleteCookie(name: string) {
+  const date = new Date();
 
-    // Set it expire in -1 days
-    date.setTime(date.getTime() + (-1 * 24 * 60 * 60 * 1000));
+  // Set it expire in -1 days
+  date.setTime(date.getTime() + -1 * 24 * 60 * 60 * 1000);
 
-    // Set it
-    document.cookie = name + "=; expires=" + date.toUTCString() + "; path=/";
+  // Set it
+  document.cookie = name + "=; expires=" + date.toUTCString() + "; path=/";
 }
 
 /**
- * Check if cookie is alive.
- *
+ * @function
  * @returns {boolean} Is the cookie alive?.
+ * @description Check if cookie is alive.
  */
-export function cookieChecker(name: string) {
-    let cookie = getCookie(name);
-    console.log(cookie)
-    console.log("Cookiename: ", name)
-    if (cookie) {
-        console.log("cookie true")
-        return true;
-    }
-    console.log("cookie false")
-    return false;
+function cookieChecker(name: string) {
+  let cookie = getCookie(name);
+
+  if (cookie) {
+    return true;
+  }
+  return false;
 }
+
+//#region > Exports
+export { setCookie, getCookie, deleteCookie, cookieChecker };
+//#endregion
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © Simon Prast
+ */
