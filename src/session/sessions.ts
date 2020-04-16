@@ -43,9 +43,7 @@ class GithubSession extends Session {
     public ep: ApolloEndpoint,
     public template: IMainTemplate
   ) {
-    /**
-     * TODO: Change template set to github
-     */
+    /* TODO: Change template set to github */
     super(sId);
   }
 
@@ -71,9 +69,7 @@ class SnekSession extends Session {
   refreshToken: string | undefined = "";
   refreshTokenName: string = "refresh";
 
-  /**
-   * Define tasks
-   */
+  /* Define tasks */
   public tasks: SnekTasks;
 
   /**
@@ -122,10 +118,10 @@ class SnekSession extends Session {
     this.token = auth.token;
     this.refreshToken = auth.refreshToken;
 
-    /** Delte the token and refreshToken cookie. */
+    /* Delete the token and refreshToken cookie. */
     deleteCookie(this.tokenName);
     deleteCookie(this.refreshTokenName);
-    /** Set the token and refreshToken cookie with expire times. */
+    /* Set the token and refreshToken cookie with expire times. */
     setCookie(this.tokenName, this.token, 2 * 60);
     setCookie(this.refreshTokenName, this.refreshToken, 6 * 24 * 60 * 60);
   }
@@ -164,39 +160,37 @@ class SnekSession extends Session {
     let response;
 
     if (!user && this.wasAlive()) {
-      /** Refresh tokens. */
+      /* Refresh tokens. */
       this.refresh();
     } else {
       if (!user) {
-        /** Authenticate anonymous user. */
+        /* Authenticate anonymous user. */
         response = await this.tasks.auth.anon();
       } else {
-        /** Authenticate real user. */
+        /* Authenticate real user. */
         response = await this.tasks.auth.nonanon(user);
       }
       if (response.errors) {
         throw new Error(JSON.stringify(response.errors));
       }
 
-      /** Set tokens. */
+      /* Set tokens. */
       this.initTokens(response.data.auth);
 
       return <UserData>response.data.auth.user;
     }
 
-    /** Get user data. */
+    /* Get user data. */
     response = await this.tasks.user.whoami();
 
     return <UserData>response.data;
   }
 
-  /** @description Refreshes the cookies*/
+  /** @description Refreshes the cookies. */
   async refresh() {
     if (!this.isAlive()) {
       if (this.wasAlive()) {
-        /**
-         * Refresh token with refreshToken
-         */
+        /* Refresh token with refreshToken */
         this.refreshToken = getCookie(this.refreshTokenName);
         let response = await this.tasks.auth.refresh();
 
@@ -206,7 +200,7 @@ class SnekSession extends Session {
 
         this.initTokens(response.data.refresh);
       } else {
-        /** Begin new session */
+        /* Begin new session */
         await this.end();
         await this.begin();
       }
@@ -222,19 +216,17 @@ class SnekSession extends Session {
 
   /** @description End session by resetting jwt and deleting cookies. */
   async end() {
-    /** Revoke token if it is set */
+    /* Revoke token if it is set */
     if (this.refreshToken !== "") {
       let response = await this.tasks.auth.revoke();
-      /**
-       * TID: 1
-       */
+      /* TID: 1 */
       console.log("TID-1(REVOKE)", response.data.revoke.revoked);
     }
-    /** Reset token. */
+    /* Reset token. */
     this.token = "";
     this.refreshToken = "";
 
-    /** Delete cookie. */
+    /* Delete cookie. */
     deleteCookie(this.tokenName);
     deleteCookie(this.refreshTokenName);
   }
