@@ -16,6 +16,7 @@ interface IEndpoint {
    */
   desc: string;
 }
+
 /** @interface Options defines the structure of the apollo options. */
 interface IOptions {
   /**
@@ -46,14 +47,14 @@ interface ApolloEndpoint extends IEndpoint {
 /** @interface ScraperEndpoint defines the structure of the scraper endpoint. */
 interface ScraperEndpoint extends IEndpoint {
   /**
-   * GetJson: A method which get gets json data from a specific url.
+   * GetJson: A method which gets json data from a specific url.
    *
    * @param url A web url.
    * @returns {Promise<T>} Json data in the given format <T>.
    */
   getJson<T>(url: string): Promise<T>;
   /**
-   * GetDom: A method which get gets DOM data from a specific url.
+   * GetDom: A method which gets DOM data from a specific url.
    *
    * @param url A web url.
    * @returns {Promise<Document>} A DOM Document.

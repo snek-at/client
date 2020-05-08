@@ -24,6 +24,7 @@ interface IEndpoint {
   type: string;
   headers: object;
 }
+
 /** @interface Client will define the client structure. */
 interface IClient {}
 //#endregion

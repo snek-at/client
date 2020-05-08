@@ -1,9 +1,10 @@
 //#region > Imports
 //> Interfaces
-// Contains the interface for the Apollo endpoint and the Apollo options
+// Contains the interface for the Apollo endpoint and options
 import { ScraperEndpoint, IOptions } from "./index";
 //#endregion
 
+//#region > Classes
 /**@class A endpoint to fetch website page data. */
 class Scraper implements ScraperEndpoint {
   //> Fields
@@ -66,6 +67,7 @@ class Scraper implements ScraperEndpoint {
       });
   }
 }
+//#endregion
 
 //#region > Exports
 export default Scraper;

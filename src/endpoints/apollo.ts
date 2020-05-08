@@ -51,7 +51,7 @@ class Apollo implements ApolloEndpoint {
     try {
       this.cache = new InMemoryCache({ fragmentMatcher });
     } catch {
-      throw new Error("An error occurred when initializing cache!");
+      throw new Error("An error occurred while initializing the cache!");
     }
 
     try {
@@ -60,7 +60,7 @@ class Apollo implements ApolloEndpoint {
         headers: options.headers,
       });
     } catch {
-      throw new Error("An error occurred when initializing the API link!");
+      throw new Error("An error occurred while initializing the API link!");
     }
 
     try {
@@ -69,7 +69,7 @@ class Apollo implements ApolloEndpoint {
         link: this.link,
       });
     } catch {
-      throw new Error("An error occurred when initializing headers!");
+      throw new Error("An error occurred while initializing the headers!");
     }
   }
 
