@@ -14,6 +14,7 @@ function setCookie(name: string, val: string, time: number) {
 
   // Set cookie expiry date in n(time) seconds
   date.setTime(date.getTime() + time * 1000);
+
   // Create cookie
   document.cookie =
     name + "=" + value + "; expires=" + date.toUTCString() + "; path=/";
@@ -51,15 +52,16 @@ function deleteCookie(name: string) {
 
 /**
  * @function
- * @returns {boolean} Is the cookie alive?.
+ * @returns {boolean} The life status of the cookie.
  * @description Check if cookie is alive.
  */
-function cookieChecker(name: string) {
+function cookieChecker(name: string): boolean {
   let cookie = getCookie(name);
 
   if (cookie) {
     return true;
   }
+
   return false;
 }
 //#endregion

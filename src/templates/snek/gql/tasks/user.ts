@@ -26,7 +26,7 @@ interface ICacheResponse extends IResponse {
   data: CacheData;
 }
 
-/** @interface CacheResponse defines the structure of a data response. */
+/** @interface CacheData defines the structure of a data response. */
 interface CacheData {
   user: {
     id: number;
@@ -66,12 +66,13 @@ interface WhoamiData {
 /** @class A set of session aware Tasks */
 class SnekGqlUserTasks {
   public template: ISnekGqlTemplate;
+
   /**
    * Creates an instance of a SessionTasks.
    *
    * @constructor
    * @author Nico Schett <contact@schett.net>
-   * @param {string} session A session for the tasks
+   * @param {string} session A session for the tasks.
    */
   constructor(private session: SnekSession) {
     this.template = session.template.snekGql;
@@ -83,13 +84,10 @@ class SnekGqlUserTasks {
    * @returns {Promise<IRegistrationResponse>} A JWT token.
    */
   async registration(values: object): Promise<IRegistrationResponse> {
-    /**
-     * Refresh if session is not alive
-     */
+    /* Refresh if session is not alive */
     await this.session.refresh();
 
     let query = this.template.mutations.user.registration;
-    console.log(query);
     let response = <IRegistrationResponse>await this.session.ep.send(
       "mutation",
       query,
@@ -98,6 +96,7 @@ class SnekGqlUserTasks {
         values,
       }
     );
+
     return response;
   }
 
@@ -107,9 +106,7 @@ class SnekGqlUserTasks {
    * @returns {Promise<ICacheResponse>} A JWT token.
    */
   async cache(platformData: string): Promise<ICacheResponse> {
-    /**
-     * Refresh if session is not alive
-     */
+    /* Refresh if session is not alive */
     await this.session.refresh();
 
     let query = this.template.mutations.user.cache;
@@ -121,6 +118,7 @@ class SnekGqlUserTasks {
         platformData,
       }
     );
+
     return response;
   }
 
@@ -131,9 +129,7 @@ class SnekGqlUserTasks {
    * @returns {Promise<IProfileResponse>} The page profile of a user.
    */
   async profile(url: string): Promise<IProfileResponse> {
-    /**
-     * Refresh if session is not alive
-     */
+    /* Refresh if session is not alive */
     await this.session.refresh();
 
     let query = this.template.queries.user.profile;
@@ -155,9 +151,7 @@ class SnekGqlUserTasks {
    * @returns {Promise<IWhoamiResponse>} User data.
    */
   async whoami(): Promise<IWhoamiResponse> {
-    /**
-     * Refresh if session is not alive
-     */
+    /* Refresh if session is not alive */
     await this.session.refresh();
 
     let query = this.template.queries.user.whoami;

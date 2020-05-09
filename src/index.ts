@@ -30,12 +30,12 @@ interface IClient {}
 //#endregion
 
 //#region > Classes
-/**@class The snek-client. Enjoy it. Will be implemented in the future. */
+/** @class The snek-client. Enjoy it. Will be implemented in the future. */
 class Client implements IClient {
   constructor(ep: IEndpoint) {}
 }
 
-/**@class A client implementation for snek interaction */
+/** @class A client implementation for snek interaction. */
 class SnekClient extends Client {
   endpoint: ApolloEndpoint;
   template: IMainTemplate;

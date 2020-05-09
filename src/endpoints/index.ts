@@ -1,5 +1,6 @@
 //#region > Imports
 //> Interfaces
+//#INSTALL "graphql"
 // Contains the interface for gql queries, mutations and subscriptions
 import { DocumentNode } from "graphql";
 //#endregion
@@ -28,7 +29,7 @@ interface IOptions {
 /** @interface ApolloEndpoint defines the structure of the apollo endpoint. */
 interface ApolloEndpoint extends IEndpoint {
   /**
-   * Send: A method which provides send functionallity for all graphql types.
+   * Send: Provides requests for various graphql types.
    *
    * @param {string} type The type of the action you want to perform. Query, Mutation,...
    * @param {DocumentNode} data The query structure.

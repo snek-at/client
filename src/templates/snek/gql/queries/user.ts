@@ -1,18 +1,19 @@
 //#region > Imports
 //> Graphql
-// Contains a a gql tag for wrapping queries
+//#INSTALL "graphql-tag"
+// Contains a gql tag for wrapping queries
 import gql from "graphql-tag";
 //#endregion
 
 //#region > Queries
 /**
  * Whoami:
- * Query to fetch the username of the according token
+ * Query to fetch the username of the according token.
  *
- * @deprecated since 1.0 use jwtAuth instead
- * @param {string} token A users JWT
- * @returns {string} Username
-*/
+ * @deprecated since 1.0 use jwtAuth instead.
+ * @param {string} token A users JWT.
+ * @returns {string} A username.
+ */
 const whoami = gql`
   query whoami($token: String!) {
     whoami: me(token: $token) {
@@ -28,11 +29,11 @@ const whoami = gql`
 
 /**
  * Get user profile:
- * Query to fetch profile data
+ * Query to fetch profile data.
  *
- * @param {string} url PageUrl of a user profile
- * @param {string} token  A users JWT
- * @returns {string} Profile page of a user
+ * @param {string} url PageUrl of a user profile.
+ * @param {string} token A users JWT.
+ * @returns {string} A profile page of a user.
  */
 const profile = gql`
   query profile($url: String!, $token: String!) {
@@ -54,7 +55,7 @@ const profile = gql`
 //#endregion
 
 //#region > Exports
-export { whoami, profile};
+export { whoami, profile };
 //#endregion
 
 /**

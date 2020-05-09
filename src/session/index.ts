@@ -57,7 +57,7 @@ class Session implements ISession {
    * Add a subSession.
    *
    * @param childSId The session name of the child.
-   * @param {any} type Specify the session (Session | string)
+   * @param {any} type Specify the session (Session | string).
    * @param permanent True if not set.
    * @description Add a subSession to a session.
    */

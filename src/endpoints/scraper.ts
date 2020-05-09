@@ -5,16 +5,16 @@ import { ScraperEndpoint, IOptions } from "./index";
 //#endregion
 
 //#region > Classes
-/**@class A endpoint to fetch website page data. */
+/** @class A endpoint to fetch page DOM. */
 class Scraper implements ScraperEndpoint {
   //> Fields
   headers: object;
-  desc: string = "A endpoint to fetch website page data.";
+  desc: string = "A endpoint to fetch page DOM";
 
   /**
    * @constructor
    * @author Nico Schett <contact@schett.net>
-   * @param root Root url of endpoint. Specify it like https://foo.bar. Correct slash setting is IMPORTANT!
+   * @param root Root url of endpoint. Specify it like https://foo.bar. The correct placement of the slashes is essential!
    * @param options Specify options object to define e.g headers.
    * @description Creates a instance of Scraper.
    */
@@ -24,7 +24,7 @@ class Scraper implements ScraperEndpoint {
 
   //> Methods
   /**
-   * @param path Path to the endpoint. Specify it like "/foo/bar". Correct slash setting is IMPORTANT!
+   * @param path Path to the endpoint. Specify it like "/foo/bar". The correct placement of the slashes is essential!
    * @returns {T} JSON object passed to given structure <T>.
    * @description Get JSON object<T> from specified path.
    */
@@ -45,7 +45,7 @@ class Scraper implements ScraperEndpoint {
   }
 
   /**
-   * @param path Path to the endpoint. Specify it like "/foo/bar". Correct slash setting is IMPORTANT!
+   * @param path Path to the endpoint. Specify it like "/foo/bar". The correct placement of the slashes is essential!
    * @returns {object} DOM object.
    * @description Get DOM object from specified path.
    */

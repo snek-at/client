@@ -1,12 +1,15 @@
 //#region > Imports
 //> Apollo Client
-// Contains the client for graphql handeling
+//#INSTALL "apollo-client"
+// Contains the client for graphql handling
 import { ApolloClient } from "apollo-client";
 //> Apollo Link
+//#INSTALL "apollo-link-http"
 // Contains the link for the apollo client
 import { HttpLink } from "apollo-link-http";
 //> Apollo Cache
-// Contains cache handeling for apollo
+//#INSTALL "apollo-cache-inmemory"
+// Contains cache handling for apollo
 import {
   InMemoryCache,
   IntrospectionFragmentMatcher,
@@ -15,12 +18,13 @@ import {
 //> Interfaces
 // Contains the interface for gql queries, mutations and subscriptions
 import { DocumentNode } from "graphql";
+
 // Contains the interface for the Apollo endpoint and the Apollo options
 import { ApolloEndpoint, IOptions } from "./index";
 //#endregion
 
 //#region > Classes
-/** @class Apollo client for graphql handeling. */
+/** @class Apollo client for graphql handling. */
 class Apollo implements ApolloEndpoint {
   //> Fields
   private link: HttpLink;
@@ -28,7 +32,7 @@ class Apollo implements ApolloEndpoint {
   private client: ApolloClient<NormalizedCacheObject>;
 
   headers: object;
-  desc: string = "Apollo Endpoint";
+  desc: string = "A endpoint used for APIv4 requests";
 
   /**
    * Creates a Apollo instance.

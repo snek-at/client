@@ -27,15 +27,16 @@ interface IAllPageUrlResponse extends IResponse {
 //#endregion
 
 //#region > Classes
-/** @class A set of session aware Tasks */
+/** @class A set of session aware Tasks. */
 class SnekGqlGeneralTasks {
   public template: ISnekGqlTemplate;
+
   /**
    * Creates an instance of a SessionTasks.
    *
    * @constructor
    * @author Nico Schett <contact@schett.net>
-   * @param {string} session A session for the tasks
+   * @param {string} session A session for the tasks.
    */
   constructor(private session: SnekSession) {
     this.template = session.template.snekGql;
@@ -47,9 +48,7 @@ class SnekGqlGeneralTasks {
    * @returns {Promise<IGitlabServerResponse>} A list of Gitlab server.
    */
   async gitlabServer(): Promise<IGitlabServerResponse> {
-    /**
-     * Refresh if session is not alive
-     */
+    /* Refresh if session is not alive */
     await this.session.refresh();
 
     let query = this.template.queries.general.gitlabServer;
@@ -66,9 +65,7 @@ class SnekGqlGeneralTasks {
    * @returns {Promise<IAllPageUrlResponse>} A list of all page urls.
    */
   async allPageUrls(): Promise<IAllPageUrlResponse> {
-    /**
-     * Refresh if session is not alive
-     */
+    /* Refresh if session is not alive */
     await this.session.refresh();
 
     let query = this.template.queries.general.allPageUrls;

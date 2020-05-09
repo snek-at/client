@@ -1,4 +1,9 @@
 //#region > Imports
+//> Interfaces
+//#INSTALL "graphql"
+// Contains the interface for gql queries, mutations and subscriptions
+import { DocumentNode } from "graphql";
+
 //> Session
 // Contains the base session
 import Session from "./index";
@@ -8,7 +13,7 @@ import { IMainTemplate } from "../templates/index";
 // Contains the snek template
 import SnekTemplate from "../templates/snek/index";
 //> Cookie Utils
-// Contains tools for cookie handeling
+// Contains tools for cookie handling
 import {
   cookieChecker,
   getCookie,
@@ -19,8 +24,6 @@ import {
 // Contains snek tasks
 import SnekTasks from "../templates/snek/gql/tasks/index";
 //> Interfaces
-// Contains the interface for gql queries, mutations and subscriptions
-import { DocumentNode } from "graphql";
 // Contains the interface for the apollo endpoint
 import { ApolloEndpoint } from "../../src/endpoints/index";
 // Contains basic session interfaces
@@ -28,22 +31,22 @@ import { IAuth, User, UserData } from "./index";
 //#endregion
 
 //#region > Classes
-/** @class A Github SubSession  */
+/** @class A Github SubSession. */
 class GithubSession extends Session {
   /**
    * Creates an instance of a GithubSession.
    *
    * @constructor
-   * @param {string} sId A session name
-   * @param {Endpoint} ep A endpoint
-   * @param {IMainTemplate} template A template set
+   * @param {string} sId A session name.
+   * @param {Endpoint} ep A endpoint.
+   * @param {IMainTemplate} template A template set.
    */
   constructor(
     sId: string,
     public ep: ApolloEndpoint,
     public template: IMainTemplate
   ) {
-    /* TODO: Change template set to github */
+    /** @todo Change template set to dedicated github template set */
     super(sId);
   }
 
@@ -64,7 +67,7 @@ class GithubSession extends Session {
   }
 }
 
-/** @class A Snek SubSession  */
+/** @class A Snek SubSession. */
 class SnekSession extends Session {
   refreshToken: string | undefined = "";
   refreshTokenName: string = "refresh";
@@ -76,9 +79,9 @@ class SnekSession extends Session {
    * Creates an instance of a SnekSession.
    *
    * @constructor
-   * @param {string} sId A session name
-   * @param {Endpoint} ep A endpoint
-   * @param {SnekTemplate} template A template set
+   * @param {string} sId A session name.
+   * @param {Endpoint} ep A endpoint.
+   * @param {SnekTemplate} template A template set.
    */
   constructor(
     sId: string,
@@ -118,10 +121,11 @@ class SnekSession extends Session {
     this.token = auth.token;
     this.refreshToken = auth.refreshToken;
 
-    /* Delete the token and refreshToken cookie. */
+    /* Delete the token and refreshToken cookie */
     deleteCookie(this.tokenName);
     deleteCookie(this.refreshTokenName);
-    /* Set the token and refreshToken cookie with expire times. */
+
+    /* Set the token and refreshToken cookie with expire times */
     setCookie(this.tokenName, this.token, 2 * 60);
     setCookie(this.refreshTokenName, this.refreshToken, 6 * 24 * 60 * 60);
   }
@@ -160,38 +164,39 @@ class SnekSession extends Session {
     let response;
 
     if (!user && this.wasAlive()) {
-      /* Refresh tokens. */
+      /* Refresh token and retrieve a new refreshToken if necessary */
       this.refresh();
     } else {
       if (!user) {
-        /* Authenticate anonymous user. */
+        /* Authenticate anonymous user */
         response = await this.tasks.auth.anon();
       } else {
-        /* Authenticate real user. */
+        /* Authenticate real user */
         response = await this.tasks.auth.nonanon(user);
       }
       if (response.errors) {
         throw new Error(JSON.stringify(response.errors));
       }
 
-      /* Set tokens. */
+      /* Set tokens */
       this.initTokens(response.data.auth);
 
       return <UserData>response.data.auth.user;
     }
 
-    /* Get user data. */
+    /* Get user data */
     response = await this.tasks.user.whoami();
 
     return <UserData>response.data;
   }
 
-  /** @description Refreshes the cookies. */
+  /** @description Refreshes the cookies */
   async refresh() {
     if (!this.isAlive()) {
       if (this.wasAlive()) {
         /* Refresh token with refreshToken */
         this.refreshToken = getCookie(this.refreshTokenName);
+
         let response = await this.tasks.auth.refresh();
 
         if (response.errors) {
@@ -219,14 +224,16 @@ class SnekSession extends Session {
     /* Revoke token if it is set */
     if (this.refreshToken !== "") {
       let response = await this.tasks.auth.revoke();
-      /* TID: 1 */
+
+      //#DEBUG TSID1
       console.log("TID-1(REVOKE)", response.data.revoke.revoked);
     }
-    /* Reset token. */
+
+    /* Reset token */
     this.token = "";
     this.refreshToken = "";
 
-    /* Delete cookie. */
+    /* Delete cookie */
     deleteCookie(this.tokenName);
     deleteCookie(this.refreshTokenName);
   }
