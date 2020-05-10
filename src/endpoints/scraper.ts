@@ -14,7 +14,8 @@ class Scraper implements ScraperEndpoint {
   /**
    * @constructor
    * @author Nico Schett <contact@schett.net>
-   * @param root Root url of endpoint. Specify it like https://foo.bar. The correct placement of the slashes is essential!
+   * @param root Root url of endpoint. Specify it like https://foo.bar. The correct placement of the slashes is
+   *             essential!
    * @param options Specify options object to define e.g headers.
    * @description Creates a instance of Scraper.
    */
