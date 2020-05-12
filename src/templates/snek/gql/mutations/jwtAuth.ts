@@ -12,7 +12,7 @@ import gql from "graphql-tag";
  *
  * @param {string} username Username of a user.
  * @param {string} password Password of a user.
- * @returns {string} JWT
+ * @returns {string} A users JWT.
  */
 const auth = gql`
   mutation auth($username: String!, $password: String!) {

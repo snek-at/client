@@ -16,6 +16,7 @@ import {
   NormalizedCacheObject,
 } from "apollo-cache-inmemory";
 //> Interfaces
+//#INSTALL "graphql"
 // Contains the interface for gql queries, mutations and subscriptions
 import { DocumentNode } from "graphql";
 
