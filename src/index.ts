@@ -20,6 +20,10 @@ import { IMainTemplate } from "./templates/index";
 //#region > Interfaces
 /** @interface Endpoint defines the structure of object a endpoint requieres to initialize. */
 interface IEndpoint {
+  /**
+   * Url: the URL of an endpoint. For performance reasons,
+   *      https should always be selected as protocol if possible.
+   */
   url: string;
   type: string;
   headers: object;
@@ -32,7 +36,19 @@ interface IClient {}
 //#region > Classes
 /** @class The snek-client. Enjoy it. Will be implemented in the future. */
 class Client implements IClient {
-  constructor(ep: IEndpoint) {}
+  constructor(ep: IEndpoint) {
+    /*
+     * When no protocol is defined, http will be appended. Therefore https
+     * should always be included for performance.
+     */
+    ep.url = ((url: string) => {
+      if (!/^(?:f|ht)tps?\:\/\//.test(url)) {
+        url = "http://" + url;
+      }
+
+      return url;
+    })(ep.url);
+  }
 }
 
 /** @class A client implementation for snek interaction. */
@@ -73,21 +89,25 @@ class GithubClient extends Client {
   }
 }
 
-/** @class A client implementation for gitlab interaction. */
-class GitlabClient extends Client {
-  public endpointScraper: ScraperEndpoint;
+/**
+ * @class A client implementation for web interaction like scraping or access
+ *        to APIv4 endpoints.
+ */
+class WebClient extends Client {
+  public scraper: ScraperEndpoint;
+
   constructor(
-    url: string = "https://gitlab.com",
-    type: string = "scraper",
+    url: string,
+    type: string = "A webscraper client",
     headers: object = {}
   ) {
     super({ type, url, headers });
 
-    this.endpointScraper = new Scraper(url, { headers });
+    this.scraper = new Scraper(url, { headers });
   }
 }
 //#endregion
 
 //#region > Exports
-export { SnekClient, GithubClient, GitlabClient };
+export { SnekClient, GithubClient, WebClient };
 //#endregion
