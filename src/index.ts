@@ -58,9 +58,9 @@ class SnekClient extends Client {
   session: SnekSession;
 
   constructor(
-    type: string = "graphql",
     url: string = "https://engine.snek.at/api/graphiql",
-    headers: object = {}
+    headers: object = {},
+    type: string = "graphql"
   ) {
     super({ type, url, headers });
 
@@ -78,8 +78,8 @@ class GithubClient extends Client {
 
   constructor(
     url: string = "https://api.github.com/graphql",
-    type: string = "graphql",
-    headers: object = {}
+    headers: object = {},
+    type: string = "graphql"
   ) {
     super({ type, url, headers });
 
@@ -98,8 +98,8 @@ class WebClient extends Client {
 
   constructor(
     url: string,
-    type: string = "A webscraper client",
-    headers: object = {}
+    headers: object = {},
+    type: string = "A webscraper client"
   ) {
     super({ type, url, headers });
 
