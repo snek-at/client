@@ -36,7 +36,18 @@ interface IClient {}
 //#region > Classes
 /** @class The snek-client. Enjoy it. Will be implemented in the future. */
 class Client implements IClient {
-  constructor(ep: IEndpoint) {}
+  constructor(ep: IEndpoint) {
+    /*
+     * When no protocol is defined, http will be appended. Therefore https
+     * should always be included for performance.
+     */
+    ep.url = ((url: string) => {
+      if (!/^(?:f|ht)tps?\:\/\//.test(url)) {
+        url = "http://" + url;
+      }
+      return url;
+    })(ep.url);
+  }
 }
 
 /** @class A client implementation for snek interaction. */
