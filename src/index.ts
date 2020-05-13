@@ -88,21 +88,25 @@ class GithubClient extends Client {
   }
 }
 
-/** @class A client implementation for gitlab interaction. */
-class GitlabClient extends Client {
-  public endpointScraper: ScraperEndpoint;
+/**
+ * @class A client implementation for web interaction like scraping or access
+ *        to APIv4 endpoints.
+ */
+class WebClient extends Client {
+  public scraper: ScraperEndpoint;
+
   constructor(
-    url: string = "https://gitlab.com",
-    type: string = "scraper",
+    url: string,
+    type: string = "A webscraper client",
     headers: object = {}
   ) {
     super({ type, url, headers });
 
-    this.endpointScraper = new Scraper(url, { headers });
+    this.scraper = new Scraper(url, { headers });
   }
 }
 //#endregion
 
 //#region > Exports
-export { SnekClient, GithubClient, GitlabClient };
+export { SnekClient, GithubClient, WebClient };
 //#endregion
