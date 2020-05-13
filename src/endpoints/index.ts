@@ -61,6 +61,26 @@ interface ScraperEndpoint extends IEndpoint {
    * @returns {Promise<Document>} A DOM Document.
    */
   getDom(url: string): Promise<Document>;
+  /**
+   * Post: A method to post data to a specific url.
+   *
+   * @param {string} url A web url
+   * @param data Data which is filled into the body of a post request
+   * @returns {Promise<Document>} A DOM Document
+   */
+  post<T>(
+    url: string,
+    data:
+      | string
+      | Blob
+      | ArrayBufferView
+      | ArrayBuffer
+      | FormData
+      | URLSearchParams
+      | ReadableStream<Uint8Array>
+      | null
+      | undefined
+  ): Promise<T>;
 }
 //#endregion
 
