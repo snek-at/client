@@ -78,6 +78,41 @@ class Scraper implements ScraperEndpoint {
         return new DOMParser().parseFromString(text, "text/html");
       });
   }
+
+  /**
+   * @param {string} path Path to the endpoint. Specify it like "/foo/bar".
+   *                      The correct placement of the slashes is essential!
+   * @param data Data which is filled into the body of a post request
+   * @returns {Promise<Document>} A DOM Document
+   * @description Post data to a endpoint and get the respective result
+   */
+  async post<T>(
+    path: string,
+    data:
+      | string
+      | Blob
+      | ArrayBufferView
+      | ArrayBuffer
+      | FormData
+      | URLSearchParams
+      | ReadableStream<Uint8Array>
+      | null
+      | undefined
+  ): Promise<T> {
+    return fetch(this.url + path, {
+      method: "POST",
+      body: data,
+      headers: {
+        ...this.headers,
+      },
+    }).then(async (response) => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+
+      return response.json().then((data) => data as T);
+    });
+  }
 }
 //#endregion
 
