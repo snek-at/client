@@ -20,6 +20,10 @@ import { IMainTemplate } from "./templates/index";
 //#region > Interfaces
 /** @interface Endpoint defines the structure of object a endpoint requieres to initialize. */
 interface IEndpoint {
+  /**
+   * Url: the URL of an endpoint. For performance reasons,
+   *      https should always be selected as protocol if possible.
+   */
   url: string;
   type: string;
   headers: object;
