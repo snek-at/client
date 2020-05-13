@@ -45,6 +45,7 @@ class Client implements IClient {
       if (!/^(?:f|ht)tps?\:\/\//.test(url)) {
         url = "http://" + url;
       }
+
       return url;
     })(ep.url);
   }
