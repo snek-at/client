@@ -8,7 +8,10 @@ import { ScraperEndpoint, IOptions } from "./index";
 /** @class A endpoint to fetch page DOM. */
 class Scraper implements ScraperEndpoint {
   //> Fields
-  headers: object;
+  headers: object = {
+    "x-requested-with": "XMLHttpRequest",
+    accept: "application/json, text/plain, */*",
+  };
   desc: string = "A endpoint to fetch page DOM";
 
   /**
@@ -20,7 +23,7 @@ class Scraper implements ScraperEndpoint {
    * @description Creates a instance of Scraper.
    */
   constructor(private root: string, options: IOptions) {
-    this.headers = options.headers;
+    this.headers = { ...this.headers, ...options.headers };
   }
 
   //> Methods
@@ -32,8 +35,6 @@ class Scraper implements ScraperEndpoint {
   async getJson<T>(path: string): Promise<T> {
     return fetch(this.root + path, {
       headers: {
-        "x-requested-with": "XMLHttpRequest",
-        accept: "application/json, text/plain, */*",
         ...this.headers,
       },
     }).then((response) => {
