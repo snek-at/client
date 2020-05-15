@@ -58,7 +58,7 @@ interface IWhoamiResponse extends IResponse {
 
 /** @interface WhoamiData defines the structure of a whoami data. */
 interface WhoamiData {
-  username: string;
+  whoami: { username: string };
 }
 //#endregion
 
