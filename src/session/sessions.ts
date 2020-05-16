@@ -3,6 +3,10 @@
 //#INSTALL "graphql"
 // Contains the interface for gql queries, mutations and subscriptions
 import { DocumentNode } from "graphql";
+//> Cookie Utils
+//#INSTALL "js-cookie"
+//A simple, lightweight JavaScript API for handling browser cookies
+import Cookies from "js-cookie";
 
 //> Session
 // Contains the base session
@@ -12,14 +16,6 @@ import Session from "./index";
 import { IMainTemplate } from "../templates/index";
 // Contains the snek template
 import SnekTemplate from "../templates/snek/index";
-//> Cookie Utils
-// Contains tools for cookie handling
-import {
-  cookieChecker,
-  getCookie,
-  setCookie,
-  deleteCookie,
-} from "./cookie-utils";
 //> Tasks
 // Contains snek tasks
 import SnekTasks from "../templates/snek/gql/tasks/index";
@@ -122,12 +118,20 @@ class SnekSession extends Session {
     this.refreshToken = auth.refreshToken;
 
     /* Delete the token and refreshToken cookie */
-    deleteCookie(this.tokenName);
-    deleteCookie(this.refreshTokenName);
+    Cookies.remove(this.tokenName);
+    Cookies.remove(this.refreshTokenName);
+
+    let now = new Date();
 
     /* Set the token and refreshToken cookie with expire times */
-    setCookie(this.tokenName, this.token, 2 * 60);
-    setCookie(this.refreshTokenName, this.refreshToken, 6 * 24 * 60 * 60);
+    Cookies.set(this.tokenName, this.token, {
+      /* Expire time is 4 minutes */
+      expires: 4 / 1440,
+    });
+
+    Cookies.set(this.refreshTokenName, this.refreshToken, {
+      expires: 6,
+    });
   }
 
   /**
@@ -138,6 +142,7 @@ class SnekSession extends Session {
    */
   wasAlive() {
     return cookieChecker(this.refreshTokenName);
+    return Cookies.get(this.refreshTokenName) ? true : false;
   }
 
   /**
@@ -148,6 +153,7 @@ class SnekSession extends Session {
    */
   isAlive() {
     if (cookieChecker(this.refreshTokenName) && super.isAlive()) {
+    if (this.wasAlive() && super.isAlive()) {
       return true;
     }
 
@@ -195,7 +201,7 @@ class SnekSession extends Session {
     if (!this.isAlive()) {
       if (this.wasAlive()) {
         /* Refresh token with refreshToken */
-        this.refreshToken = getCookie(this.refreshTokenName);
+        this.refreshToken = Cookies.get(this.refreshTokenName);
 
         let response = await this.tasks.auth.refresh();
 
@@ -210,8 +216,8 @@ class SnekSession extends Session {
         await this.begin();
       }
     } else {
-      const token = getCookie(this.tokenName);
-      const refreshToken = getCookie(this.refreshTokenName);
+      const token = Cookies.get(this.tokenName);
+      const refreshToken = Cookies.get(this.refreshTokenName);
 
       if (token && refreshToken) {
         this.initTokens({ token, refreshToken });
@@ -234,8 +240,8 @@ class SnekSession extends Session {
     this.refreshToken = "";
 
     /* Delete cookie */
-    deleteCookie(this.tokenName);
-    deleteCookie(this.refreshTokenName);
+    Cookies.remove(this.tokenName);
+    Cookies.remove(this.refreshTokenName);
   }
 }
 //#endregion

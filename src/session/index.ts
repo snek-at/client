@@ -1,7 +1,8 @@
 //#region > Imports
 //> Cookie Utils
-// Contains a tool which can check if a cookie is still alive
-import { cookieChecker } from "./cookie-utils";
+//#INSTALL "js-cookie"
+//A simple, lightweight JavaScript API for handling browser cookies
+import Cookies from "js-cookie";
 //#endregion
 
 //#region > Interfaces
@@ -52,6 +53,8 @@ class Session implements ISession {
    */
   constructor(private sId: string) {}
 
+  //> Getter
+
   //> Methods
   /**
    * Add a subSession.
@@ -74,7 +77,7 @@ class Session implements ISession {
    * @param {boolean} alive A status.
    */
   isAlive() {
-    return cookieChecker(this.tokenName);
+    return Cookies.get(this.tokenName) ? true : false;
   }
 }
 //#endregion
