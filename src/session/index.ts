@@ -32,7 +32,6 @@ interface User {
 /** @interface Session defines the session structure. */
 interface ISession {
   sessions: { [id: string]: ISession };
-  token: string | undefined;
   tokenName: string;
 }
 //#endregion
@@ -41,7 +40,6 @@ interface ISession {
 /** @class A general Session with token functionality. */
 class Session implements ISession {
   sessions: { [id: string]: ISession } = {};
-  token: string | undefined = "";
   tokenName: string = "token";
 
   /**
@@ -54,6 +52,20 @@ class Session implements ISession {
   constructor(private sId: string) {}
 
   //> Getter
+  get token() {
+    const token = Cookies.get(this.tokenName);
+
+    return token ? token : undefined;
+  }
+
+  //> Setter
+  set token(value: string | undefined) {
+    if(value){
+      Cookies.set(this.tokenName, value);
+    }else{
+      Cookies.remove(this.tokenName)
+    }
+  }
 
   //> Methods
   /**
@@ -68,16 +80,6 @@ class Session implements ISession {
     let session: S = new Cls(this.sId + "_" + childSId, endpoint, template);
 
     return session;
-  }
-
-  /**
-   * Is alive check.
-   *
-   * @description A status whether the token is alive or not.
-   * @param {boolean} alive A status.
-   */
-  isAlive() {
-    return Cookies.get(this.tokenName) ? true : false;
   }
 }
 //#endregion

@@ -65,7 +65,6 @@ class GithubSession extends Session {
 
 /** @class A Snek SubSession. */
 class SnekSession extends Session {
-  refreshToken: string | undefined = "";
   refreshTokenName: string = "refresh";
 
   /* Define tasks */
@@ -91,7 +90,59 @@ class SnekSession extends Session {
     this.tasks = new SnekTasks(this);
   }
 
+  //> Getter
+  get token() {
+    let token = super.token;
+
+    /* Refresh token if there is none */
+    if (!token) {
+      token = super.token;
+    }
+
+    return token;
+  }
+
+  get refreshToken() {
+    const token = Cookies.get(this.refreshTokenName);
+
+    return token ? token : undefined;
+  }
+
+  //> Setter
+  set token(value: string | undefined) {
+    if (value) {
+      Cookies.set(this.tokenName, value ? value : "", {
+        expires: 4 / 1440,
+      });
+    } else {
+      Cookies.remove(this.tokenName);
+    }
+  }
+
+  set refreshToken(value: string | undefined) {
+    if (value) {
+      Cookies.set(this.refreshTokenName, value, {
+        expires: 6,
+      });
+    } else {
+      Cookies.remove(this.refreshTokenName);
+    }
+  }
+
   //> Methods
+  async upToDateToken() {
+    let token = super.token;
+
+    /* Refresh token if there is none */
+    if (!token) {
+      await this.refresh();
+
+      token = super.token;
+    }
+
+    return token;
+  }
+
   /**
    * Send query:
    *
@@ -109,58 +160,6 @@ class SnekSession extends Session {
   }
 
   /**
-   * Initialize tokens.
-   *
-   * @param {IAuth} auth A Auth object (token, refreshToken).
-   */
-  initTokens(auth: IAuth) {
-    this.token = auth.token;
-    this.refreshToken = auth.refreshToken;
-
-    /* Delete the token and refreshToken cookie */
-    Cookies.remove(this.tokenName);
-    Cookies.remove(this.refreshTokenName);
-
-    let now = new Date();
-
-    /* Set the token and refreshToken cookie with expire times */
-    Cookies.set(this.tokenName, this.token, {
-      /* Expire time is 4 minutes */
-      expires: 4 / 1440,
-    });
-
-    Cookies.set(this.refreshTokenName, this.refreshToken, {
-      expires: 6,
-    });
-  }
-
-  /**
-   * Was alive check.
-   *
-   * @description Refresh token status check.
-   * @param {boolean} alive A status whether the refresh token is alive or not.
-   */
-  wasAlive() {
-    return cookieChecker(this.refreshTokenName);
-    return Cookies.get(this.refreshTokenName) ? true : false;
-  }
-
-  /**
-   * Is alive check.
-   *
-   * @description Token and refresh token status check.
-   * @param {boolean} alive A status whether the token and refresh token are alive or not.
-   */
-  isAlive() {
-    if (cookieChecker(this.refreshTokenName) && super.isAlive()) {
-    if (this.wasAlive() && super.isAlive()) {
-      return true;
-    }
-
-    return false;
-  }
-
-  /**
    * Begin session.
    *
    * @param {string} user A User defined by username and password.
@@ -168,8 +167,8 @@ class SnekSession extends Session {
    */
   async begin(user?: User) {
     let response;
-
-    if (!user && this.wasAlive()) {
+    console.log("BEGIN")
+    if (!user && this.refreshToken) {
       /* Refresh token and retrieve a new refreshToken if necessary */
       this.refresh();
     } else {
@@ -185,7 +184,8 @@ class SnekSession extends Session {
       }
 
       /* Set tokens */
-      this.initTokens(response.data.auth);
+      this.token = response.data.auth.token;
+      this.refreshToken = response.data.auth.refreshToken;
 
       return <UserData>response.data.auth.user;
     }
@@ -198,29 +198,22 @@ class SnekSession extends Session {
 
   /** @description Refreshes the cookies */
   async refresh() {
-    if (!this.isAlive()) {
-      if (this.wasAlive()) {
-        /* Refresh token with refreshToken */
-        this.refreshToken = Cookies.get(this.refreshTokenName);
-
+    // C1: refresh and token empty
+    // c2: refresh empty:
+    // c3: token empty
+    if (!this.token) {
+      if (this.refreshToken) {
         let response = await this.tasks.auth.refresh();
 
         if (response.errors) {
           throw new Error(JSON.stringify(response.errors));
         }
 
-        this.initTokens(response.data.refresh);
+        this.token = response.data.refresh.token;
+        this.refreshToken = response.data.refresh.refreshToken;
       } else {
-        /* Begin new session */
-        await this.end();
+        /* No token and refresh token: Anon login */
         await this.begin();
-      }
-    } else {
-      const token = Cookies.get(this.tokenName);
-      const refreshToken = Cookies.get(this.refreshTokenName);
-
-      if (token && refreshToken) {
-        this.initTokens({ token, refreshToken });
       }
     }
   }
@@ -236,12 +229,8 @@ class SnekSession extends Session {
     }
 
     /* Reset token */
-    this.token = "";
-    this.refreshToken = "";
-
-    /* Delete cookie */
-    Cookies.remove(this.tokenName);
-    Cookies.remove(this.refreshTokenName);
+    this.token = undefined;
+    this.refreshToken = undefined;
   }
 }
 //#endregion

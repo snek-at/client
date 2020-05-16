@@ -48,12 +48,9 @@ class SnekGqlGeneralTasks {
    * @returns {Promise<IGitlabServerResponse>} A list of Gitlab server.
    */
   async gitlabServer(): Promise<IGitlabServerResponse> {
-    /* Refresh if session is not alive */
-    await this.session.refresh();
-
     let query = this.template.queries.general.gitlabServer;
     let response = <IGitlabServerResponse>(
-      await this.session.ep.send("query", query, { token: this.session.token })
+      await this.session.ep.send("query", query, { token: await this.session.upToDateToken() })
     );
 
     return response;
@@ -65,12 +62,9 @@ class SnekGqlGeneralTasks {
    * @returns {Promise<IAllPageUrlResponse>} A list of all page urls.
    */
   async allPageUrls(): Promise<IAllPageUrlResponse> {
-    /* Refresh if session is not alive */
-    await this.session.refresh();
-
     let query = this.template.queries.general.allPageUrls;
     let response = <IAllPageUrlResponse>(
-      await this.session.ep.send("query", query, { token: this.session.token })
+      await this.session.ep.send("query", query, { token: await this.session.upToDateToken() })
     );
 
     return response;

@@ -84,15 +84,12 @@ class SnekGqlUserTasks {
    * @returns {Promise<IRegistrationResponse>} A JWT token.
    */
   async registration(values: object): Promise<IRegistrationResponse> {
-    /* Refresh if session is not alive */
-    await this.session.refresh();
-
     let query = this.template.mutations.user.registration;
     let response = <IRegistrationResponse>await this.session.ep.send(
       "mutation",
       query,
       {
-        token: this.session.token,
+        token: await this.session.upToDateToken(),
         values,
       }
     );
@@ -106,15 +103,12 @@ class SnekGqlUserTasks {
    * @returns {Promise<ICacheResponse>} A JWT token.
    */
   async cache(platformData: string): Promise<ICacheResponse> {
-    /* Refresh if session is not alive */
-    await this.session.refresh();
-
     let query = this.template.mutations.user.cache;
     let response = <ICacheResponse>await this.session.ep.send(
       "mutation",
       query,
       {
-        token: this.session.token,
+        token: await this.session.upToDateToken(),
         platformData,
       }
     );
@@ -129,16 +123,13 @@ class SnekGqlUserTasks {
    * @returns {Promise<IProfileResponse>} The page profile of a user.
    */
   async profile(url: string): Promise<IProfileResponse> {
-    /* Refresh if session is not alive */
-    await this.session.refresh();
-
     let query = this.template.queries.user.profile;
     let response = <IProfileResponse>await this.session.ep.send(
       "query",
       query,
       {
         url,
-        token: this.session.token,
+        token: await this.session.upToDateToken(),
       }
     );
 
@@ -151,12 +142,9 @@ class SnekGqlUserTasks {
    * @returns {Promise<IWhoamiResponse>} User data.
    */
   async whoami(): Promise<IWhoamiResponse> {
-    /* Refresh if session is not alive */
-    await this.session.refresh();
-
     let query = this.template.queries.user.whoami;
     let response = <IWhoamiResponse>(
-      await this.session.ep.send("query", query, { token: this.session.token })
+      await this.session.ep.send("query", query, { token: await this.session.upToDateToken() })
     );
 
     return response;
