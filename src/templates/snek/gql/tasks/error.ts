@@ -1,11 +1,26 @@
+//#region > Imports
+//> Sessions
+// Contains the snek session
 import { SnekSession } from "../../../../session/sessions";
+//> Interfaces
+// Contains a interface for a general response
 import { IResponse } from "./index";
-export class ErrorTask {
+//#endregion
+
+//#region > Classes
+/** @class A set of session aware Tasks. */
+class TaskError {
+  /**
+   * Creates an instance of a TaskError.
+   * @constructor
+   * @author Nico Schett <contact@schett.net>
+   * @param {SnekSession} session A session for the task
+   */
   constructor(public session: SnekSession) {}
 
   /**
-   *
-   * @param {IResponse} response A snek graphql response
+   * Handle specific errors which could occur on snek tasks.
+   * @param {IResponse} response A snek-client graphql response
    * @returns {boolean} "false" if an error occurs. Otherwise "true"
    */
   handleErrors(response: IResponse): boolean {
@@ -30,3 +45,8 @@ export class ErrorTask {
     return true;
   }
 }
+//#endregion
+
+//#region > Exports
+export { TaskError };
+//#endregion

@@ -3,8 +3,8 @@
 // Contains the snek session
 import { SnekSession } from "../../../../session/sessions";
 //> Tasks
-// Contains the error task
-import { ErrorTask } from "./error";
+// Contains a class to handle task errors
+import { TaskError } from "./error";
 //> Interfaces
 // Contains a interface for a general response
 import { IResponse } from "./index";
@@ -31,7 +31,7 @@ interface IAllPageUrlResponse extends IResponse {
 
 //#region > Classes
 /** @class A set of session aware Tasks. */
-class SnekGqlGeneralTasks extends ErrorTask {
+class SnekGqlGeneralTasks extends TaskError {
   public template: ISnekGqlTemplate;
 
   /**

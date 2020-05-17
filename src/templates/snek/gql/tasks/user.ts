@@ -3,8 +3,8 @@
 // Contains the snek session
 import { SnekSession } from "../../../../session/sessions";
 //> Tasks
-// Contains the error task
-import { ErrorTask } from "./error";
+// Contains a class to handle task errors
+import { TaskError } from "./error";
 //> Interfaces
 // Contains a interface for a general response
 import { IResponse } from "./index";
@@ -67,7 +67,7 @@ interface WhoamiData {
 
 //#region > Classes
 /** @class A set of session aware Tasks */
-class SnekGqlUserTasks extends ErrorTask {
+class SnekGqlUserTasks extends TaskError {
   public template: ISnekGqlTemplate;
 
   /**

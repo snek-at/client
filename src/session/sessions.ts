@@ -91,27 +91,28 @@ class SnekSession extends Session {
   }
 
   //> Getter
-  get token() {
-    let token = super.token;
-
-    /* Refresh token if there is none */
-    if (!token) {
-      token = super.token;
-    }
-
-    return token;
-  }
-
-  get refreshToken() {
+  /**
+   * Get refresh token from cookies.
+   * @returns {string | undefined} A users JWT if set
+   */
+  get refreshToken(): string | undefined {
     const token = Cookies.get(this.refreshTokenName);
 
     return token ? token : undefined;
   }
 
   //> Setter
+  /**
+   * Write token to cookies.
+   * @param {string | undefined} value A users JWT
+   * @description Saves the current token to cookies. If the value is undefined,
+   *              the cookie will be removed. The expire time is set to four
+   *              minutes.
+   */
   set token(value: string | undefined) {
     if (value) {
       Cookies.set(this.tokenName, value ? value : "", {
+        /* Expire time is set to 4 minutes */
         expires: 4 / 1440,
       });
     } else {
@@ -119,9 +120,17 @@ class SnekSession extends Session {
     }
   }
 
+  /**
+   * Write refresh token to cookies.
+   * @param {string | undefined} value A users JWT refresh token
+   * @description Saves the current refresh token to cookies. If the value
+   *              is undefined, the cookie will be removed. The expire time is
+   *              set to six days.
+   */
   set refreshToken(value: string | undefined) {
     if (value) {
       Cookies.set(this.refreshTokenName, value, {
+        /* Expire time is set to 6 days */
         expires: 6,
       });
     } else {
@@ -130,7 +139,11 @@ class SnekSession extends Session {
   }
 
   //> Methods
-  async upToDateToken() {
+  /**
+   * Get a valid session token. If there is not the session will be refreshed.
+   * @returns {Promise<string | undefined>} The session token if set
+   */
+  async upToDateToken(): Promise<string | undefined> {
     let token = super.token;
 
     /* Refresh token if there is none */
@@ -163,11 +176,11 @@ class SnekSession extends Session {
    * Begin session.
    *
    * @param {string} user A User defined by username and password.
-   * @returns {UserData} A UserData object.
+   * @returns {Promise<UserData>} A UserData object.
    */
-  async begin(user?: User) {
+  async begin(user?: User): Promise<UserData> {
     let response;
-    console.log("BEGIN")
+
     if (!user && this.refreshToken) {
       /* Refresh token and retrieve a new refreshToken if necessary */
       this.refresh();
@@ -193,29 +206,30 @@ class SnekSession extends Session {
     return <UserData>response.data;
   }
 
-  /** @description Refreshes the cookies */
+  /**
+   * Refreshes a session based on its history.
+   * @description When there is no token the refresh task is called.
+   *              When there are no token and refresh token session begin as equivalent to an
+   *              anonymous login is called.
+   */
   async refresh() {
-    // C1: refresh and token empty
-    // c2: refresh empty:
-    // c3: token empty
     if (!this.token) {
       if (this.refreshToken) {
         let response = await this.tasks.auth.refresh();
 
-        if (response.errors) {
-          throw new Error(JSON.stringify(response.errors));
-        }
-
         this.token = response.data.refresh.token;
         this.refreshToken = response.data.refresh.refreshToken;
       } else {
-        /* No token and refresh token: Anon login */
+        /* No token and refresh token -> anonymous login */
         await this.begin();
       }
     }
   }
 
-  /** @description End session by resetting jwt and deleting cookies. */
+  /**
+   * Ends a session.
+   * @description The token and refresh token are revoked and deleted
+   */
   async end() {
     /* Revoke token if it is set */
     if (this.refreshToken !== "") {

@@ -3,8 +3,8 @@
 // Contains the snek session
 import { SnekSession } from "../../../../session/sessions";
 //> Tasks
-// Contains the error task
-import { ErrorTask } from "./error";
+// Contains a class to handle task errors
+import { TaskError } from "./error";
 //> Interfaces
 // Contains the user interface for authentication
 import { User } from "../../../../session";
@@ -54,8 +54,9 @@ interface RevokeData {
 
 //#region > Classes
 /** @class A set of session aware Tasks. */
-class SnekGqlAuthTasks extends ErrorTask {
+class SnekGqlAuthTasks extends TaskError {
   public template: ISnekGqlTemplate;
+
   /**
    * Creates an instance of a SessionTasks.
    *

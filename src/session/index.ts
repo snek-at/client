@@ -52,18 +52,28 @@ class Session implements ISession {
   constructor(private sId: string) {}
 
   //> Getter
-  get token() {
+  /**
+   * Get token from cookies.
+   * @returns {string | undefined} A users JWT if set
+   */
+  get token(): string | undefined {
     const token = Cookies.get(this.tokenName);
 
     return token ? token : undefined;
   }
 
   //> Setter
-  set token(value: string | undefined) {
-    if(value){
+  /**
+   * Write token to cookies.
+   * @param {string | undefined} value A users JWT
+   * @description Saves the current token to cookies. If the value is undefined,
+   *              the cookie will be removed.
+   */
+  set token(value: string | undefined) {
+    if (value) {
       Cookies.set(this.tokenName, value);
-    }else{
-      Cookies.remove(this.tokenName)
+    } else {
+      Cookies.remove(this.tokenName);
     }
   }
 
