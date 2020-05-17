@@ -203,7 +203,7 @@ class SnekSession extends Session {
     /* Get user data */
     response = await this.tasks.user.whoami();
 
-    return <UserData>response.data;
+    return <UserData>response.data.whoami;
   }
 
   /**
