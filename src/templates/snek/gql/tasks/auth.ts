@@ -2,6 +2,9 @@
 //> Sessions
 // Contains the snek session
 import { SnekSession } from "../../../../session/sessions";
+//> Tasks
+// Contains the error task
+import { ErrorTask } from "./error";
 //> Interfaces
 // Contains the user interface for authentication
 import { User } from "../../../../session";
@@ -15,7 +18,6 @@ import { ISnekGqlTemplate } from "../index";
 /** @interface AuthResponse defines the overall structure of a authentication response from the snek-engine. */
 interface IAuthResponse extends IResponse {
   data: { auth: AuthData };
-  errors: [];
 }
 
 /** @interface AuthData defines the structure of the specific data a authentication response contains. */
@@ -52,7 +54,7 @@ interface RevokeData {
 
 //#region > Classes
 /** @class A set of session aware Tasks. */
-class SnekGqlAuthTasks {
+class SnekGqlAuthTasks extends ErrorTask {
   public template: ISnekGqlTemplate;
   /**
    * Creates an instance of a SessionTasks.
@@ -61,7 +63,8 @@ class SnekGqlAuthTasks {
    * @author Nico Schett <contact@schett.net>
    * @param {string} session A session for the tasks.
    */
-  constructor(private session: SnekSession) {
+  constructor(session: SnekSession) {
+    super(session);
     this.template = session.template.snekGql;
   }
 
@@ -101,6 +104,8 @@ class SnekGqlAuthTasks {
       }
     );
 
+    this.handleErrors(response);
+
     return response;
   }
 
@@ -120,6 +125,8 @@ class SnekGqlAuthTasks {
       }
     );
 
+    this.handleErrors(response);
+
     return response;
   }
 
@@ -138,6 +145,8 @@ class SnekGqlAuthTasks {
         refreshToken: this.session.refreshToken,
       }
     );
+
+    this.handleErrors(response);
 
     return response;
   }

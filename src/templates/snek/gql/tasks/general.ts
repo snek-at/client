@@ -2,6 +2,9 @@
 //> Sessions
 // Contains the snek session
 import { SnekSession } from "../../../../session/sessions";
+//> Tasks
+// Contains the error task
+import { ErrorTask } from "./error";
 //> Interfaces
 // Contains a interface for a general response
 import { IResponse } from "./index";
@@ -28,7 +31,7 @@ interface IAllPageUrlResponse extends IResponse {
 
 //#region > Classes
 /** @class A set of session aware Tasks. */
-class SnekGqlGeneralTasks {
+class SnekGqlGeneralTasks extends ErrorTask {
   public template: ISnekGqlTemplate;
 
   /**
@@ -38,7 +41,9 @@ class SnekGqlGeneralTasks {
    * @author Nico Schett <contact@schett.net>
    * @param {string} session A session for the tasks.
    */
-  constructor(private session: SnekSession) {
+  constructor(session: SnekSession) {
+    super(session);
+
     this.template = session.template.snekGql;
   }
 
@@ -49,9 +54,15 @@ class SnekGqlGeneralTasks {
    */
   async gitlabServer(): Promise<IGitlabServerResponse> {
     let query = this.template.queries.general.gitlabServer;
-    let response = <IGitlabServerResponse>(
-      await this.session.ep.send("query", query, { token: await this.session.upToDateToken() })
+    let response = <IGitlabServerResponse>await this.session.ep.send(
+      "query",
+      query,
+      {
+        token: await this.session.upToDateToken(),
+      }
     );
+
+    this.handleErrors(response);
 
     return response;
   }
@@ -63,9 +74,15 @@ class SnekGqlGeneralTasks {
    */
   async allPageUrls(): Promise<IAllPageUrlResponse> {
     let query = this.template.queries.general.allPageUrls;
-    let response = <IAllPageUrlResponse>(
-      await this.session.ep.send("query", query, { token: await this.session.upToDateToken() })
+    let response = <IAllPageUrlResponse>await this.session.ep.send(
+      "query",
+      query,
+      {
+        token: await this.session.upToDateToken(),
+      }
     );
+
+    this.handleErrors(response);
 
     return response;
   }

@@ -14,7 +14,11 @@ import SnekGqlUserTasks from "./user";
 //#region > Interfaces
 /** @interface Response defines the basic response structure. */
 interface IResponse {
-  errors: [];
+  errors: [
+    {
+      message: string;
+    }
+  ];
 }
 //#endregion
 
@@ -31,6 +35,8 @@ class SnekTasks {
     this.user = new SnekGqlUserTasks(session);
   }
 }
+
+
 //#endregion
 
 //#region > Exports

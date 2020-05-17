@@ -179,9 +179,6 @@ class SnekSession extends Session {
         /* Authenticate real user */
         response = await this.tasks.auth.nonanon(user);
       }
-      if (response.errors) {
-        throw new Error(JSON.stringify(response.errors));
-      }
 
       /* Set tokens */
       this.token = response.data.auth.token;

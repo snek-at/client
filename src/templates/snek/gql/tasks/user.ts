@@ -2,6 +2,9 @@
 //> Sessions
 // Contains the snek session
 import { SnekSession } from "../../../../session/sessions";
+//> Tasks
+// Contains the error task
+import { ErrorTask } from "./error";
 //> Interfaces
 // Contains a interface for a general response
 import { IResponse } from "./index";
@@ -64,7 +67,7 @@ interface WhoamiData {
 
 //#region > Classes
 /** @class A set of session aware Tasks */
-class SnekGqlUserTasks {
+class SnekGqlUserTasks extends ErrorTask {
   public template: ISnekGqlTemplate;
 
   /**
@@ -74,7 +77,9 @@ class SnekGqlUserTasks {
    * @author Nico Schett <contact@schett.net>
    * @param {string} session A session for the tasks.
    */
-  constructor(private session: SnekSession) {
+  constructor(session: SnekSession) {
+    super(session);
+
     this.template = session.template.snekGql;
   }
 
@@ -94,6 +99,8 @@ class SnekGqlUserTasks {
       }
     );
 
+    this.handleErrors(response);
+
     return response;
   }
 
@@ -112,6 +119,8 @@ class SnekGqlUserTasks {
         platformData,
       }
     );
+
+    this.handleErrors(response);
 
     return response;
   }
@@ -133,6 +142,8 @@ class SnekGqlUserTasks {
       }
     );
 
+    this.handleErrors(response);
+
     return response;
   }
 
@@ -143,9 +154,11 @@ class SnekGqlUserTasks {
    */
   async whoami(): Promise<IWhoamiResponse> {
     let query = this.template.queries.user.whoami;
-    let response = <IWhoamiResponse>(
-      await this.session.ep.send("query", query, { token: await this.session.upToDateToken() })
-    );
+    let response = <IWhoamiResponse>await this.session.ep.send("query", query, {
+      token: await this.session.upToDateToken(),
+    });
+
+    this.handleErrors(response);
 
     return response;
   }
