@@ -89,7 +89,7 @@ class Apollo implements ApolloEndpoint {
       case "query":
         return this.client.query({
           query: data,
-          errorPolicy: "ignore",
+          errorPolicy: "all",
           variables,
           context: {
             headers: { ...this.headers, ...headers },
@@ -102,7 +102,7 @@ class Apollo implements ApolloEndpoint {
       case "mutation":
         return this.client.mutate({
           mutation: data,
-          errorPolicy: "ignore",
+          errorPolicy: "all",
           variables,
           context: {
             headers: this.headers,
