@@ -35,8 +35,6 @@ class SnekTasks {
     this.user = new SnekGqlUserTasks(session);
   }
 }
-
-
 //#endregion
 
 //#region > Exports

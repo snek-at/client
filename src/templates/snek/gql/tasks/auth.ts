@@ -66,6 +66,7 @@ class SnekGqlAuthTasks extends TaskError {
    */
   constructor(session: SnekSession) {
     super(session);
+
     this.template = session.template.snekGql;
   }
 

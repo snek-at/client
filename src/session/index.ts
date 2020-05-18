@@ -1,7 +1,7 @@
 //#region > Imports
 //> Cookie Utils
 //#INSTALL "js-cookie"
-//A simple, lightweight JavaScript API for handling browser cookies
+// A simple, lightweight JavaScript API for handling browser cookies
 import Cookies from "js-cookie";
 //#endregion
 

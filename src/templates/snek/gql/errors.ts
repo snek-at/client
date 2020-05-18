@@ -42,6 +42,7 @@ class TaskError {
         return false;
       }
     }
+
     return true;
   }
 }

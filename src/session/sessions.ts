@@ -5,7 +5,7 @@
 import { DocumentNode } from "graphql";
 //> Cookie Utils
 //#INSTALL "js-cookie"
-//A simple, lightweight JavaScript API for handling browser cookies
+// A simple, lightweight JavaScript API for handling browser cookies
 import Cookies from "js-cookie";
 
 //> Session
@@ -209,7 +209,7 @@ class SnekSession extends Session {
   /**
    * Refreshes a session based on its history.
    * @description When there is no token the refresh task is called.
-   *              When there are no token and refresh token session begin as equivalent to an
+   *              When there is no token and refresh token session begin as equivalent to an
    *              anonymous login is called.
    */
   async refresh() {
@@ -220,7 +220,7 @@ class SnekSession extends Session {
         this.token = response.data.refresh.token;
         this.refreshToken = response.data.refresh.refreshToken;
       } else {
-        /* No token and refresh token -> anonymous login */
+        /* No token and refresh token present, start anonymous login */
         await this.begin();
       }
     }
