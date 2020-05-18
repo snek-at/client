@@ -4,7 +4,7 @@
 import { SnekSession } from "../../../../session/sessions";
 //> Tasks
 // Contains a class to handle task errors
-import { TaskError } from "./error";
+import { TaskError } from "../errors";
 //> Interfaces
 // Contains the user interface for authentication
 import { User } from "../../../../session";

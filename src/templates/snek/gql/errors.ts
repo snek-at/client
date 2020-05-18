@@ -1,10 +1,10 @@
 //#region > Imports
 //> Sessions
 // Contains the snek session
-import { SnekSession } from "../../../../session/sessions";
+import { SnekSession } from "../../../session/sessions";
 //> Interfaces
 // Contains a interface for a general response
-import { IResponse } from "./index";
+import { IResponse } from "./tasks/index";
 //#endregion
 
 //#region > Classes

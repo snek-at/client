@@ -4,7 +4,7 @@
 import { SnekSession } from "../../../../session/sessions";
 //> Tasks
 // Contains a class to handle task errors
-import { TaskError } from "./error";
+import { TaskError } from "../errors";
 //> Interfaces
 // Contains a interface for a general response
 import { IResponse } from "./index";
