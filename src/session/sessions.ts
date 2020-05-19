@@ -3,7 +3,7 @@
 //#INSTALL "graphql"
 // Contains the interface for gql queries, mutations and subscriptions
 import { DocumentNode } from "graphql";
-//> Cookie Utils
+//> JS Cookie
 //#INSTALL "js-cookie"
 // A simple, lightweight JavaScript API for handling browser cookies
 import Cookies from "js-cookie";
