@@ -26,6 +26,7 @@ class TaskError {
   handleErrors(response: Response): boolean {
     if (response.errors?.length > 0) {
       //#LEGACY
+      //#ERROR
       console.error("An error occurred" + JSON.stringify(response));
 
       if (response.errors[0].message === "Invalid refresh token") {
