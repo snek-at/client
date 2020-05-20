@@ -3,6 +3,12 @@
     "editor.fontLigatures": true,
     "editor.snippetSuggestions": "top",
     "editor.rulers": [80, 120],
+    // Set the default
+    "editor.formatOnSave": false,
+    // Enable per-language
+    "[typescript]": {
+        "editor.formatOnSave": true
+    },
     "terminal.integrated.fontFamily": "Consolas",
     "workbench.colorTheme": "Dracula Soft",
     "cSpell.ignoreWords": [
