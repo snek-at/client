@@ -1,6 +1,6 @@
 //#region > Imports
 //> Interfaces
-//# PACKAGE "graphql"
+//#PACKAGE "graphql"
 //## nmp install "graphql"@14.6.0
 // Contains the interface for gql queries, mutations and subscriptions
 import { DocumentNode } from "graphql";

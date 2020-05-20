@@ -1,5 +1,5 @@
 //#region > Imports
-//# PACKAGE "graphql-tag"
+//#PACKAGE "graphql-tag"
 //## nmp install ""graphql-tag"@2.10.3
 // Contains a gql tag for wrapping queries
 import gql from "graphql-tag";

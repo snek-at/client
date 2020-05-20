@@ -1,9 +1,9 @@
 //#region > Imports
-//# PACKAGE "graphql"
+//#PACKAGE "graphql"
 //## nmp install "graphql"@14.6.0
 // Contains the interface for gql queries, mutations and subscriptions
 import { DocumentNode } from "graphql";
-//# PACKAGE "js-cookie"
+//#PACKAGE "js-cookie"
 //## nmp install "graphql"@2.2.1
 // A simple, lightweight JavaScript API for handling browser cookies
 import Cookies from "js-cookie";
