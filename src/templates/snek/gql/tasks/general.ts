@@ -15,7 +15,7 @@ import { SnekGqlTemplate } from "../index";
 //#region > Interfaces
 /**
  * @interface GitlabServerResponse defines the overall structure of a Gitlab
- *                                server response from the SNEK-engine.
+ *                                 server response from the SNEK-engine.
  */
 interface GitlabServerResponse extends Response {
   data: { page: GitlabServerData };
@@ -23,7 +23,7 @@ interface GitlabServerResponse extends Response {
 
 /**
  * @interface GitlabServerData defines the structure of the specific data a
- *                      GitlabServerResponse contains.
+ *                             GitlabServerResponse contains.
  */
 interface GitlabServerData {
   supportedGitlabs: [];

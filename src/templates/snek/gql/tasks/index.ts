@@ -14,7 +14,7 @@ import SnekGqlUserTasks from "./user";
 //#region > Interfaces
 /**
  * @interface Response defines the basic response structure which fits all
- *                       graphql requests.
+ *                     graphql requests.
  */
 interface Response {
   errors: [
