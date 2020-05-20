@@ -4,14 +4,14 @@ import SnekTemplate from "./snek";
 //#endregion
 
 //#region > Interfaces
-/** @interface MainTemplate define the strucutre of the base interfaces. */
+/** @interface IMainTemplate define the structure of the base templates */
 interface IMainTemplate {
   snek: SnekTemplate;
 }
 //#endregion
 
 //#region > Classes
-/** @class A Template which initializes all SubTemplates. */
+/** @class A Template which initializes all SubTemplates */
 class MainTemplate implements IMainTemplate {
   public snek = new SnekTemplate();
 }

@@ -1,17 +1,16 @@
 //#region > Imports
 //> Sessions
-// Contains the snek session
+// Contains the SNEK session
 import { SnekSession } from "../../../session/sessions";
 //> Interfaces
 // Contains a interface for a general response
-import { IResponse } from "./tasks/index";
+import { Response } from "./tasks/index";
 //#endregion
 
 //#region > Classes
-/** @class A set of session aware Tasks. */
+/** @class A set of session aware Tasks */
 class TaskError {
   /**
-   * Creates an instance of a TaskError.
    * @constructor
    * @author Nico Schett <contact@schett.net>
    * @param {SnekSession} session A session for the task
@@ -19,12 +18,14 @@ class TaskError {
   constructor(public session: SnekSession) {}
 
   /**
-   * Handle specific errors which could occur on snek tasks.
-   * @param {IResponse} response A snek-client graphql response
+   * Handle specific errors which could occur on SNEK tasks.
+   *
+   * @param {Response} response A SNEK-client graphql response
    * @returns {boolean} "false" if an error occurs. Otherwise "true"
    */
-  handleErrors(response: IResponse): boolean {
+  handleErrors(response: Response): boolean {
     if (response.errors?.length > 0) {
+      //#LEGACY
       console.error("An error occurred" + JSON.stringify(response));
 
       if (response.errors[0].message === "Invalid refresh token") {
