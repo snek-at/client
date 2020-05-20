@@ -14,7 +14,11 @@ import SnekGqlUserTasks from "./user";
 //#region > Interfaces
 /** @interface Response defines the basic response structure. */
 interface IResponse {
-  errors: [];
+  errors: [
+    {
+      message: string;
+    }
+  ];
 }
 //#endregion
 

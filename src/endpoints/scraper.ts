@@ -9,7 +9,6 @@ import { ScraperEndpoint, IOptions } from "./index";
 class Scraper implements ScraperEndpoint {
   //> Fields
   headers: object = {
-    "x-requested-with": "XMLHttpRequest",
     accept: "application/json, text/plain, */*",
   };
   desc: string = "A endpoint to fetch page DOM";
@@ -46,6 +45,7 @@ class Scraper implements ScraperEndpoint {
     return fetch(this.url + path, {
       headers: {
         ...this.headers,
+        "x-requested-with": "XMLHttpRequest",
       },
     }).then(async (response) => {
       if (!response.ok) {

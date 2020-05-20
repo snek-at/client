@@ -1,7 +1,8 @@
 //#region > Imports
-//> Cookie Utils
-// Contains a tool which can check if a cookie is still alive
-import { cookieChecker } from "./cookie-utils";
+//> JS Cookie
+//#INSTALL "js-cookie"
+// A simple, lightweight JavaScript API for handling browser cookies
+import Cookies from "js-cookie";
 //#endregion
 
 //#region > Interfaces
@@ -31,7 +32,6 @@ interface User {
 /** @interface Session defines the session structure. */
 interface ISession {
   sessions: { [id: string]: ISession };
-  token: string | undefined;
   tokenName: string;
 }
 //#endregion
@@ -40,7 +40,6 @@ interface ISession {
 /** @class A general Session with token functionality. */
 class Session implements ISession {
   sessions: { [id: string]: ISession } = {};
-  token: string | undefined = "";
   tokenName: string = "token";
 
   /**
@@ -51,6 +50,32 @@ class Session implements ISession {
    * @param {string} sId Session identifier.
    */
   constructor(private sId: string) {}
+
+  //> Getter
+  /**
+   * Get token from cookies.
+   * @returns {string | undefined} A users JWT if set
+   */
+  get token(): string | undefined {
+    const token = Cookies.get(this.tokenName);
+
+    return token ? token : undefined;
+  }
+
+  //> Setter
+  /**
+   * Write token to cookies.
+   * @param {string | undefined} value A users JWT
+   * @description Saves the current token to cookies. If the value is undefined,
+   *              the cookie will be removed.
+   */
+  set token(value: string | undefined) {
+    if (value) {
+      Cookies.set(this.tokenName, value);
+    } else {
+      Cookies.remove(this.tokenName);
+    }
+  }
 
   //> Methods
   /**
@@ -65,16 +90,6 @@ class Session implements ISession {
     let session: S = new Cls(this.sId + "_" + childSId, endpoint, template);
 
     return session;
-  }
-
-  /**
-   * Is alive check.
-   *
-   * @description A status whether the token is alive or not.
-   * @param {boolean} alive A status.
-   */
-  isAlive() {
-    return cookieChecker(this.tokenName);
   }
 }
 //#endregion

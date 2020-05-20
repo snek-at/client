@@ -2,6 +2,9 @@
 //> Sessions
 // Contains the snek session
 import { SnekSession } from "../../../../session/sessions";
+//> Tasks
+// Contains a class to handle task errors
+import { TaskError } from "../errors";
 //> Interfaces
 // Contains a interface for a general response
 import { IResponse } from "./index";
@@ -28,7 +31,7 @@ interface IAllPageUrlResponse extends IResponse {
 
 //#region > Classes
 /** @class A set of session aware Tasks. */
-class SnekGqlGeneralTasks {
+class SnekGqlGeneralTasks extends TaskError {
   public template: ISnekGqlTemplate;
 
   /**
@@ -38,7 +41,9 @@ class SnekGqlGeneralTasks {
    * @author Nico Schett <contact@schett.net>
    * @param {string} session A session for the tasks.
    */
-  constructor(private session: SnekSession) {
+  constructor(session: SnekSession) {
+    super(session);
+
     this.template = session.template.snekGql;
   }
 
@@ -48,13 +53,16 @@ class SnekGqlGeneralTasks {
    * @returns {Promise<IGitlabServerResponse>} A list of Gitlab server.
    */
   async gitlabServer(): Promise<IGitlabServerResponse> {
-    /* Refresh if session is not alive */
-    await this.session.refresh();
-
     let query = this.template.queries.general.gitlabServer;
-    let response = <IGitlabServerResponse>(
-      await this.session.ep.send("query", query, { token: this.session.token })
+    let response = <IGitlabServerResponse>await this.session.ep.send(
+      "query",
+      query,
+      {
+        token: await this.session.upToDateToken(),
+      }
     );
+
+    this.handleErrors(response);
 
     return response;
   }
@@ -65,13 +73,16 @@ class SnekGqlGeneralTasks {
    * @returns {Promise<IAllPageUrlResponse>} A list of all page urls.
    */
   async allPageUrls(): Promise<IAllPageUrlResponse> {
-    /* Refresh if session is not alive */
-    await this.session.refresh();
-
     let query = this.template.queries.general.allPageUrls;
-    let response = <IAllPageUrlResponse>(
-      await this.session.ep.send("query", query, { token: this.session.token })
+    let response = <IAllPageUrlResponse>await this.session.ep.send(
+      "query",
+      query,
+      {
+        token: await this.session.upToDateToken(),
+      }
     );
+
+    this.handleErrors(response);
 
     return response;
   }

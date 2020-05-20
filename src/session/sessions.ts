@@ -3,6 +3,10 @@
 //#INSTALL "graphql"
 // Contains the interface for gql queries, mutations and subscriptions
 import { DocumentNode } from "graphql";
+//> JS Cookie
+//#INSTALL "js-cookie"
+// A simple, lightweight JavaScript API for handling browser cookies
+import Cookies from "js-cookie";
 
 //> Session
 // Contains the base session
@@ -12,14 +16,6 @@ import Session from "./index";
 import { IMainTemplate } from "../templates/index";
 // Contains the snek template
 import SnekTemplate from "../templates/snek/index";
-//> Cookie Utils
-// Contains tools for cookie handling
-import {
-  cookieChecker,
-  getCookie,
-  setCookie,
-  deleteCookie,
-} from "./cookie-utils";
 //> Tasks
 // Contains snek tasks
 import SnekTasks from "../templates/snek/gql/tasks/index";
@@ -69,7 +65,6 @@ class GithubSession extends Session {
 
 /** @class A Snek SubSession. */
 class SnekSession extends Session {
-  refreshToken: string | undefined = "";
   refreshTokenName: string = "refresh";
 
   /* Define tasks */
@@ -95,7 +90,72 @@ class SnekSession extends Session {
     this.tasks = new SnekTasks(this);
   }
 
+  //> Getter
+  /**
+   * Get refresh token from cookies.
+   * @returns {string | undefined} A users JWT if set
+   */
+  get refreshToken(): string | undefined {
+    const token = Cookies.get(this.refreshTokenName);
+
+    return token ? token : undefined;
+  }
+
+  //> Setter
+  /**
+   * Write token to cookies.
+   * @param {string | undefined} value A users JWT
+   * @description Saves the current token to cookies. If the value is undefined,
+   *              the cookie will be removed. The expire time is set to four
+   *              minutes.
+   */
+  set token(value: string | undefined) {
+    if (value) {
+      Cookies.set(this.tokenName, value ? value : "", {
+        /* Expire time is set to 4 minutes */
+        expires: 4 / 1440,
+      });
+    } else {
+      Cookies.remove(this.tokenName);
+    }
+  }
+
+  /**
+   * Write refresh token to cookies.
+   * @param {string | undefined} value A users JWT refresh token
+   * @description Saves the current refresh token to cookies. If the value
+   *              is undefined, the cookie will be removed. The expire time is
+   *              set to six days.
+   */
+  set refreshToken(value: string | undefined) {
+    if (value) {
+      Cookies.set(this.refreshTokenName, value, {
+        /* Expire time is set to 6 days */
+        expires: 6,
+      });
+    } else {
+      Cookies.remove(this.refreshTokenName);
+    }
+  }
+
   //> Methods
+  /**
+   * Get a valid session token. If there is not the session will be refreshed.
+   * @returns {Promise<string | undefined>} The session token if set
+   */
+  async upToDateToken(): Promise<string | undefined> {
+    let token = super.token;
+
+    /* Refresh token if there is none */
+    if (!token) {
+      await this.refresh();
+
+      token = super.token;
+    }
+
+    return token;
+  }
+
   /**
    * Send query:
    *
@@ -113,57 +173,15 @@ class SnekSession extends Session {
   }
 
   /**
-   * Initialize tokens.
-   *
-   * @param {IAuth} auth A Auth object (token, refreshToken).
-   */
-  initTokens(auth: IAuth) {
-    this.token = auth.token;
-    this.refreshToken = auth.refreshToken;
-
-    /* Delete the token and refreshToken cookie */
-    deleteCookie(this.tokenName);
-    deleteCookie(this.refreshTokenName);
-
-    /* Set the token and refreshToken cookie with expire times */
-    setCookie(this.tokenName, this.token, 2 * 60);
-    setCookie(this.refreshTokenName, this.refreshToken, 6 * 24 * 60 * 60);
-  }
-
-  /**
-   * Was alive check.
-   *
-   * @description Refresh token status check.
-   * @param {boolean} alive A status whether the refresh token is alive or not.
-   */
-  wasAlive() {
-    return cookieChecker(this.refreshTokenName);
-  }
-
-  /**
-   * Is alive check.
-   *
-   * @description Token and refresh token status check.
-   * @param {boolean} alive A status whether the token and refresh token are alive or not.
-   */
-  isAlive() {
-    if (cookieChecker(this.refreshTokenName) && super.isAlive()) {
-      return true;
-    }
-
-    return false;
-  }
-
-  /**
    * Begin session.
    *
    * @param {string} user A User defined by username and password.
-   * @returns {UserData} A UserData object.
+   * @returns {Promise<UserData>} A UserData object.
    */
-  async begin(user?: User) {
+  async begin(user?: User): Promise<UserData> {
     let response;
 
-    if (!user && this.wasAlive()) {
+    if (!user && this.refreshToken) {
       /* Refresh token and retrieve a new refreshToken if necessary */
       this.refresh();
     } else {
@@ -174,12 +192,10 @@ class SnekSession extends Session {
         /* Authenticate real user */
         response = await this.tasks.auth.nonanon(user);
       }
-      if (response.errors) {
-        throw new Error(JSON.stringify(response.errors));
-      }
 
       /* Set tokens */
-      this.initTokens(response.data.auth);
+      this.token = response.data.auth.token;
+      this.refreshToken = response.data.auth.refreshToken;
 
       return <UserData>response.data.auth.user;
     }
@@ -187,39 +203,33 @@ class SnekSession extends Session {
     /* Get user data */
     response = await this.tasks.user.whoami();
 
-    return <UserData>response.data;
+    return <UserData>response.data.whoami;
   }
 
-  /** @description Refreshes the cookies */
+  /**
+   * Refreshes a session based on its history.
+   * @description When there is no token the refresh task is called.
+   *              When there is no token and refresh token session begin as equivalent to an
+   *              anonymous login is called.
+   */
   async refresh() {
-    if (!this.isAlive()) {
-      if (this.wasAlive()) {
-        /* Refresh token with refreshToken */
-        this.refreshToken = getCookie(this.refreshTokenName);
-
+    if (!this.token) {
+      if (this.refreshToken) {
         let response = await this.tasks.auth.refresh();
 
-        if (response.errors) {
-          throw new Error(JSON.stringify(response.errors));
-        }
-
-        this.initTokens(response.data.refresh);
+        this.token = response.data.refresh.token;
+        this.refreshToken = response.data.refresh.refreshToken;
       } else {
-        /* Begin new session */
-        await this.end();
+        /* No token and refresh token present, start anonymous login */
         await this.begin();
-      }
-    } else {
-      const token = getCookie(this.tokenName);
-      const refreshToken = getCookie(this.refreshTokenName);
-
-      if (token && refreshToken) {
-        this.initTokens({ token, refreshToken });
       }
     }
   }
 
-  /** @description End session by resetting jwt and deleting cookies. */
+  /**
+   * Ends a session.
+   * @description The token and refresh token are revoked and deleted
+   */
   async end() {
     /* Revoke token if it is set */
     if (this.refreshToken !== "") {
@@ -230,12 +240,8 @@ class SnekSession extends Session {
     }
 
     /* Reset token */
-    this.token = "";
-    this.refreshToken = "";
-
-    /* Delete cookie */
-    deleteCookie(this.tokenName);
-    deleteCookie(this.refreshTokenName);
+    this.token = undefined;
+    this.refreshToken = undefined;
   }
 }
 //#endregion
