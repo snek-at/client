@@ -15,7 +15,7 @@ import { SnekGqlTemplate } from "../index";
 //#region > Interfaces
 /**
  *  @interface RegistrationResponse defines the overall structure of a
- *                                  registration response from the SNEK-engine
+ *                                  registration response from the SNEK-engine.
  */
 interface RegistrationResponse extends Response {
   data: RegistrationData;
@@ -129,6 +129,7 @@ class SnekGqlUserTasks extends TaskError {
 
   /**
    * Cache a user.
+   *
    * @param {string} platformData A serialized JSON object to be cached
    * @returns {Promise<CacheResponse>} A JWT token
    */

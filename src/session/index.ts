@@ -1,6 +1,6 @@
 //#region > Imports
 //#PACKAGE "js-cookie"
-//## nmp install "graphql"@2.2.1
+//## npm install "js-cookie"@2.2.1
 // A simple, lightweight JavaScript API for handling browser cookies
 import Cookies from "js-cookie";
 //#endregion

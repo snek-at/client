@@ -1,14 +1,14 @@
 //#region > Imports
 //#PACKAGE "apollo-client"
-//## nmp install "apollo-client"@2.6.8
+//## npm install "apollo-client"@2.6.8
 // Contains the client for graphql handling
 import { ApolloClient } from "apollo-client";
 //#PACKAGE "apollo-link-http"
-//## nmp install "apollo-link-http"@1.5.16
+//## npm install "apollo-link-http"@1.5.16
 // Contains the link for the apollo client
 import { HttpLink } from "apollo-link-http";
 //#PACKAGE "apollo-cache-inmemory"
-//## nmp install "apollo-cache-inmemory"@1.6.5
+//## npm install "apollo-cache-inmemory"@1.6.5
 // Contains cache handling for apollo
 import {
   InMemoryCache,
@@ -16,7 +16,7 @@ import {
   NormalizedCacheObject,
 } from "apollo-cache-inmemory";
 //#PACKAGE "graphql"
-//## nmp install "graphql"@14.6.0
+//## npm install "graphql"@14.6.0
 // Contains the interface for gql queries, mutations and subscriptions
 import { DocumentNode } from "graphql";
 

@@ -1,10 +1,10 @@
 //#region > Imports
 //#PACKAGE "graphql"
-//## nmp install "graphql"@14.6.0
+//## npm install "graphql"@14.6.0
 // Contains the interface for gql queries, mutations and subscriptions
 import { DocumentNode } from "graphql";
 //#PACKAGE "js-cookie"
-//## nmp install "graphql"@2.2.1
+//## npm install "js-cookie"@2.2.1
 // A simple, lightweight JavaScript API for handling browser cookies
 import Cookies from "js-cookie";
 
@@ -50,7 +50,7 @@ class GithubSession extends Session {
    *
    * @param {string} token A authentication token
    * @param {DocumentNode} data A DocumentNode with a query
-   * @param {object} variables A abject with variables
+   * @param {object} variables A object with variables
    */
   async send(token: string, data: DocumentNode, variables?: object) {
     let headers = {
@@ -159,9 +159,9 @@ class SnekSession extends Session {
   /**
    * Send a query to the endpoint.
    *
-   * @param {string} token A authentication token.
-   * @param {DocumentNode} data A DocumentNode with a query.
-   * @param {object} variables A object with variables.
+   * @param {string} token A authentication token
+   * @param {DocumentNode} data A DocumentNode with a query
+   * @param {object} variables A object with variables
    */
   async send(token: string, data: DocumentNode, variables?: object) {
     let headers = {
@@ -174,8 +174,8 @@ class SnekSession extends Session {
   /**
    * Begin session.
    *
-   * @param {string} user A User defined by username and password.
-   * @returns {Promise<UserData>} A UserData object.
+   * @param {string} user A User defined by username and password
+   * @returns {Promise<UserData>} A UserData object
    */
   async begin(user?: User): Promise<UserData> {
     let response;

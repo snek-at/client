@@ -60,7 +60,7 @@ class Scraper implements ScraperEndpoint {
   }
 
   /**
-   * Get DOM object from specified path
+   * Get DOM object from specified path.
    *
    * @param path Path to the endpoint. Specify it like "/foo/bar".
    *             The correct placement of the slashes is essential!

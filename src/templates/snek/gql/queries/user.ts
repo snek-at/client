@@ -1,6 +1,6 @@
 //#region > Imports
 //#PACKAGE "graphql-tag"
-//## nmp install ""graphql-tag"@2.10.3
+//## npm install ""graphql-tag"@2.10.3
 // Contains a gql tag for wrapping queries
 import gql from "graphql-tag";
 //#endregion
@@ -28,7 +28,7 @@ const whoami = gql`
 `;
 
 /**
- * Get user profile:
+ * Get user profile.
  *
  * @param {string} url PageUrl of a user profile
  * @param {string} token A users JWT
