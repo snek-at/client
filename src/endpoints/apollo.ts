@@ -80,8 +80,8 @@ class Apollo implements ApolloEndpoint {
   /**
    * Send: Provides requests for various graphql types.
    *
-   * @param {string} type The type of the action you want to perform.
-   *                      Query, Mutation,...
+   * @param {string} type The type of the action you want to perform like Query,
+   *                      Mutation,...
    * @param {DocumentNode} data The query structure
    * @param {object} variables A object which contains variables for the query
    *                           structure.

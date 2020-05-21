@@ -25,7 +25,7 @@ interface IAuthResponse extends IResponse {
 
 /**
  * @interface AuthData defines the structure of the specific data a
- *                      authentication response contains.
+ *                     authentication response contains.
  */
 interface AuthData {
   token: string;

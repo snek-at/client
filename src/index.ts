@@ -43,7 +43,7 @@ interface IClient {}
 //#region > Classes
 /**
  * @class The SNEK-client. Enjoy it. Will be implemented in the future
- * @todo Rework the url checker. Add documentation
+ * @todo Rework the url checker and add documentation
  */
 class Client implements IClient {
   constructor(ep: IEndpoint) {
