@@ -1,12 +1,12 @@
 //#region > Imports
-//> JS Cookie
-//#INSTALL "js-cookie"
+//#PACKAGE "js-cookie"
+//## npm install "js-cookie"@2.2.1
 // A simple, lightweight JavaScript API for handling browser cookies
 import Cookies from "js-cookie";
 //#endregion
 
 //#region > Interfaces
-/** @interface UserData defines the structure of profile objects. */
+/** @interface UserData defines the structure of profile objects */
 interface UserData {
   username?: string;
   firstName?: string;
@@ -17,19 +17,19 @@ interface UserData {
   lastLogin?: string;
 }
 
-/** @interface UserData defines the structure of an authentication object. */
+/** @interface Auth defines the structure of an authentication object */
 interface IAuth {
   token: string;
   refreshToken: string;
 }
 
-/** @interface User defines the structure of a basic user object. */
+/** @interface User defines the structure of a basic user object */
 interface User {
   username: string;
   password: string;
 }
 
-/** @interface Session defines the session structure. */
+/** @interface ISession defines the session structure */
 interface ISession {
   sessions: { [id: string]: ISession };
   tokenName: string;
@@ -37,17 +37,15 @@ interface ISession {
 //#endregion
 
 //#region > Classes
-/** @class A general Session with token functionality. */
+/** @class A general Session with token functionality */
 class Session implements ISession {
   sessions: { [id: string]: ISession } = {};
   tokenName: string = "token";
 
   /**
-   * Creates an instance of a Session.
-   *
    * @constructor
    * @author Nico Schett <contact@schett.net>
-   * @param {string} sId Session identifier.
+   * @param {string} sId Session identifier
    */
   constructor(private sId: string) {}
 
@@ -65,6 +63,7 @@ class Session implements ISession {
   //> Setter
   /**
    * Write token to cookies.
+   *
    * @param {string | undefined} value A users JWT
    * @description Saves the current token to cookies. If the value is undefined,
    *              the cookie will be removed.
@@ -79,12 +78,11 @@ class Session implements ISession {
 
   //> Methods
   /**
-   * Add a subSession.
+   * Add a subSession to a session.
    *
-   * @param childSId The session name of the child.
-   * @param {any} type Specify the session (Session | string).
-   * @param permanent True if not set.
-   * @description Add a subSession to a session.
+   * @param childSId The session name of the child
+   * @param {any} type Specify the session (Session | string)
+   * @param permanent True if not set
    */
   addSubSession<S, E, T>(childSId: string, Cls: any, endpoint: E, template: T) {
     let session: S = new Cls(this.sId + "_" + childSId, endpoint, template);

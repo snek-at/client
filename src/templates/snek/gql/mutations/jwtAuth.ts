@@ -1,18 +1,18 @@
 //#region > Imports
-//> Graphql
-//#INSTALL "graphql-tag"
+//#PACKAGE "graphql-tag"
+//## npm install "graphql-tag"@2.10.3
 // Contains a gql tag for wrapping queries
 import gql from "graphql-tag";
 //#endregion
 
 //#region > Queries
 /**
- * JWT Authentication:
- * Mutation to authenticate a user with username and password.
+ * JWT Authentication.
  *
- * @param {string} username Username of a user.
- * @param {string} password Password of a user.
- * @returns {string} A users JWT.
+ * @param {string} username Username of a user
+ * @param {string} password Password of a user
+ * @returns {string} A users JWT
+ * @description A mutation to authenticate a user with username and password
  */
 const auth = gql`
   mutation auth($username: String!, $password: String!) {
@@ -32,11 +32,11 @@ const auth = gql`
 `;
 
 /**
- * JWT Refresh:
- * Mutation to refresh a JWT.
+ * JWT Refresh.
  *
- * @param {string} token A users JWT.
- * @returns {string} Refresh conformation.
+ * @param {string} token A users JWT
+ * @returns {string} Refresh conformation
+ * @description A mutation to refresh a JWT
  */
 const refresh = gql`
   mutation refresh($refreshToken: String!) {
@@ -49,11 +49,11 @@ const refresh = gql`
 `;
 
 /**
- * JWT Verify:
- * Mutation to verify a JWT.
+ * JWT Verify.
  *
- * @param {string} token A users JWT.
- * @returns {string} Verify conformation.
+ * @param {string} token A users JWT
+ * @returns {string} Verify conformation
+ * @description A mutation to verify a JWT
  */
 const verify = gql`
   mutation verify($token: String!) {
@@ -64,11 +64,11 @@ const verify = gql`
 `;
 
 /**
- * JWT Revoke:
- * Mutation to revoke a JWT.
+ * JWT Revoke.
  *
- * @param {string} token A users JWT.
- * @returns {string} Revoke conformation.
+ * @param {string} token A users JWT
+ * @returns {string} Revoke conformation
+ * @description Mutation to revoke a JWT
  */
 const revoke = gql`
   mutation revoke($refreshToken: String!) {

@@ -8,7 +8,7 @@ import Scraper from "./endpoints/scraper";
 // Contains the main template
 import { MainTemplate } from "./templates/index";
 //> Sessions
-// Contains the snek and github session
+// Contains the SNEK and github session
 import { SnekSession, GithubSession } from "./session/sessions";
 //> Interfaces
 // Contains interfaces for scraper and apollo
@@ -18,27 +18,37 @@ import { IMainTemplate } from "./templates/index";
 //#endregion
 
 //#region > Interfaces
-/** @interface Endpoint defines the structure of object a endpoint requieres to initialize. */
+/**
+ * @interface Endpoint defines the structure of object a endpoint requirers to
+ *                     initialize.
+ */
 interface IEndpoint {
   /**
-   * Url: the URL of an endpoint. For performance reasons,
+   * Url: The URL of an endpoint. For performance reasons,
    *      https should always be selected as protocol if possible.
    */
   url: string;
+  /**
+   * Type: It is possible to specify the type. This is currently only used to
+   *       differentiate multiple instances.
+   */
   type: string;
   headers: object;
 }
 
-/** @interface Client will define the client structure. */
+/** @interface IClient will define the client structure */
 interface IClient {}
 //#endregion
 
 //#region > Classes
-/** @class The snek-client. Enjoy it. Will be implemented in the future. */
+/**
+ * @class The SNEK-client. Enjoy it. Will be implemented in the future
+ * @todo Rework the url checker and add documentation
+ */
 class Client implements IClient {
   constructor(ep: IEndpoint) {
     /*
-     * When no protocol is defined, http will be appended. Therefore https
+     * When no protocol is defined, http will be appended. Therefore "https"
      * should always be included for performance.
      */
     ep.url = ((url: string) => {
@@ -51,12 +61,20 @@ class Client implements IClient {
   }
 }
 
-/** @class A client implementation for snek interaction. */
+/** @class A client implementation for SNEK interaction */
 class SnekClient extends Client {
   endpoint: ApolloEndpoint;
   template: IMainTemplate;
   session: SnekSession;
 
+  /**
+   * @constructor
+   * @author Nico Schett <contact@schett.net>
+   * @param url The base URL the SnekClient should be working on.
+   *            Default: "https://engine.snek.at/api/graphiql".
+   * @param headers A object containing various request headers
+   * @param type A type description to differ between multiple instances
+   */
   constructor(
     url: string = "https://engine.snek.at/api/graphiql",
     headers: object = {},
@@ -70,12 +88,20 @@ class SnekClient extends Client {
   }
 }
 
-/** @class A client implementation for github interaction. */
+/** @class A client implementation for github interaction */
 class GithubClient extends Client {
   endpoint: ApolloEndpoint;
   template: IMainTemplate;
   session: GithubSession;
 
+  /**
+   * @constructor
+   * @author Nico Schett <contact@schett.net>
+   * @param url The base URL the GithubClient should be working on.
+   *            Default: "https://api.github.com/graphql".
+   * @param headers A object containing various request headers
+   * @param type A type description to differ between multiple instances
+   */
   constructor(
     url: string = "https://api.github.com/graphql",
     headers: object = {},
@@ -96,6 +122,13 @@ class GithubClient extends Client {
 class WebClient extends Client {
   public scraper: ScraperEndpoint;
 
+  /**
+   * @constructor
+   * @author Nico Schett <contact@schett.net>
+   * @param url The base URL the WebClient should be working on
+   * @param headers A object containing various request headers
+   * @param type A type description to differ between multiple instances
+   */
   constructor(
     url: string,
     headers: object = {},

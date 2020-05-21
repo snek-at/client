@@ -1,6 +1,6 @@
 //#region > Imports
 //> Sessions
-// Contains the snek session
+// Contains the SNEK session
 import { SnekSession } from "../../../../session/sessions";
 //> Tasks
 // Contains a class to handle task errors
@@ -13,33 +13,41 @@ import { ISnekGqlTemplate } from "../index";
 //#endregion
 
 //#region > Interfaces
-/** @interface GitlabServerResponse defines the structure of the gitlab server response. */
+/**
+ * @interface GitlabServerResponse defines the overall structure of a Gitlab
+ *                                 server response from the SNEK-engine.
+ */
 interface IGitlabServerResponse extends IResponse {
   data: { page: GitlabServerData };
 }
 
-/** @interface GitlabServerData defines the structure of the gitlab server data. */
+/**
+ * @interface GitlabServerData defines the structure of the specific data a
+ *                             GitlabServerResponse contains.
+ */
 interface GitlabServerData {
   supportedGitlabs: [];
 }
 
-/** @interface AllPageUrlResponse defines the structure of the all page url response. */
+/**
+ * @interface AllPageUrlResponse defines the overall structure of a AllPageUrl
+ *                               response from the SNEK-engine.
+ *
+ */
 interface IAllPageUrlResponse extends IResponse {
   data: { pages: [] };
 }
 //#endregion
 
 //#region > Classes
-/** @class A set of session aware Tasks. */
+/** @class A set of session aware Tasks */
 class SnekGqlGeneralTasks extends TaskError {
   public template: ISnekGqlTemplate;
 
   /**
-   * Creates an instance of a SessionTasks.
-   *
    * @constructor
    * @author Nico Schett <contact@schett.net>
-   * @param {string} session A session for the tasks.
+   * @param {string} session A session for the tasks
    */
   constructor(session: SnekSession) {
     super(session);
@@ -48,9 +56,10 @@ class SnekGqlGeneralTasks extends TaskError {
   }
 
   /**
-   * Gitlab Server
+   * Gitlab Server.
    *
-   * @returns {Promise<IGitlabServerResponse>} A list of Gitlab server.
+   * @returns {Promise<GitlabServerResponse>} A list of Gitlab server
+   * @description Get all Gitlab servers which are registered in the SNEK-engine
    */
   async gitlabServer(): Promise<IGitlabServerResponse> {
     let query = this.template.queries.general.gitlabServer;
@@ -68,9 +77,10 @@ class SnekGqlGeneralTasks extends TaskError {
   }
 
   /**
-   * All page url
+   * All page url.
    *
-   * @returns {Promise<IAllPageUrlResponse>} A list of all page urls.
+   * @returns {Promise<AllPageUrlResponse>} A list of all page urls
+   * @description Get a list of all pages
    */
   async allPageUrls(): Promise<IAllPageUrlResponse> {
     let query = this.template.queries.general.allPageUrls;

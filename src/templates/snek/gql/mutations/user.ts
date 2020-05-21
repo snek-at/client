@@ -1,18 +1,19 @@
 //#region > Imports
-//> Graphql
-//#INSTALL "graphql-tag"
+//#PACKAGE "graphql-tag"
+//## npm install "graphql-tag"@2.10.3
 // Contains a gql tag for wrapping queries
 import gql from "graphql-tag";
 //#endregion
 
 //#region > Queries
 /**
- * Register user:
- * Mutation to register a user.
+ * User registration.
  *
- * @param {string} token A users JWT.
- * @param {string} values Registration parameters defined by registration page.
- * @returns {string} Registration conformation.
+ * @param {string} token A users JWT
+ * @param {string} values Registration parameters defined by registration page
+ * @returns {string} Registration conformation
+ * @description A mutation to register a user by providing values and a valid
+ *              JWT. This could be a JWT of the anonymous user.
  */
 const registration = gql`
   mutation registration($token: String!, $values: GenericScalar!) {
@@ -31,12 +32,13 @@ const registration = gql`
 `;
 
 /**
- * Cache user:
- * Mutation to cache user information server side.
+ * Cache user.
  *
- * @param {string} token A users JWT.
- * @param {string} platformData A serialized JSON object of all generated user data.
- * @returns {string} PlatformData of a user.
+ * @param {string} token A users JWT
+ * @param {string} platformData A serialized JSON object of all generated user
+ *                              data.
+ * @returns {string} PlatformData of a user
+ * @description A mutation to cache user information server side
  */
 const cache = gql`
   mutation cache($token: String!, $platformData: String!) {

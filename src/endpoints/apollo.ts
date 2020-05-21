@@ -1,22 +1,22 @@
 //#region > Imports
-//> Apollo Client
-//#INSTALL "apollo-client"
+//#PACKAGE "apollo-client"
+//## npm install "apollo-client"@2.6.8
 // Contains the client for graphql handling
 import { ApolloClient } from "apollo-client";
-//> Apollo Link
-//#INSTALL "apollo-link-http"
+//#PACKAGE "apollo-link-http"
+//## npm install "apollo-link-http"@1.5.16
 // Contains the link for the apollo client
 import { HttpLink } from "apollo-link-http";
-//> Apollo Cache
-//#INSTALL "apollo-cache-inmemory"
+//#PACKAGE "apollo-cache-inmemory"
+//## npm install "apollo-cache-inmemory"@1.6.5
 // Contains cache handling for apollo
 import {
   InMemoryCache,
   IntrospectionFragmentMatcher,
   NormalizedCacheObject,
 } from "apollo-cache-inmemory";
-//> Interfaces
-//#INSTALL "graphql"
+//#PACKAGE "graphql"
+//## npm install "graphql"@14.6.0
 // Contains the interface for gql queries, mutations and subscriptions
 import { DocumentNode } from "graphql";
 
@@ -25,7 +25,7 @@ import { ApolloEndpoint, IOptions } from "./index";
 //#endregion
 
 //#region > Classes
-/** @class Apollo client for graphql handling. */
+/** @class Apollo client for graphql handling */
 class Apollo implements ApolloEndpoint {
   //> Fields
   private link: HttpLink;
@@ -36,12 +36,10 @@ class Apollo implements ApolloEndpoint {
   desc: string = "A endpoint used for APIv4 requests";
 
   /**
-   * Creates a Apollo instance.
-   *
    * @constructor
    * @author Nico Schett <contact@schett.net>
-   * @param uri A uri of a graphql endpoint.
-   * @param options Configuration options.
+   * @param uri A uri of a graphql endpoint
+   * @param options Configuration options
    */
   constructor(uri: string, options: IOptions) {
     this.headers = options.headers;
@@ -79,6 +77,18 @@ class Apollo implements ApolloEndpoint {
   }
 
   //> Methods
+  /**
+   * Send: Provides requests for various graphql types.
+   *
+   * @param {string} type The type of the action you want to perform like Query,
+   *                      Mutation,...
+   * @param {DocumentNode} data The query structure
+   * @param {object} variables A object which contains variables for the query
+   *                           structure.
+   * @param {object} headers Optional headers which get appended to the endpoint
+   *                         headers.
+   * @returns {Promise<object>} Resolved apollo data object
+   */
   async send(
     type: string,
     data: DocumentNode,

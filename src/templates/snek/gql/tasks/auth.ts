@@ -1,6 +1,6 @@
 //#region > Imports
 //> Sessions
-// Contains the snek session
+// Contains the SNEK session
 import { SnekSession } from "../../../../session/sessions";
 //> Tasks
 // Contains a class to handle task errors
@@ -10,17 +10,23 @@ import { TaskError } from "../errors";
 import { User } from "../../../../session";
 // Contains a interface for a general response
 import { IResponse } from "./index";
-// Contains the snek template
+// Contains the SNEK template
 import { ISnekGqlTemplate } from "../index";
 //#endregion
 
 //#region > Interfaces
-/** @interface AuthResponse defines the overall structure of a authentication response from the snek-engine. */
+/**
+ * @interface AuthResponse defines the overall structure of a authentication
+ *                         response from the SNEK-engine.
+ */
 interface IAuthResponse extends IResponse {
   data: { auth: AuthData };
 }
 
-/** @interface AuthData defines the structure of the specific data a authentication response contains. */
+/**
+ * @interface AuthData defines the structure of the specific data a
+ *                     authentication response contains.
+ */
 interface AuthData {
   token: string;
   refreshToken: string;
@@ -29,40 +35,49 @@ interface AuthData {
   };
 }
 
-/** @interface RefreshResponse defines the overall structure of a token refresh response from the snek-engine. */
+/**
+ *  @interface RefreshResponse defines the overall structure of a token refresh
+ *                             response from the SNEK-engine.
+ */
 interface IRefreshResponse extends IResponse {
   data: { refresh: RefreshData };
 }
 
-/** @interface RefreshData defines the structure of the specific data a refresh response contains. */
+/**
+ *  @interface RefreshData defines the structure of the specific data a refresh
+ *                         response contains.
+ */
 interface RefreshData {
   payload: string;
   token: string;
   refreshToken: string;
 }
 
-/** @interface RevokeResponse defines the overall structure of a token revoke response from the snek-engine. */
+/** @interface RevokeResponse defines the overall structure of a token revoke
+ *                            response from the SNEK-engine.
+ */
 interface IRevokeResponse extends IResponse {
   data: { revoke: RevokeData };
 }
 
-/** @interface RevokeData defines the structure of the specific data a revoke response contains. */
+/**
+ * @interface RevokeData defines the structure of the specific data a revoke
+ *                       response contains.
+ */
 interface RevokeData {
   revoked: string;
 }
 //#endregion
 
 //#region > Classes
-/** @class A set of session aware Tasks. */
+/** @class A set of session aware Tasks */
 class SnekGqlAuthTasks extends TaskError {
   public template: ISnekGqlTemplate;
 
   /**
-   * Creates an instance of a SessionTasks.
-   *
    * @constructor
    * @author Nico Schett <contact@schett.net>
-   * @param {string} session A session for the tasks.
+   * @param {string} session A session for the tasks
    */
   constructor(session: SnekSession) {
     super(session);
@@ -73,7 +88,8 @@ class SnekGqlAuthTasks extends TaskError {
   /**
    * Anonymous login.
    *
-   * @returns {Promise<IAuthResponse>} A JWT token.
+   * @returns {Promise<AuthResponse>} A JWT token
+   * @description Authenticates the anonymous user to obtain a JWT
    */
   async anon(): Promise<IAuthResponse> {
     let query = this.template.mutations.jwtAuth.auth;
@@ -92,8 +108,9 @@ class SnekGqlAuthTasks extends TaskError {
   /**
    * User login.
    *
-   * @param {string} user A User defined by username and password.
-   * @returns {Promise<AuthData>} A JWT token.
+   * @param {string} user A User defined by username and password
+   * @returns {Promise<AuthData>} A JWT token
+   * @description Authenticates a real user to obtain a JWT
    */
   async nonanon(user: User): Promise<IAuthResponse> {
     let query = this.template.mutations.jwtAuth.auth;
@@ -112,10 +129,10 @@ class SnekGqlAuthTasks extends TaskError {
   }
 
   /**
-   * Refresh token.
+   * Refresh a token.
    *
-   * @param {string} user A User defined by username and password.
-   * @returns {Promise<IRefreshResponse>} A JWT token.
+   * @param {string} user A User defined by username and password
+   * @returns {Promise<RefreshResponse>} A JWT token
    */
   async refresh(): Promise<IRefreshResponse> {
     let query = this.template.mutations.jwtAuth.refresh;
@@ -133,10 +150,10 @@ class SnekGqlAuthTasks extends TaskError {
   }
 
   /**
-   * Revoke token.
+   * Revoke a token.
    *
-   * @param {string} user A User defined by username and password.
-   * @returns {Promise<IRevokeResponse>} Revoke acknowledgment.
+   * @param {string} user A User defined by username and password
+   * @returns {Promise<RevokeResponse>} Revoke acknowledgment
    */
   async revoke(): Promise<IRevokeResponse> {
     let query = this.template.mutations.jwtAuth.revoke;

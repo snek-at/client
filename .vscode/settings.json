@@ -3,6 +3,10 @@
     "editor.fontLigatures": true,
     "editor.snippetSuggestions": "top",
     "editor.rulers": [80, 120],
+    "editor.formatOnSave": false,
+    "[typescript]": {
+        "editor.formatOnSave": true
+    },
     "terminal.integrated.fontFamily": "Consolas",
     "workbench.colorTheme": "Dracula Soft",
     "cSpell.ignoreWords": [

@@ -6,7 +6,7 @@ import { SnekGqlMutation } from "./mutations/index";
 //#endregion
 
 //#region > Interfaces
-/** @interface ISnekGqlTemplate defines the structure for the gql template. */
+/** @interface SnekGqlTemplate defines the structure for the gql template */
 interface ISnekGqlTemplate {
   queries: SnekGqlQuery;
   mutations: SnekGqlMutation;
@@ -14,7 +14,7 @@ interface ISnekGqlTemplate {
 //#endregion
 
 //#region > Classes
-/** @class A Template which initializes all SubTemplates. */
+/** @class A Template which initializes all SubTemplates */
 class SnekGql {
   public queries = new SnekGqlQuery();
   public mutations = new SnekGqlMutation();

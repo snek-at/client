@@ -5,22 +5,22 @@ import { ScraperEndpoint, IOptions } from "./index";
 //#endregion
 
 //#region > Classes
-/** @class A endpoint to fetch page DOM. */
+/** @class A endpoint to fetch page DOM */
 class Scraper implements ScraperEndpoint {
   //> Fields
   headers: object = {
     accept: "application/json, text/plain, */*",
   };
+
   desc: string = "A endpoint to fetch page DOM";
   proxy: string = "https://cors.snek.at/";
 
   /**
    * @constructor
    * @author Nico Schett <contact@schett.net>
-   * @param root Root url of endpoint. Specify it like https://foo.bar. The correct placement of the slashes is
-   *             essential!
-   * @param options Specify options object to define e.g headers.
-   * @description Creates a instance of Scraper.
+   * @param root Root url of endpoint. Specify it like "https://foo.bar".
+   *             The correct placement of the slashes is essential!
+   * @param options Specify options object to define e.g headers
    */
   constructor(private root: string, options: IOptions) {
     this.headers = { ...this.headers, ...options.headers };
@@ -28,8 +28,9 @@ class Scraper implements ScraperEndpoint {
 
   //> Getter
   /**
+   * Provides a URL which is composed of proxy and root url.
+   *
    * @returns {string} A URL
-   * @description Provides a URL which is composed of proxy and root url
    */
   get url(): string {
     return this.proxy + this.root;
@@ -37,9 +38,11 @@ class Scraper implements ScraperEndpoint {
 
   //> Methods
   /**
-   * @param path Path to the endpoint. Specify it like "/foo/bar". The correct placement of the slashes is essential!
-   * @returns {T} JSON object passed to given structure <T>.
-   * @description Get JSON object<T> from specified path.
+   * Get JSON object from specified path.
+   *
+   * @param path Path to the endpoint. Specify it like "/foo/bar".
+   *             The correct placement of the slashes is essential!
+   * @returns {T} JSON object passed to given structure
    */
   async getJson<T>(path: string): Promise<T> {
     return fetch(this.url + path, {
@@ -57,9 +60,11 @@ class Scraper implements ScraperEndpoint {
   }
 
   /**
-   * @param path Path to the endpoint. Specify it like "/foo/bar". The correct placement of the slashes is essential!
-   * @returns {object} DOM object.
-   * @description Get DOM object from specified path.
+   * Get DOM object from specified path.
+   *
+   * @param path Path to the endpoint. Specify it like "/foo/bar".
+   *             The correct placement of the slashes is essential!
+   * @returns {object} DOM object
    */
   async getDom(path: string): Promise<Document> {
     return fetch(this.url + path, {
@@ -80,11 +85,12 @@ class Scraper implements ScraperEndpoint {
   }
 
   /**
+   * Post data to a endpoint and get the respective result.
+   *
    * @param {string} path Path to the endpoint. Specify it like "/foo/bar".
    *                      The correct placement of the slashes is essential!
    * @param data Data which is filled into the body of a post request
    * @returns {Promise<Document>} A DOM Document
-   * @description Post data to a endpoint and get the respective result
    */
   async post<T>(
     path: string,

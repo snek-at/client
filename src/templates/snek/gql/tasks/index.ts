@@ -1,6 +1,6 @@
 //#region > Imports
 //> Sessions
-// Contains the snek session
+// Contains the SNEK session
 import { SnekSession } from "../../../../session/sessions";
 //> Tasks
 // Contains the SnekGqlAuth task
@@ -12,7 +12,10 @@ import SnekGqlUserTasks from "./user";
 //#endregion
 
 //#region > Interfaces
-/** @interface Response defines the basic response structure. */
+/**
+ * @interface Response defines the basic response structure which fits all
+ *                     graphql requests.
+ */
 interface IResponse {
   errors: [
     {
@@ -23,12 +26,17 @@ interface IResponse {
 //#endregion
 
 //#region > Classes
-/** @class A Template with initializes all tasks. */
+/** @class A Template with initializes all tasks */
 class SnekTasks {
   public general!: SnekGqlGeneralTasks;
   public auth!: SnekGqlAuthTasks;
   public user!: SnekGqlUserTasks;
 
+  /**
+   * @constructor
+   * @author Nico Schett <contact@schett.net>
+   * @param {string} session A session to initialize all corresponding tasks
+   */
   constructor(session: SnekSession) {
     this.general = new SnekGqlGeneralTasks(session);
     this.auth = new SnekGqlAuthTasks(session);

@@ -1,18 +1,18 @@
 //#region > Imports
-//> Graphql
-//#INSTALL "graphql-tag"
+//#PACKAGE "graphql-tag"
+//## npm install "graphql-tag"@2.10.3
 // Contains a gql tag for wrapping queries
 import gql from "graphql-tag";
 //#endregion
 
 //#region > Queries
 /**
- * Whoami:
- * Query to fetch the username of the according token.
+ * Whoami.
  *
- * @deprecated since 1.0 use jwtAuth instead.
- * @param {string} token A users JWT.
- * @returns {string} A username.
+ * @deprecated since 1.0 use jwtAuth instead
+ * @param {string} token A users JWT
+ * @returns {string} A username
+ * @description A query to fetch the username of the according token
  */
 const whoami = gql`
   query whoami($token: String!) {
@@ -28,12 +28,12 @@ const whoami = gql`
 `;
 
 /**
- * Get user profile:
- * Query to fetch profile data.
+ * Get user profile.
  *
- * @param {string} url PageUrl of a user profile.
- * @param {string} token A users JWT.
- * @returns {string} A profile page of a user.
+ * @param {string} url PageUrl of a user profile
+ * @param {string} token A users JWT
+ * @returns {string} A profile page of a user
+ * @description A query to fetch profile data
  */
 const profile = gql`
   query profile($url: String!, $token: String!) {

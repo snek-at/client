@@ -1,17 +1,17 @@
 //#region > Imports
-//> Graphql
-//#INSTALL "graphql-tag"
+//#PACKAGE "graphql-tag"
+//## npm install "graphql-tag"@2.10.3
 // Contains a gql tag for wrapping queries
 import gql from "graphql-tag";
 //#endregion
 
 //#region > Queries
 /**
- * List of GitLab server:
- * Query to fetch all available GitLab server.
+ * List of GitLab server.
  *
- * @param {string} JWT A users JWT.
- * @returns {string} A serialized JSON object with a list of GitLab server.
+ * @param {string} JWT A users JWT
+ * @returns {string} A serialized JSON object with a list of GitLab server
+ * @description A query to fetch all available GitLab server
  */
 const gitlabServer = gql`
   query gitLabServers($token: String!) {
@@ -30,11 +30,11 @@ const gitlabServer = gql`
 `;
 
 /**
- * List of page urls:
- * Query to fetch all pages urls.
+ * List of page urls.
  *
- * @param {string} JWT A users JWT.
- * @returns {string} A serialized JSON object with a list of all page urls.
+ * @param {string} JWT A users JWT
+ * @returns {string} A serialized JSON object with a list of all page urls
+ * @description A query to fetch all pages urls
  */
 const allPageUrls = gql`
   query pages($token: String!) {
