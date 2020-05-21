@@ -1,6 +1,6 @@
 //#region > Imports
 //#PACKAGE "graphql-tag"
-//## npm install ""graphql-tag"@2.10.3
+//## npm install "graphql-tag"@2.10.3
 // Contains a gql tag for wrapping queries
 import gql from "graphql-tag";
 //#endregion
