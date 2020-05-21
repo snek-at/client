@@ -21,7 +21,7 @@ import {
 import { DocumentNode } from "graphql";
 
 // Contains the interface for the Apollo endpoint and the Apollo options
-import { ApolloEndpoint, Options } from "./index";
+import { ApolloEndpoint, IOptions } from "./index";
 //#endregion
 
 //#region > Classes
@@ -32,8 +32,8 @@ class Apollo implements ApolloEndpoint {
   private cache: InMemoryCache;
   private client: ApolloClient<NormalizedCacheObject>;
 
-  public headers: object;
-  public desc: string = "A endpoint used for APIv4 requests";
+  headers: object;
+  desc: string = "A endpoint used for APIv4 requests";
 
   /**
    * @constructor
@@ -41,7 +41,7 @@ class Apollo implements ApolloEndpoint {
    * @param uri A uri of a graphql endpoint
    * @param options Configuration options
    */
-  constructor(uri: string, options: Options) {
+  constructor(uri: string, options: IOptions) {
     this.headers = options.headers;
     const fragmentMatcher = new IntrospectionFragmentMatcher({
       introspectionQueryResultData: {
@@ -94,7 +94,7 @@ class Apollo implements ApolloEndpoint {
     data: DocumentNode,
     variables?: object,
     headers?: object
-  ): Promise<object> {
+  ) {
     switch (type) {
       case "query":
         return this.client.query({

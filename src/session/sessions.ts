@@ -63,7 +63,7 @@ class GithubSession extends Session {
 
 /** @class A SNEK SubSession */
 class SnekSession extends Session {
-  public refreshTokenName: string = "refresh";
+  refreshTokenName: string = "refresh";
   /* Define tasks */
   public tasks: SnekTasks;
 

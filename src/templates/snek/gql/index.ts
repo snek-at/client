@@ -7,7 +7,7 @@ import { SnekGqlMutation } from "./mutations/index";
 
 //#region > Interfaces
 /** @interface SnekGqlTemplate defines the structure for the gql template */
-interface SnekGqlTemplate {
+interface ISnekGqlTemplate {
   queries: SnekGqlQuery;
   mutations: SnekGqlMutation;
 }
@@ -22,7 +22,7 @@ class SnekGql {
 //#endregion
 
 //#region > Exports
-export type { SnekGqlTemplate };
+export type { ISnekGqlTemplate };
 export default SnekGql;
 //#endregion
 

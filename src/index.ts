@@ -22,7 +22,7 @@ import { IMainTemplate } from "./templates/index";
  * @interface Endpoint defines the structure of object a endpoint requirers to
  *                     initialize.
  */
-interface Endpoint {
+interface IEndpoint {
   /**
    * Url: The URL of an endpoint. For performance reasons,
    *      https should always be selected as protocol if possible.
@@ -46,7 +46,7 @@ interface IClient {}
  * @todo Rework the url checker. Add documentation
  */
 class Client implements IClient {
-  constructor(public ep: Endpoint) {
+  constructor(ep: IEndpoint) {
     /*
      * When no protocol is defined, http will be appended. Therefore "https"
      * should always be included for performance.
@@ -63,9 +63,9 @@ class Client implements IClient {
 
 /** @class A client implementation for SNEK interaction */
 class SnekClient extends Client {
-  public endpoint: ApolloEndpoint;
-  public template: IMainTemplate;
-  public session: SnekSession;
+  endpoint: ApolloEndpoint;
+  template: IMainTemplate;
+  session: SnekSession;
 
   /**
    * @constructor
@@ -90,9 +90,9 @@ class SnekClient extends Client {
 
 /** @class A client implementation for github interaction */
 class GithubClient extends Client {
-  public endpoint: ApolloEndpoint;
-  public template: IMainTemplate;
-  public session: GithubSession;
+  endpoint: ApolloEndpoint;
+  template: IMainTemplate;
+  session: GithubSession;
 
   /**
    * @constructor

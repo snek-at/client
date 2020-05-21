@@ -16,7 +16,7 @@ import SnekGqlUserTasks from "./user";
  * @interface Response defines the basic response structure which fits all
  *                     graphql requests.
  */
-interface Response {
+interface IResponse {
   errors: [
     {
       message: string;
@@ -46,7 +46,7 @@ class SnekTasks {
 //#endregion
 
 //#region > Exports
-export type { Response };
+export type { IResponse };
 export default SnekTasks;
 //#endregion
 

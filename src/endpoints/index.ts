@@ -8,7 +8,7 @@ import { DocumentNode } from "graphql";
 
 //#region > Interfaces
 /** @interface Endpoint defines the basic endpoint structure */
-interface Endpoint {
+interface IEndpoint {
   /**
    * Hedaers: A object which contains the headers as key value pair.
    */
@@ -20,7 +20,7 @@ interface Endpoint {
 }
 
 /** @interface Options defines the structure of the apollo options */
-interface Options {
+interface IOptions {
   /**
    * Headers: Contains the headers for the requests.
    */
@@ -28,7 +28,7 @@ interface Options {
 }
 
 /** @interface ApolloEndpoint defines the structure of the apollo endpoint */
-interface ApolloEndpoint extends Endpoint {
+interface ApolloEndpoint extends IEndpoint {
   /**
    * Send: Provides requests for various graphql types.
    *
@@ -50,7 +50,7 @@ interface ApolloEndpoint extends Endpoint {
 }
 
 /** @interface ScraperEndpoint defines the structure of the scraper endpoint */
-interface ScraperEndpoint extends Endpoint {
+interface ScraperEndpoint extends IEndpoint {
   /**
    * GetJson: A method which gets json data from a specific url.
    *
@@ -89,7 +89,7 @@ interface ScraperEndpoint extends Endpoint {
 //#endregion
 
 //#region > Exports
-export type { Options, ApolloEndpoint, ScraperEndpoint };
+export type { IOptions, ApolloEndpoint, ScraperEndpoint };
 //#endregion
 
 /**

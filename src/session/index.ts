@@ -17,8 +17,8 @@ interface UserData {
   lastLogin?: string;
 }
 
-/** @interface UserData defines the structure of an authentication object */
-interface Auth {
+/** @interface Auth defines the structure of an authentication object */
+interface IAuth {
   token: string;
   refreshToken: string;
 }
@@ -39,8 +39,8 @@ interface ISession {
 //#region > Classes
 /** @class A general Session with token functionality */
 class Session implements ISession {
-  public sessions: { [id: string]: ISession } = {};
-  public tokenName: string = "token";
+  sessions: { [id: string]: ISession } = {};
+  tokenName: string = "token";
 
   /**
    * @constructor
@@ -93,7 +93,7 @@ class Session implements ISession {
 //#endregion
 
 //#region > Exports
-export type { UserData, Auth, User, ISession };
+export type { UserData, IAuth, User, ISession };
 export default Session;
 //#endregion
 

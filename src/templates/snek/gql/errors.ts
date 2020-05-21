@@ -4,7 +4,7 @@
 import { SnekSession } from "../../../session/sessions";
 //> Interfaces
 // Contains a interface for a general response
-import { Response } from "./tasks/index";
+import { IResponse } from "./tasks/index";
 //#endregion
 
 //#region > Classes
@@ -23,7 +23,7 @@ class TaskError {
    * @param {Response} response A SNEK-client graphql response
    * @returns {boolean} "false" if an error occurs. Otherwise "true"
    */
-  handleErrors(response: Response): boolean {
+  handleErrors(response: IResponse): boolean {
     if (response.errors?.length > 0) {
       //#LEGACY
       //#ERROR

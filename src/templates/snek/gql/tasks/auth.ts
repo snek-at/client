@@ -9,9 +9,9 @@ import { TaskError } from "../errors";
 // Contains the user interface for authentication
 import { User } from "../../../../session";
 // Contains a interface for a general response
-import { Response } from "./index";
+import { IResponse } from "./index";
 // Contains the SNEK template
-import { SnekGqlTemplate } from "../index";
+import { ISnekGqlTemplate } from "../index";
 //#endregion
 
 //#region > Interfaces
@@ -19,7 +19,7 @@ import { SnekGqlTemplate } from "../index";
  * @interface AuthResponse defines the overall structure of a authentication
  *                         response from the SNEK-engine.
  */
-interface AuthResponse extends Response {
+interface IAuthResponse extends IResponse {
   data: { auth: AuthData };
 }
 
@@ -39,7 +39,7 @@ interface AuthData {
  *  @interface RefreshResponse defines the overall structure of a token refresh
  *                             response from the SNEK-engine.
  */
-interface RefreshResponse extends Response {
+interface IRefreshResponse extends IResponse {
   data: { refresh: RefreshData };
 }
 
@@ -56,7 +56,7 @@ interface RefreshData {
 /** @interface RevokeResponse defines the overall structure of a token revoke
  *                            response from the SNEK-engine.
  */
-interface RevokeResponse extends Response {
+interface IRevokeResponse extends IResponse {
   data: { revoke: RevokeData };
 }
 
@@ -72,7 +72,7 @@ interface RevokeData {
 //#region > Classes
 /** @class A set of session aware Tasks */
 class SnekGqlAuthTasks extends TaskError {
-  public template: SnekGqlTemplate;
+  public template: ISnekGqlTemplate;
 
   /**
    * @constructor
@@ -91,12 +91,16 @@ class SnekGqlAuthTasks extends TaskError {
    * @returns {Promise<AuthResponse>} A JWT token
    * @description Authenticates the anonymous user to obtain a JWT
    */
-  async anon(): Promise<AuthResponse> {
+  async anon(): Promise<IAuthResponse> {
     let query = this.template.mutations.jwtAuth.auth;
-    let response = <AuthResponse>await this.session.ep.send("mutation", query, {
-      username: "cisco",
-      password: "ciscocisco",
-    });
+    let response = <IAuthResponse>await this.session.ep.send(
+      "mutation",
+      query,
+      {
+        username: "cisco",
+        password: "ciscocisco",
+      }
+    );
 
     return response;
   }
@@ -108,12 +112,16 @@ class SnekGqlAuthTasks extends TaskError {
    * @returns {Promise<AuthData>} A JWT token
    * @description Authenticates a real user to obtain a JWT
    */
-  async nonanon(user: User): Promise<AuthResponse> {
+  async nonanon(user: User): Promise<IAuthResponse> {
     let query = this.template.mutations.jwtAuth.auth;
-    let response = <AuthResponse>await this.session.ep.send("mutation", query, {
-      username: user.username,
-      password: user.password,
-    });
+    let response = <IAuthResponse>await this.session.ep.send(
+      "mutation",
+      query,
+      {
+        username: user.username,
+        password: user.password,
+      }
+    );
 
     this.handleErrors(response);
 
@@ -126,9 +134,9 @@ class SnekGqlAuthTasks extends TaskError {
    * @param {string} user A User defined by username and password
    * @returns {Promise<RefreshResponse>} A JWT token
    */
-  async refresh(): Promise<RefreshResponse> {
+  async refresh(): Promise<IRefreshResponse> {
     let query = this.template.mutations.jwtAuth.refresh;
-    let response = <RefreshResponse>await this.session.ep.send(
+    let response = <IRefreshResponse>await this.session.ep.send(
       "mutation",
       query,
       {
@@ -147,9 +155,9 @@ class SnekGqlAuthTasks extends TaskError {
    * @param {string} user A User defined by username and password
    * @returns {Promise<RevokeResponse>} Revoke acknowledgment
    */
-  async revoke(): Promise<RevokeResponse> {
+  async revoke(): Promise<IRevokeResponse> {
     let query = this.template.mutations.jwtAuth.revoke;
-    let response = <RevokeResponse>await this.session.ep.send(
+    let response = <IRevokeResponse>await this.session.ep.send(
       "mutation",
       query,
       {

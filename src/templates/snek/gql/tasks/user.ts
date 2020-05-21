@@ -7,9 +7,9 @@ import { SnekSession } from "../../../../session/sessions";
 import { TaskError } from "../errors";
 //> Interfaces
 // Contains a interface for a general response
-import { Response } from "./index";
+import { IResponse } from "./index";
 // Contains the SNEK template
-import { SnekGqlTemplate } from "../index";
+import { ISnekGqlTemplate } from "../index";
 //#endregion
 
 //#region > Interfaces
@@ -17,7 +17,7 @@ import { SnekGqlTemplate } from "../index";
  *  @interface RegistrationResponse defines the overall structure of a
  *                                  registration response from the SNEK-engine.
  */
-interface RegistrationResponse extends Response {
+interface IRegistrationResponse extends IResponse {
   data: RegistrationData;
 }
 
@@ -34,7 +34,7 @@ interface RegistrationData {
  *  @interface CacheResponse defines the overall structure of a cache response
  *                           from the SNEK-engine.
  */
-interface CacheResponse extends Response {
+interface ICacheResponse extends IResponse {
   data: CacheData;
 }
 
@@ -52,7 +52,7 @@ interface CacheData {
  *  @interface ProfileResponse defines the overall structure of a profile
  *                             response from the SNEK-engine.
  */
-interface ProfileResponse extends Response {
+interface IProfileResponse extends IResponse {
   data: ProfileData;
 }
 
@@ -76,7 +76,7 @@ interface ProfileData {
  *  @interface WhoamiResponse defines the overall structure of a whoami
  *                            response from the SNEK-engine.
  */
-interface WhoamiResponse extends Response {
+interface IWhoamiResponse extends IResponse {
   data: WhoamiData;
 }
 
@@ -92,7 +92,7 @@ interface WhoamiData {
 //#region > Classes
 /** @class A set of session aware Tasks */
 class SnekGqlUserTasks extends TaskError {
-  public template: SnekGqlTemplate;
+  public template: ISnekGqlTemplate;
 
   /**
    * @constructor
@@ -111,9 +111,9 @@ class SnekGqlUserTasks extends TaskError {
    * @param {object} values Registration parameters like username, email,...
    * @returns {Promise<RegistrationResponse>} A JWT token
    */
-  async registration(values: object): Promise<RegistrationResponse> {
+  async registration(values: object): Promise<IRegistrationResponse> {
     let query = this.template.mutations.user.registration;
-    let response = <RegistrationResponse>await this.session.ep.send(
+    let response = <IRegistrationResponse>await this.session.ep.send(
       "mutation",
       query,
       {
@@ -133,9 +133,9 @@ class SnekGqlUserTasks extends TaskError {
    * @param {string} platformData A serialized JSON object to be cached
    * @returns {Promise<CacheResponse>} A JWT token
    */
-  async cache(platformData: string): Promise<CacheResponse> {
+  async cache(platformData: string): Promise<ICacheResponse> {
     let query = this.template.mutations.user.cache;
-    let response = <CacheResponse>await this.session.ep.send(
+    let response = <ICacheResponse>await this.session.ep.send(
       "mutation",
       query,
       {
@@ -155,12 +155,16 @@ class SnekGqlUserTasks extends TaskError {
    * @param {string} url A url of a page
    * @returns {Promise<ProfileResponse>} The page profile of a user
    */
-  async profile(url: string): Promise<ProfileResponse> {
+  async profile(url: string): Promise<IProfileResponse> {
     let query = this.template.queries.user.profile;
-    let response = <ProfileResponse>await this.session.ep.send("query", query, {
-      url,
-      token: await this.session.upToDateToken(),
-    });
+    let response = <IProfileResponse>await this.session.ep.send(
+      "query",
+      query,
+      {
+        url,
+        token: await this.session.upToDateToken(),
+      }
+    );
 
     this.handleErrors(response);
 
@@ -172,9 +176,9 @@ class SnekGqlUserTasks extends TaskError {
    *
    * @returns {Promise<WhoamiResponse>} User data
    */
-  async whoami(): Promise<WhoamiResponse> {
+  async whoami(): Promise<IWhoamiResponse> {
     let query = this.template.queries.user.whoami;
-    let response = <WhoamiResponse>await this.session.ep.send("query", query, {
+    let response = <IWhoamiResponse>await this.session.ep.send("query", query, {
       token: await this.session.upToDateToken(),
     });
 

@@ -7,9 +7,9 @@ import { SnekSession } from "../../../../session/sessions";
 import { TaskError } from "../errors";
 //> Interfaces
 // Contains a interface for a general response
-import { Response } from "./index";
+import { IResponse } from "./index";
 // Contains the user interface for authentication
-import { SnekGqlTemplate } from "../index";
+import { ISnekGqlTemplate } from "../index";
 //#endregion
 
 //#region > Interfaces
@@ -17,7 +17,7 @@ import { SnekGqlTemplate } from "../index";
  * @interface GitlabServerResponse defines the overall structure of a Gitlab
  *                                 server response from the SNEK-engine.
  */
-interface GitlabServerResponse extends Response {
+interface IGitlabServerResponse extends IResponse {
   data: { page: GitlabServerData };
 }
 
@@ -34,7 +34,7 @@ interface GitlabServerData {
  *                               response from the SNEK-engine.
  *
  */
-interface AllPageUrlResponse extends Response {
+interface IAllPageUrlResponse extends IResponse {
   data: { pages: [] };
 }
 //#endregion
@@ -42,7 +42,7 @@ interface AllPageUrlResponse extends Response {
 //#region > Classes
 /** @class A set of session aware Tasks */
 class SnekGqlGeneralTasks extends TaskError {
-  public template: SnekGqlTemplate;
+  public template: ISnekGqlTemplate;
 
   /**
    * @constructor
@@ -61,9 +61,9 @@ class SnekGqlGeneralTasks extends TaskError {
    * @returns {Promise<GitlabServerResponse>} A list of Gitlab server
    * @description Get all Gitlab servers which are registered in the SNEK-engine
    */
-  async gitlabServer(): Promise<GitlabServerResponse> {
+  async gitlabServer(): Promise<IGitlabServerResponse> {
     let query = this.template.queries.general.gitlabServer;
-    let response = <GitlabServerResponse>await this.session.ep.send(
+    let response = <IGitlabServerResponse>await this.session.ep.send(
       "query",
       query,
       {
@@ -82,9 +82,9 @@ class SnekGqlGeneralTasks extends TaskError {
    * @returns {Promise<AllPageUrlResponse>} A list of all page urls
    * @description Get a list of all pages
    */
-  async allPageUrls(): Promise<AllPageUrlResponse> {
+  async allPageUrls(): Promise<IAllPageUrlResponse> {
     let query = this.template.queries.general.allPageUrls;
-    let response = <AllPageUrlResponse>await this.session.ep.send(
+    let response = <IAllPageUrlResponse>await this.session.ep.send(
       "query",
       query,
       {
