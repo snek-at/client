@@ -19,9 +19,12 @@ import {
 //## npm install "graphql"@14.6.0
 // Contains the interface for gql queries, mutations and subscriptions
 import { DocumentNode } from "graphql";
-
+//> Interfaces
 // Contains the interface for the Apollo endpoint and the Apollo options
 import { ApolloEndpoint, IOptions } from "./index";
+//> Types
+// Contains the type declaration for apollo results
+import { ApolloResult } from "./index";
 //#endregion
 
 //#region > Classes
@@ -75,52 +78,75 @@ class Apollo implements ApolloEndpoint {
       throw new Error("An error occurred while initializing the headers!");
     }
   }
-
-  //> Methods
-  /**
-   * Send: Provides requests for various graphql types.
-   *
-   * @param {string} type The type of the action you want to perform like Query,
-   *                      Mutation,...
-   * @param {DocumentNode} data The query structure
-   * @param {object} variables A object which contains variables for the query
-   *                           structure.
-   * @param {object} headers Optional headers which get appended to the endpoint
-   *                         headers.
-   * @returns {Promise<object>} Resolved apollo data object
-   */
+  //#LEGACY
+  /** @deprecated Will be removed in the upcoming release */
   async send(
     type: string,
     data: DocumentNode,
     variables?: object,
     headers?: object
   ) {
-    switch (type) {
-      case "query":
-        return this.client.query({
-          query: data,
-          errorPolicy: "all",
-          variables,
-          context: {
-            headers: { ...this.headers, ...headers },
-          },
-        });
-
-      case "subscription":
-        break;
-
-      case "mutation":
-        return this.client.mutate({
-          mutation: data,
-          errorPolicy: "all",
-          variables,
-          context: {
-            headers: this.headers,
-          },
-        });
+    if (type === "query") {
+      return this.sendQuery(data, variables, headers);
+    } else if (type === "mutation") {
+      return this.sendMutation(data, variables, headers);
+    } else {
+      console.warn(
+        "No query type specified! Please re-check." +
+          "Selecting type 'query' as default"
+      );
+      return this.sendQuery(data, variables, headers);
     }
+  }
 
-    return new Error("No valid query type specified!");
+  /**
+   * Send: Provides requests for graphql queries.
+   *
+   * @param {DocumentNode} data The query structure
+   * @param {object} variables A object which contains variables for
+   *                           the query structure.
+   * @param {object} headers Optional headers which get appended to
+   *                         the endpoint headers.
+   * @returns {Promise<ApolloResult<T>>} Resolved apollo data object
+   */
+  async sendQuery<T>(
+    data: DocumentNode,
+    variables?: object,
+    headers?: object
+  ): Promise<ApolloResult<T>> {
+    return this.client.query<T>({
+      query: data,
+      errorPolicy: "all",
+      variables,
+      context: {
+        headers: { ...this.headers, ...headers },
+      },
+    });
+  }
+
+  /**
+   * Send: Provides requests for graphql mutations.
+   *
+   * @param {DocumentNode} data The query structure
+   * @param {object} variables A object which contains variables for
+   *                           the query structure.
+   * @param {object} headers Optional headers which get appended to
+   *                         the endpoint headers.
+   * @returns {Promise<ApolloResult<T>>} Resolved apollo data object
+   */
+  async sendMutation<T>(
+    data: DocumentNode,
+    variables?: object,
+    headers?: object
+  ): Promise<ApolloResult<T>> {
+    return this.client.mutate<T>({
+      mutation: data,
+      errorPolicy: "all",
+      variables,
+      context: {
+        headers: { ...this.headers, ...headers },
+      },
+    });
   }
 }
 //#endregion

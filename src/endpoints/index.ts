@@ -5,6 +5,12 @@
 // Contains the interface for gql queries, mutations and subscriptions
 import { DocumentNode } from "graphql";
 //#endregion
+import { FetchResult } from "apollo-link";
+import { ApolloQueryResult } from "apollo-client";
+
+export type ApolloResult<T> =
+  | FetchResult<T, Record<string, any>, Record<string, any>>
+  | ApolloQueryResult<T>;
 
 //#region > Interfaces
 /** @interface Endpoint defines the basic endpoint structure */
@@ -30,23 +36,35 @@ interface IOptions {
 /** @interface ApolloEndpoint defines the structure of the apollo endpoint */
 interface ApolloEndpoint extends IEndpoint {
   /**
-   * Send: Provides requests for various graphql types.
+   * Send: Provides requests for graphql queries.
    *
-   * @param {string} type The type of the action you want to perform like Query,
-   *                      Mutation,...
    * @param {DocumentNode} data The query structure
    * @param {object} variables A object which contains variables for
    *                           the query structure.
    * @param {object} headers Optional headers which get appended to
    *                         the endpoint headers.
-   * @returns {Promise<object>} Resolved apollo data object
+   * @returns {Promise<ApolloResult<T>>} Resolved apollo data object
    */
-  send: (
-    type: string,
+  sendQuery<T>(
     data: DocumentNode,
     variables?: object,
     headers?: object
-  ) => Promise<object>;
+  ): Promise<ApolloResult<T>>;
+  /**
+   * Send: Provides requests for graphql mutations.
+   *
+   * @param {DocumentNode} data The query structure
+   * @param {object} variables A object which contains variables for
+   *                           the query structure.
+   * @param {object} headers Optional headers which get appended to
+   *                         the endpoint headers.
+   * @returns {Promise<ApolloResult<T>>} Resolved apollo data object
+   */
+  sendMutation<T>(
+    data: DocumentNode,
+    variables?: object,
+    headers?: object
+  ): Promise<ApolloResult<T>>;
 }
 
 /** @interface ScraperEndpoint defines the structure of the scraper endpoint */
