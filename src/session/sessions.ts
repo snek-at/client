@@ -88,6 +88,15 @@ class SnekSession extends Session {
 
   //> Getter
   /**
+   * Get current token.
+   *
+   * @returns {string | undefined} A users JWT if set
+   */
+  get token(): string | undefined {
+    return super.token;
+  }
+
+  /**
    * Get refresh token from cookies.
    *
    * @returns {string | undefined} A users JWT if set
