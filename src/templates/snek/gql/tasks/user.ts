@@ -108,7 +108,6 @@ class SnekGqlUserTasks {
    * @returns {Promise<ApolloResult<ProfileData>>} The page profile of a user
    */
   async profile(url: string): Promise<ApolloResult<ProfileData>> {
-    console.error(await this.parent.session.upToDateToken());
     const response = await this.parent.run<ProfileData>(
       "query",
       this.parent.template.queries.user.profile,
