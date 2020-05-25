@@ -253,6 +253,24 @@ class SnekSession extends Session {
     this.token = undefined;
     this.refreshToken = undefined;
   }
+
+  /**
+   * Perform a custom task.
+   *
+   * @param type
+   * @param data
+   * @param variables
+   * @description Perform a session aware custom task. Token and refreshToken
+   *              are set by default!
+   *              When no type is specified, query is set as default.
+   */
+  async customTask<T>(type: string, data: DocumentNode, variables: object) {
+    return this.tasks.run<T>(type, data, {
+      ...variables,
+      token: this.token,
+      refreshToken: this.refreshToken,
+    });
+  }
 }
 //#endregion
 
