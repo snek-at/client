@@ -22,7 +22,7 @@ import { IMainTemplate } from "./templates/index";
  * @interface Endpoint defines the structure of object a endpoint requirers to
  *                     initialize.
  */
-interface IEndpoint {
+interface Endpoint {
   /**
    * Url: The URL of an endpoint. For performance reasons,
    *      https should always be selected as protocol if possible.
@@ -46,7 +46,7 @@ interface IClient {}
  * @todo Rework the url checker and add documentation
  */
 class Client implements IClient {
-  constructor(ep: IEndpoint) {
+  constructor(ep: Endpoint) {
     /*
      * When no protocol is defined, http will be appended. Therefore "https"
      * should always be included for performance.

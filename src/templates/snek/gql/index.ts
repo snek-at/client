@@ -10,7 +10,7 @@ import { ApolloResult } from "../../../endpoints/index";
 
 //#region > Interfaces
 /** @interface SnekGqlTemplate defines the structure for the gql template */
-interface ISnekGqlTemplate {
+interface SnekGqlTemplate {
   queries: SnekGqlQuery;
   mutations: SnekGqlMutation;
 }
@@ -25,7 +25,7 @@ class SnekGql {
 //#endregion
 
 //#region > Exports
-export type { ISnekGqlTemplate, ApolloResult };
+export type { SnekGqlTemplate, ApolloResult };
 export default SnekGql;
 //#endregion
 

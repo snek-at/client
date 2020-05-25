@@ -8,13 +8,13 @@ import { DocumentNode } from "graphql";
 import { FetchResult } from "apollo-link";
 import { ApolloQueryResult } from "apollo-client";
 
-export type ApolloResult<T> =
+type ApolloResult<T> =
   | FetchResult<T, Record<string, any>, Record<string, any>>
   | ApolloQueryResult<T>;
 
 //#region > Interfaces
 /** @interface Endpoint defines the basic endpoint structure */
-interface IEndpoint {
+interface Endpoint {
   /**
    * Hedaers: A object which contains the headers as key value pair.
    */
@@ -26,7 +26,7 @@ interface IEndpoint {
 }
 
 /** @interface Options defines the structure of the apollo options */
-interface IOptions {
+interface Options {
   /**
    * Headers: Contains the headers for the requests.
    */
@@ -34,7 +34,7 @@ interface IOptions {
 }
 
 /** @interface ApolloEndpoint defines the structure of the apollo endpoint */
-interface ApolloEndpoint extends IEndpoint {
+interface ApolloEndpoint extends Endpoint {
   /**
    * Send: Provides requests for graphql queries.
    *
@@ -68,7 +68,7 @@ interface ApolloEndpoint extends IEndpoint {
 }
 
 /** @interface ScraperEndpoint defines the structure of the scraper endpoint */
-interface ScraperEndpoint extends IEndpoint {
+interface ScraperEndpoint extends Endpoint {
   /**
    * GetJson: A method which gets json data from a specific url.
    *
@@ -107,7 +107,7 @@ interface ScraperEndpoint extends IEndpoint {
 //#endregion
 
 //#region > Exports
-export type { IOptions, ApolloEndpoint, ScraperEndpoint };
+export type { ApolloResult, Options, ApolloEndpoint, ScraperEndpoint };
 //#endregion
 
 /**

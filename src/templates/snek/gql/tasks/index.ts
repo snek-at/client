@@ -18,7 +18,7 @@ import SnekGqlUserTasks from "./user";
 import { TaskError } from "../errors";
 //> Interfaces
 // Contains the snek template
-import { ISnekGqlTemplate } from "../index";
+import { SnekGqlTemplate } from "../index";
 //> Types
 // Contains the type declaration for apollo results
 import { ApolloResult } from "../index";
@@ -27,7 +27,7 @@ import { ApolloResult } from "../index";
 //#region > Classes
 /** @class A Template with initializes all tasks */
 class SnekTasks extends TaskError {
-  public template!: ISnekGqlTemplate;
+  public template!: SnekGqlTemplate;
   public general!: SnekGqlGeneralTasks;
   public auth!: SnekGqlAuthTasks;
   public user!: SnekGqlUserTasks;

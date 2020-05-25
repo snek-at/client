@@ -21,7 +21,7 @@ import {
 import { DocumentNode } from "graphql";
 //> Interfaces
 // Contains the interface for the Apollo endpoint and the Apollo options
-import { ApolloEndpoint, IOptions } from "./index";
+import { ApolloEndpoint, Options } from "./index";
 //> Types
 // Contains the type declaration for apollo results
 import { ApolloResult } from "./index";
@@ -44,7 +44,7 @@ class Apollo implements ApolloEndpoint {
    * @param uri A uri of a graphql endpoint
    * @param options Configuration options
    */
-  constructor(uri: string, options: IOptions) {
+  constructor(uri: string, options: Options) {
     this.headers = options.headers;
     const fragmentMatcher = new IntrospectionFragmentMatcher({
       introspectionQueryResultData: {
