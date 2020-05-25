@@ -23,7 +23,7 @@ import SnekTasks from "../templates/snek/gql/tasks/index";
 // Contains the interface for the apollo endpoint
 import { ApolloEndpoint } from "../../src/endpoints/index";
 // Contains basic session interfaces
-import { User, UserData } from "./index";
+import { User } from "./index";
 //#endregion
 
 //#region > Classes
@@ -186,7 +186,7 @@ class SnekSession extends Session {
    * @param {string} user A User defined by username and password
    * @returns {Promise<UserData>} A UserData object
    */
-  async begin(user?: User): Promise<UserData> {
+  async begin(user?: User): Promise<any> {
     let response;
 
     if (!user && this.refreshToken) {
@@ -202,16 +202,16 @@ class SnekSession extends Session {
       }
 
       /* Set tokens */
-      this.token = response.data.auth.token;
-      this.refreshToken = response.data.auth.refreshToken;
+      this.token = response.data?.auth.token;
+      this.refreshToken = response.data?.auth.refreshToken;
 
-      return <UserData>response.data.auth.user;
+      return response.data?.auth.user;
     }
 
     /* Get user data */
     response = await this.tasks.user.whoami();
 
-    return <UserData>response.data.whoami;
+    return response.data?.whoami;
   }
 
   /**
@@ -226,8 +226,8 @@ class SnekSession extends Session {
       if (this.refreshToken) {
         let response = await this.tasks.auth.refresh();
 
-        this.token = response.data.refresh.token;
-        this.refreshToken = response.data.refresh.refreshToken;
+        this.token = response.data?.refresh.token;
+        this.refreshToken = response.data?.refresh.refreshToken;
       } else {
         /* No token and refresh token present, start anonymous login */
         await this.begin();
@@ -246,7 +246,7 @@ class SnekSession extends Session {
       let response = await this.tasks.auth.revoke();
 
       //#DEBUG TSID1
-      console.log("TID-1(REVOKE)", response.data.revoke.revoked);
+      console.log("TID-1(REVOKE)", response.data?.revoke.revoked);
     }
 
     /* Reset token */
