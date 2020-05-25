@@ -10,7 +10,7 @@ import { ApolloResult } from "./index";
 //#region > Interfaces
 /**
  * @interface GitlabServerData defines the structure of the Gitlab server result
- *                             data
+ *                             data.
  */
 interface GitlabServerData {
   page: {
@@ -28,13 +28,12 @@ interface AllPageUrlData {
 //#endregion
 
 //#region > Classes
-/** @class A set of session aware Tasks */
+/** @class A set of session aware tasks */
 class SnekGqlGeneralTasks {
   /**
    * @constructor
    * @author Nico Schett <contact@schett.net>
    * @param {string} parent The parent task
-   * @param {string} template A template set containing mutation and queries
    */
   constructor(private parent: SnekTasks) {}
 

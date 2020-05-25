@@ -42,7 +42,7 @@ class SnekTasks extends TaskError {
 
     this.template = session.template.snekGql;
 
-    /* init tasks */
+    /* Init tasks */
     this.general = new SnekGqlGeneralTasks(this);
     this.auth = new SnekGqlAuthTasks(this);
     this.user = new SnekGqlUserTasks(this);
@@ -60,6 +60,7 @@ class SnekTasks extends TaskError {
         "No query type specified! Please re-check." +
           "Selecting type 'query' as default"
       );
+
       response = await this.session.ep.sendQuery<T>(query, variables);
     }
 

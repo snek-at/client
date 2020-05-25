@@ -18,7 +18,7 @@ interface RegistrationData {
 
 /**
  * @interface CacheData defines the structure of the cache result
- *                       data.
+ *                      data.
  */
 interface CacheData {
   user: {
@@ -54,13 +54,12 @@ interface WhoamiData {
 //#endregion
 
 //#region > Classes
-/** @class A set of session aware Tasks */
+/** @class A set of session aware tasks */
 class SnekGqlUserTasks {
   /**
    * @constructor
    * @author Nico Schett <contact@schett.net>
    * @param {string} parent The parent task
-   * @param {string} template A template set containing mutation and queries
    */
   constructor(private parent: SnekTasks) {}
 
@@ -68,7 +67,7 @@ class SnekGqlUserTasks {
    * Register a user.
    *
    * @param {object} values Registration parameters like username, email,...
-   * @returns {Promise<ApolloResult<RegistrationData>>} A JWT token
+   * @returns {Promise<ApolloResult<RegistrationData>>} Registration data
    */
   async registration(values: object): Promise<ApolloResult<RegistrationData>> {
     const response = await this.parent.run<RegistrationData>(
@@ -87,7 +86,7 @@ class SnekGqlUserTasks {
    * Cache a user.
    *
    * @param {string} platformData A serialized JSON object to be cached
-   * @returns {Promise<ApolloResult<CacheData>>} A JWT token
+   * @returns {Promise<ApolloResult<CacheData>>} Cache data
    */
   async cache(platformData: string): Promise<ApolloResult<CacheData>> {
     const response = await this.parent.run<CacheData>(

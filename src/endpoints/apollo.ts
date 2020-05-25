@@ -95,6 +95,7 @@ class Apollo implements ApolloEndpoint {
         "No query type specified! Please re-check." +
           "Selecting type 'query' as default"
       );
+
       return this.sendQuery(data, variables, headers);
     }
   }

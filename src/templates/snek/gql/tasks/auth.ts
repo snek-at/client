@@ -46,7 +46,7 @@ interface RevokeData {
 //#endregion
 
 //#region > Classes
-/** @class A set of session aware Tasks */
+/** @class A set of session aware tasks */
 class SnekGqlAuthTasks {
   /**
    * @constructor
@@ -58,7 +58,7 @@ class SnekGqlAuthTasks {
   /**
    * Anonymous login.
    *
-   * @returns {Promise<ApolloResult<AuthData>>} A JWT token.
+   * @returns {Promise<ApolloResult<AuthData>>} Authentication data
    * @description Authenticates the anonymous user to obtain a JWT
    */
   async anon(): Promise<ApolloResult<AuthData>> {
@@ -79,7 +79,7 @@ class SnekGqlAuthTasks {
    *
    * @param {string} user A User defined by username and password
    * @description Authenticates a real user to obtain a JWT
-   * @returns {Promise<ApolloResult<AuthData>>} A JWT token
+   * @returns {Promise<ApolloResult<AuthData>>} Authentication data
    */
   async nonanon(user: User): Promise<ApolloResult<AuthData>> {
     const response = await this.parent.run<AuthData>(
@@ -98,7 +98,7 @@ class SnekGqlAuthTasks {
    * Refresh a token.
    *
    * @param {string} user A User defined by username and password
-   * @returns {Promise<ApolloResult<RefreshData>>} A JWT token
+   * @returns {Promise<ApolloResult<RefreshData>>} Refresh data
    */
   async refresh(): Promise<ApolloResult<RefreshData>> {
     const response = await this.parent.run<RefreshData>(

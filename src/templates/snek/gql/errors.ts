@@ -8,7 +8,7 @@ import { ApolloResult } from "./index";
 //#endregion
 
 //#region > Classes
-/** @class A set of session aware Tasks */
+/** @class A set of session aware tasks */
 class TaskError {
   /**
    * @constructor

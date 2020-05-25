@@ -8,9 +8,12 @@ import { DocumentNode } from "graphql";
 import { FetchResult } from "apollo-link";
 import { ApolloQueryResult } from "apollo-client";
 
+//#region > Types
+/** @type ApolloResult defines the types of a mutation and query response  */
 type ApolloResult<T> =
   | FetchResult<T, Record<string, any>, Record<string, any>>
   | ApolloQueryResult<T>;
+//#endregion
 
 //#region > Interfaces
 /** @interface Endpoint defines the basic endpoint structure */

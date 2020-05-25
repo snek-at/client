@@ -183,8 +183,8 @@ class SnekSession extends Session {
   /**
    * Begin session.
    *
-   * @param {string} user A User defined by username and password.
-   * @returns {Promise<any>} A UserData object.
+   * @param {string} user A User defined by username and password
+   * @returns {Promise<any>} A UserData object
    */
   async begin(user?: User): Promise<any> {
     let response;
