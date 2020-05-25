@@ -57,7 +57,7 @@ class GithubSession extends Session {
       authorization: token,
     };
 
-    return this.ep.send("query", data, variables, headers);
+    return this.ep.sendQuery(data, variables, headers);
   }
 }
 
@@ -177,7 +177,7 @@ class SnekSession extends Session {
       authorization: token,
     };
 
-    return this.ep.send("query", data, variables, headers);
+    return this.ep.sendQuery(data, variables, headers);
   }
 
   /**
