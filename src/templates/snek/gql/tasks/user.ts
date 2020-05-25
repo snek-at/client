@@ -1,46 +1,24 @@
 //#region > Imports
-//> Sessions
-// Contains the SNEK session
-import { SnekSession } from "../../../../session/sessions";
-//> Tasks
-// Contains a class to handle task errors
-import { TaskError } from "../errors";
-//> Interfaces
-// Contains a interface for a general response
-import { IResponse } from "./index";
-// Contains the SNEK template
-import { ISnekGqlTemplate } from "../index";
+//> Parent Task
+// Contains the SNEK parent task
+import SnekTasks from "./index";
+//> Types
+// Contains the type declaration for apollo results
+import { ApolloResult } from "./index";
 //#endregion
 
 //#region > Interfaces
 /**
- *  @interface RegistrationResponse defines the overall structure of a
- *                                  registration response from the SNEK-engine.
- */
-interface IRegistrationResponse extends IResponse {
-  data: RegistrationData;
-}
-
-/**
- * @interface RegistrationData defines the structure of the specific data a
- *                             registration response contains.
+ * @interface RegistrationData defines the structure of the registration result
+ *                             data.
  */
 interface RegistrationData {
   result: string;
-  errors: [];
 }
 
 /**
- *  @interface CacheResponse defines the overall structure of a cache response
- *                           from the SNEK-engine.
- */
-interface ICacheResponse extends IResponse {
-  data: CacheData;
-}
-
-/**
- * @interface CacheData defines the structure of the specific data a
- *                      cache response contains.
+ * @interface CacheData defines the structure of the cache result
+ *                       data.
  */
 interface CacheData {
   user: {
@@ -49,16 +27,8 @@ interface CacheData {
 }
 
 /**
- *  @interface ProfileResponse defines the overall structure of a profile
- *                             response from the SNEK-engine.
- */
-interface IProfileResponse extends IResponse {
-  data: ProfileData;
-}
-
-/**
- * @interface ProfileData defines the structure of the specific data a
- *                        profile response contains.
+ * @interface ProfileData defines the structure of the profile result
+ *                        data.
  */
 interface ProfileData {
   username: string;
@@ -73,56 +43,42 @@ interface ProfileData {
 }
 
 /**
- *  @interface WhoamiResponse defines the overall structure of a whoami
- *                            response from the SNEK-engine.
- */
-interface IWhoamiResponse extends IResponse {
-  data: WhoamiData;
-}
-
-/**
- * @interface WhoamiData defines the structure of the specific data a
- *                       whoami response contains.
+ * @interface WhoamiData defines the structure of the whoami result
+ *                        data.
  */
 interface WhoamiData {
-  whoami: { username: string };
+  whoami: {
+    username: string;
+  };
 }
 //#endregion
 
 //#region > Classes
 /** @class A set of session aware Tasks */
-class SnekGqlUserTasks extends TaskError {
-  public template: ISnekGqlTemplate;
-
+class SnekGqlUserTasks {
   /**
    * @constructor
    * @author Nico Schett <contact@schett.net>
-   * @param {string} session A session for the tasks
+   * @param {string} parent The parent task
+   * @param {string} template A template set containing mutation and queries
    */
-  constructor(session: SnekSession) {
-    super(session);
-
-    this.template = session.template.snekGql;
-  }
+  constructor(private parent: SnekTasks) {}
 
   /**
    * Register a user.
    *
    * @param {object} values Registration parameters like username, email,...
-   * @returns {Promise<RegistrationResponse>} A JWT token
+   * @returns {Promise<ApolloResult<RegistrationData>>} A JWT token
    */
-  async registration(values: object): Promise<IRegistrationResponse> {
-    let query = this.template.mutations.user.registration;
-    let response = <IRegistrationResponse>await this.session.ep.send(
+  async registration(values: object): Promise<ApolloResult<RegistrationData>> {
+    const response = await this.parent.run<RegistrationData>(
       "mutation",
-      query,
+      this.parent.template.mutations.user.registration,
       {
-        token: await this.session.upToDateToken(),
+        token: await this.parent.session.upToDateToken(),
         values,
       }
     );
-
-    this.handleErrors(response);
 
     return response;
   }
@@ -131,20 +87,17 @@ class SnekGqlUserTasks extends TaskError {
    * Cache a user.
    *
    * @param {string} platformData A serialized JSON object to be cached
-   * @returns {Promise<CacheResponse>} A JWT token
+   * @returns {Promise<ApolloResult<CacheData>>} A JWT token
    */
-  async cache(platformData: string): Promise<ICacheResponse> {
-    let query = this.template.mutations.user.cache;
-    let response = <ICacheResponse>await this.session.ep.send(
+  async cache(platformData: string): Promise<ApolloResult<CacheData>> {
+    const response = await this.parent.run<CacheData>(
       "mutation",
-      query,
+      this.parent.template.mutations.user.cache,
       {
-        token: await this.session.upToDateToken(),
+        token: await this.parent.session.upToDateToken(),
         platformData,
       }
     );
-
-    this.handleErrors(response);
 
     return response;
   }
@@ -153,20 +106,18 @@ class SnekGqlUserTasks extends TaskError {
    * Get profile.
    *
    * @param {string} url A url of a page
-   * @returns {Promise<ProfileResponse>} The page profile of a user
+   * @returns {Promise<ApolloResult<ProfileData>>} The page profile of a user
    */
-  async profile(url: string): Promise<IProfileResponse> {
-    let query = this.template.queries.user.profile;
-    let response = <IProfileResponse>await this.session.ep.send(
+  async profile(url: string): Promise<ApolloResult<ProfileData>> {
+    console.error(await this.parent.session.upToDateToken());
+    const response = await this.parent.run<ProfileData>(
       "query",
-      query,
+      this.parent.template.queries.user.profile,
       {
         url,
-        token: await this.session.upToDateToken(),
+        token: await this.parent.session.upToDateToken(),
       }
     );
-
-    this.handleErrors(response);
 
     return response;
   }
@@ -174,15 +125,16 @@ class SnekGqlUserTasks extends TaskError {
   /**
    * Whoami check.
    *
-   * @returns {Promise<WhoamiResponse>} User data
+   * @returns {Promise<ApolloResult<WhoamiData>>} User data
    */
-  async whoami(): Promise<IWhoamiResponse> {
-    let query = this.template.queries.user.whoami;
-    let response = <IWhoamiResponse>await this.session.ep.send("query", query, {
-      token: await this.session.upToDateToken(),
-    });
-
-    this.handleErrors(response);
+  async whoami(): Promise<ApolloResult<WhoamiData>> {
+    const response = await this.parent.run<WhoamiData>(
+      "query",
+      this.parent.template.queries.user.whoami,
+      {
+        token: await this.parent.session.upToDateToken(),
+      }
+    );
 
     return response;
   }

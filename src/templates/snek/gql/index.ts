@@ -3,6 +3,9 @@
 import { SnekGqlQuery } from "./queries/index";
 //> Mutations
 import { SnekGqlMutation } from "./mutations/index";
+//> Types
+// Contains the type declaration for apollo results
+import { ApolloResult } from "../../../endpoints/index";
 //#endregion
 
 //#region > Interfaces
@@ -22,7 +25,7 @@ class SnekGql {
 //#endregion
 
 //#region > Exports
-export type { ISnekGqlTemplate };
+export type { ISnekGqlTemplate, ApolloResult };
 export default SnekGql;
 //#endregion
 

@@ -1,77 +1,57 @@
 //#region > Imports
-//> Sessions
-// Contains the SNEK session
-import { SnekSession } from "../../../../session/sessions";
-//> Tasks
-// Contains a class to handle task errors
-import { TaskError } from "../errors";
-//> Interfaces
-// Contains a interface for a general response
-import { IResponse } from "./index";
-// Contains the user interface for authentication
-import { ISnekGqlTemplate } from "../index";
+//> Parent Task
+// Contains the SNEK parent task
+import SnekTasks from "./index";
+//> Types
+// Contains the type declaration for apollo results
+import { ApolloResult } from "./index";
 //#endregion
 
 //#region > Interfaces
 /**
- * @interface GitlabServerResponse defines the overall structure of a Gitlab
- *                                 server response from the SNEK-engine.
- */
-interface IGitlabServerResponse extends IResponse {
-  data: { page: GitlabServerData };
-}
-
-/**
- * @interface GitlabServerData defines the structure of the specific data a
- *                             GitlabServerResponse contains.
+ * @interface GitlabServerData defines the structure of the Gitlab server result
+ *                             data
  */
 interface GitlabServerData {
-  supportedGitlabs: [];
+  page: {
+    supportedGitlabs: [];
+  };
 }
 
 /**
- * @interface AllPageUrlResponse defines the overall structure of a AllPageUrl
- *                               response from the SNEK-engine.
- *
+ * @interface AllPageUrlData defines the structure of the all page url result
+ *                           data.
  */
-interface IAllPageUrlResponse extends IResponse {
-  data: { pages: [] };
+interface AllPageUrlData {
+  pages: [];
 }
 //#endregion
 
 //#region > Classes
 /** @class A set of session aware Tasks */
-class SnekGqlGeneralTasks extends TaskError {
-  public template: ISnekGqlTemplate;
-
+class SnekGqlGeneralTasks {
   /**
    * @constructor
    * @author Nico Schett <contact@schett.net>
-   * @param {string} session A session for the tasks
+   * @param {string} parent The parent task
+   * @param {string} template A template set containing mutation and queries
    */
-  constructor(session: SnekSession) {
-    super(session);
-
-    this.template = session.template.snekGql;
-  }
+  constructor(private parent: SnekTasks) {}
 
   /**
    * Gitlab Server.
    *
-   * @returns {Promise<GitlabServerResponse>} A list of Gitlab server
+   * @returns {Promise<ApolloResult<GitlabServerData>>} A list of Gitlab server
    * @description Get all Gitlab servers which are registered in the SNEK-engine
    */
-  async gitlabServer(): Promise<IGitlabServerResponse> {
-    let query = this.template.queries.general.gitlabServer;
-    let response = <IGitlabServerResponse>await this.session.ep.send(
+  async gitlabServer(): Promise<ApolloResult<GitlabServerData>> {
+    const response = await this.parent.run<GitlabServerData>(
       "query",
-      query,
+      this.parent.template.queries.general.gitlabServer,
       {
-        token: await this.session.upToDateToken(),
+        token: await this.parent.session.upToDateToken(),
       }
     );
-
-    this.handleErrors(response);
 
     return response;
   }
@@ -79,20 +59,17 @@ class SnekGqlGeneralTasks extends TaskError {
   /**
    * All page url.
    *
-   * @returns {Promise<AllPageUrlResponse>} A list of all page urls
+   * @returns {Promise<ApolloResult<AllPageUrlData>>} A list of all page urls
    * @description Get a list of all pages
    */
-  async allPageUrls(): Promise<IAllPageUrlResponse> {
-    let query = this.template.queries.general.allPageUrls;
-    let response = <IAllPageUrlResponse>await this.session.ep.send(
+  async allPageUrls(): Promise<ApolloResult<AllPageUrlData>> {
+    const response = await this.parent.run<AllPageUrlData>(
       "query",
-      query,
+      this.parent.template.queries.general.allPageUrls,
       {
-        token: await this.session.upToDateToken(),
+        token: await this.parent.session.upToDateToken(),
       }
     );
-
-    this.handleErrors(response);
 
     return response;
   }
