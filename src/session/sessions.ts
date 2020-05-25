@@ -183,8 +183,8 @@ class SnekSession extends Session {
   /**
    * Begin session.
    *
-   * @param {string} user A User defined by username and password
-   * @returns {Promise<UserData>} A UserData object
+   * @param {string} user A User defined by username and password.
+   * @returns {Promise<any>} A UserData object.
    */
   async begin(user?: User): Promise<any> {
     let response;
@@ -217,9 +217,9 @@ class SnekSession extends Session {
   /**
    * Refreshes a session based on its history.
    *
-   * @description When there is no token the refresh task is called.
-   *              When there is no token and refresh token session begin as
-   *              equivalent to an anonymous login is called.
+   * @description When there is no token the refresh task is called. When there
+   *              is no token and refresh token session begin as equivalent to
+   *              an anonymous login is called.
    */
   async refresh() {
     if (!this.token) {
