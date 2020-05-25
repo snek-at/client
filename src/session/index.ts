@@ -6,23 +6,6 @@ import Cookies from "js-cookie";
 //#endregion
 
 //#region > Interfaces
-/** @interface UserData defines the structure of profile objects */
-interface UserData {
-  username?: string;
-  firstName?: string;
-  lastName?: string;
-  ownedPages?: string;
-  email?: string;
-  dateJoined?: string;
-  lastLogin?: string;
-}
-
-/** @interface Auth defines the structure of an authentication object */
-interface IAuth {
-  token: string;
-  refreshToken: string;
-}
-
 /** @interface User defines the structure of a basic user object */
 interface User {
   username: string;
@@ -52,6 +35,7 @@ class Session implements ISession {
   //> Getter
   /**
    * Get token from cookies.
+   *
    * @returns {string | undefined} A users JWT if set
    */
   get token(): string | undefined {
@@ -93,7 +77,7 @@ class Session implements ISession {
 //#endregion
 
 //#region > Exports
-export type { UserData, IAuth, User, ISession };
+export type { User, ISession };
 export default Session;
 //#endregion
 
