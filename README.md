@@ -25,22 +25,22 @@ The client is used to handle all api requests that the SNEK project requires. Th
 
 ## Table of contents
 
-- [Table of contents](#table-of-contents)
-- [Quick start](#quick-start)
-- [Status](#status)
-- [Bugs and feature requests](#bugs-and-feature-requests)
-- [Contributing](#contributing)
-- [Community](#community)
-- [Versioning](#versioning)
-- [Creators](#creators)
-- [Thanks](#thanks)
-- [Copyright and license](#copyright-and-license)
+-   [Table of contents](#table-of-contents)
+-   [Quick start](#quick-start)
+-   [Status](#status)
+-   [Bugs and feature requests](#bugs-and-feature-requests)
+-   [Contributing](#contributing)
+-   [Community](#community)
+-   [Versioning](#versioning)
+-   [Creators](#creators)
+-   [Thanks](#thanks)
+-   [Copyright and license](#copyright-and-license)
 
-## [](#quick-start)Quick start 
+## [](#quick-start)Quick start
 
 Several quick start options are available:
 
-- Clone the repo: `https://github.com/snek-at/client.git`
+-   Clone the repo: `https://github.com/snek-at/client.git`
 
 ## [](#status)Status
 
@@ -82,8 +82,8 @@ those rules whenever possible.
 
 **Schett Nico**
 
-- <https://twitter.com/sxct4>
-- <https://github.com/schettn>
+-   <https://twitter.com/sxct4>
+-   <https://github.com/schettn>
 
 ## [](#thanks)Thanks
 
@@ -98,4 +98,5 @@ SPDX-License-Identifier: (EUPL-1.2)
 Copyright © Simon Prast
 
 [discord-badge]: https://img.shields.io/badge/Discord-Join%20chat%20%E2%86%92-738bd7.svg
+
 [discord]: https://discord.gg/dnxUJmk
