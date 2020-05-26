@@ -22,7 +22,7 @@ import { IMainTemplate } from "./templates/index";
  * @interface Endpoint defines the structure of object a endpoint requirers to
  *                     initialize.
  */
-interface IEndpoint {
+interface Endpoint {
   /**
    * Url: The URL of an endpoint. For performance reasons,
    *      https should always be selected as protocol if possible.
@@ -46,7 +46,7 @@ interface IClient {}
  * @todo Rework the url checker and add documentation
  */
 class Client implements IClient {
-  constructor(ep: IEndpoint) {
+  constructor(ep: Endpoint) {
     /*
      * When no protocol is defined, http will be appended. Therefore "https"
      * should always be included for performance.
@@ -63,7 +63,10 @@ class Client implements IClient {
 
 /** @class A client implementation for SNEK interaction */
 class SnekClient extends Client {
+  //#LEGACY
+  /** @deprecated Will be removed in the upcoming release */
   endpoint: ApolloEndpoint;
+  gql: ApolloEndpoint;
   template: IMainTemplate;
   session: SnekSession;
 
@@ -83,14 +86,18 @@ class SnekClient extends Client {
     super({ type, url, headers });
 
     this.template = new MainTemplate();
-    this.endpoint = new Apollo(url, { headers });
-    this.session = new SnekSession("snek", this.endpoint, this.template.snek);
+    this.gql = new Apollo(url, { headers });
+    this.endpoint = this.gql;
+    this.session = new SnekSession("snek", this.gql, this.template.snek);
   }
 }
 
 /** @class A client implementation for github interaction */
 class GithubClient extends Client {
+  //#LEGACY
+  /** @deprecated Will be removed in the upcoming release */
   endpoint: ApolloEndpoint;
+  gql: ApolloEndpoint;
   template: IMainTemplate;
   session: GithubSession;
 
@@ -110,8 +117,9 @@ class GithubClient extends Client {
     super({ type, url, headers });
 
     this.template = new MainTemplate();
-    this.endpoint = new Apollo(url, { headers });
-    this.session = new GithubSession("github", this.endpoint, this.template);
+    this.gql = new Apollo(url, { headers });
+    this.endpoint = this.gql;
+    this.session = new GithubSession("github", this.gql, this.template);
   }
 }
 

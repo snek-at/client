@@ -5,10 +5,19 @@
 // Contains the interface for gql queries, mutations and subscriptions
 import { DocumentNode } from "graphql";
 //#endregion
+import { FetchResult } from "apollo-link";
+import { ApolloQueryResult } from "apollo-client";
+
+//#region > Types
+/** @type ApolloResult defines the types of a mutation and query response  */
+type ApolloResult<T> =
+  | FetchResult<T, Record<string, any>, Record<string, any>>
+  | ApolloQueryResult<T>;
+//#endregion
 
 //#region > Interfaces
 /** @interface Endpoint defines the basic endpoint structure */
-interface IEndpoint {
+interface Endpoint {
   /**
    * Hedaers: A object which contains the headers as key value pair.
    */
@@ -20,7 +29,7 @@ interface IEndpoint {
 }
 
 /** @interface Options defines the structure of the apollo options */
-interface IOptions {
+interface Options {
   /**
    * Headers: Contains the headers for the requests.
    */
@@ -28,29 +37,41 @@ interface IOptions {
 }
 
 /** @interface ApolloEndpoint defines the structure of the apollo endpoint */
-interface ApolloEndpoint extends IEndpoint {
+interface ApolloEndpoint extends Endpoint {
   /**
-   * Send: Provides requests for various graphql types.
+   * Send: Provides requests for graphql queries.
    *
-   * @param {string} type The type of the action you want to perform like Query,
-   *                      Mutation,...
    * @param {DocumentNode} data The query structure
    * @param {object} variables A object which contains variables for
    *                           the query structure.
    * @param {object} headers Optional headers which get appended to
    *                         the endpoint headers.
-   * @returns {Promise<object>} Resolved apollo data object
+   * @returns {Promise<ApolloResult<T>>} Resolved apollo data object
    */
-  send: (
-    type: string,
+  sendQuery<T>(
     data: DocumentNode,
     variables?: object,
     headers?: object
-  ) => Promise<object>;
+  ): Promise<ApolloResult<T>>;
+  /**
+   * Send: Provides requests for graphql mutations.
+   *
+   * @param {DocumentNode} data The query structure
+   * @param {object} variables A object which contains variables for
+   *                           the query structure.
+   * @param {object} headers Optional headers which get appended to
+   *                         the endpoint headers.
+   * @returns {Promise<ApolloResult<T>>} Resolved apollo data object
+   */
+  sendMutation<T>(
+    data: DocumentNode,
+    variables?: object,
+    headers?: object
+  ): Promise<ApolloResult<T>>;
 }
 
 /** @interface ScraperEndpoint defines the structure of the scraper endpoint */
-interface ScraperEndpoint extends IEndpoint {
+interface ScraperEndpoint extends Endpoint {
   /**
    * GetJson: A method which gets json data from a specific url.
    *
@@ -89,7 +110,7 @@ interface ScraperEndpoint extends IEndpoint {
 //#endregion
 
 //#region > Exports
-export type { IOptions, ApolloEndpoint, ScraperEndpoint };
+export type { ApolloResult, Options, ApolloEndpoint, ScraperEndpoint };
 //#endregion
 
 /**

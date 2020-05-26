@@ -2,13 +2,13 @@
 //> Sessions
 // Contains the SNEK session
 import { SnekSession } from "../../../session/sessions";
-//> Interfaces
-// Contains a interface for a general response
-import { IResponse } from "./tasks/index";
+//> Types
+// Contains the type declaration for apollo results
+import { ApolloResult } from "./index";
 //#endregion
 
 //#region > Classes
-/** @class A set of session aware Tasks */
+/** @class A set of session aware tasks */
 class TaskError {
   /**
    * @constructor
@@ -23,19 +23,21 @@ class TaskError {
    * @param {Response} response A SNEK-client graphql response
    * @returns {boolean} "false" if an error occurs. Otherwise "true"
    */
-  handleErrors(response: IResponse): boolean {
-    if (response.errors?.length > 0) {
+  handleErrors(response: ApolloResult<any>): boolean {
+    const errors = response.errors;
+
+    if (errors && errors.length > 0) {
       //#LEGACY
       //#ERROR
       console.error("An error occurred" + JSON.stringify(response));
 
-      if (response.errors[0].message === "Invalid refresh token") {
+      if (errors[0].message === "Invalid refresh token") {
         /* Delete token and refresh token if refresh token is invalid */
         this.session.token = undefined;
         this.session.refreshToken = undefined;
 
         return false;
-      } else if (response.errors[0].message === "Error decoding signature") {
+      } else if (errors[0].message === "Error decoding signature") {
         /* Delete token if token is invalid */
         this.session.token = undefined;
 

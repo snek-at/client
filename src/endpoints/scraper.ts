@@ -1,7 +1,7 @@
 //#region > Imports
 //> Interfaces
 // Contains the interface for the Apollo endpoint and options
-import { ScraperEndpoint, IOptions } from "./index";
+import { ScraperEndpoint, Options } from "./index";
 //#endregion
 
 //#region > Classes
@@ -22,7 +22,7 @@ class Scraper implements ScraperEndpoint {
    *             The correct placement of the slashes is essential!
    * @param options Specify options object to define e.g headers
    */
-  constructor(private root: string, options: IOptions) {
+  constructor(private root: string, options: Options) {
     this.headers = { ...this.headers, ...options.headers };
   }
 

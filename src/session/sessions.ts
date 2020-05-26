@@ -23,7 +23,7 @@ import SnekTasks from "../templates/snek/gql/tasks/index";
 // Contains the interface for the apollo endpoint
 import { ApolloEndpoint } from "../../src/endpoints/index";
 // Contains basic session interfaces
-import { User, UserData } from "./index";
+import { User } from "./index";
 //#endregion
 
 //#region > Classes
@@ -57,7 +57,7 @@ class GithubSession extends Session {
       authorization: token,
     };
 
-    return this.ep.send("query", data, variables, headers);
+    return this.ep.sendQuery(data, variables, headers);
   }
 }
 
@@ -87,6 +87,15 @@ class SnekSession extends Session {
   }
 
   //> Getter
+  /**
+   * Get current token.
+   *
+   * @returns {string | undefined} A users JWT if set
+   */
+  get token(): string | undefined {
+    return super.token;
+  }
+
   /**
    * Get refresh token from cookies.
    *
@@ -168,16 +177,16 @@ class SnekSession extends Session {
       authorization: token,
     };
 
-    return this.ep.send("query", data, variables, headers);
+    return this.ep.sendQuery(data, variables, headers);
   }
 
   /**
    * Begin session.
    *
    * @param {string} user A User defined by username and password
-   * @returns {Promise<UserData>} A UserData object
+   * @returns {Promise<any>} A UserData object
    */
-  async begin(user?: User): Promise<UserData> {
+  async begin(user?: User): Promise<any> {
     let response;
 
     if (!user && this.refreshToken) {
@@ -193,32 +202,32 @@ class SnekSession extends Session {
       }
 
       /* Set tokens */
-      this.token = response.data.auth.token;
-      this.refreshToken = response.data.auth.refreshToken;
+      this.token = response.data?.auth.token;
+      this.refreshToken = response.data?.auth.refreshToken;
 
-      return <UserData>response.data.auth.user;
+      return response.data?.auth.user;
     }
 
     /* Get user data */
     response = await this.tasks.user.whoami();
 
-    return <UserData>response.data.whoami;
+    return response.data?.whoami;
   }
 
   /**
    * Refreshes a session based on its history.
    *
-   * @description When there is no token the refresh task is called.
-   *              When there is no token and refresh token session begin as
-   *              equivalent to an anonymous login is called.
+   * @description When there is no token the refresh task is called. When there
+   *              is no token and refresh token session begin as equivalent to
+   *              an anonymous login is called.
    */
   async refresh() {
     if (!this.token) {
       if (this.refreshToken) {
         let response = await this.tasks.auth.refresh();
 
-        this.token = response.data.refresh.token;
-        this.refreshToken = response.data.refresh.refreshToken;
+        this.token = response.data?.refresh.token;
+        this.refreshToken = response.data?.refresh.refreshToken;
       } else {
         /* No token and refresh token present, start anonymous login */
         await this.begin();
@@ -237,12 +246,30 @@ class SnekSession extends Session {
       let response = await this.tasks.auth.revoke();
 
       //#DEBUG TSID1
-      console.log("TID-1(REVOKE)", response.data.revoke.revoked);
+      console.log("TID-1(REVOKE)", response.data?.revoke.revoked);
     }
 
     /* Reset token */
     this.token = undefined;
     this.refreshToken = undefined;
+  }
+
+  /**
+   * Perform a custom task.
+   *
+   * @param type
+   * @param data
+   * @param variables
+   * @description Perform a session aware custom task. Token and refreshToken
+   *              are set by default!
+   *              When no type is specified, query is set as default.
+   */
+  async customTask<T>(type: string, data: DocumentNode, variables: object) {
+    return this.tasks.run<T>(type, data, {
+      ...variables,
+      token: this.token,
+      refreshToken: this.refreshToken,
+    });
   }
 }
 //#endregion
