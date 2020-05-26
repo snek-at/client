@@ -1,6 +1,6 @@
 {
   "name": "snek-client",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Enoy it.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
