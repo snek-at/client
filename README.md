@@ -8,7 +8,7 @@
 <p align="center">
 The SNEK project is an attempt to create a transparent, open-source non-profit platform that allows engineers to categorize and compare. It should enable engineers from adjacent fields to visualize each other's skills through visualization and project identification.
   <br>
-The client is used to handle all api requests that the SNEK project requires. This includes calls to e.g snek-engine, github and gitlab.
+The client unifies the way external data is handled and unietes it under a clean, well documented, modular,  plug and play API written in beautiful typescript :)
   <br>
   <br>
   <a href="https://github.com/snek-at/client/issues/new?template=bug_report.md">Report bug</a>
