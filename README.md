@@ -4,7 +4,7 @@
   </a>
 </p>
 
-<h3 align="center">SNEKNetwork for Engineers and Knowledged</h3>
+<h3 align="center">SNEK - Social Network for Engineers and Knowledged</h3>
 <p align="center">
 The SNEK project is an attempt to create a transparent, open-source non-profit platform that allows engineers to categorize and compare. It should enable engineers from adjacent fields to visualize each other's skills through visualization and project identification.
   <br>
