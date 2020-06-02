@@ -25,16 +25,16 @@ The client unifies the way external data is handled and unites it under a clean,
 
 ## Table of contents
 
--   [Table of contents](#table-of-contents)
--   [Quick start](#quick-start)
--   [Status](#status)
--   [Bugs and feature requests](#bugs-and-feature-requests)
--   [Contributing](#contributing)
--   [Community](#community)
--   [Versioning](#versioning)
--   [Creators](#creators)
--   [Thanks](#thanks)
--   [Copyright and license](#copyright-and-license)
+- [Table of contents](#table-of-contents)
+- [Quick start](#quick-start)
+- [Status](#status)
+- [Bugs and feature requests](#bugs-and-feature-requests)
+- [Contributing](#contributing)
+- [Community](#community)
+- [Versioning](#versioning)
+- [Creators](#creators)
+- [Thanks](#thanks)
+- [Copyright and license](#copyright-and-license)
 
 ## [](#quick-start)Quick start
 

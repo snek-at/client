@@ -245,7 +245,7 @@ class SnekSession extends Session {
       let response = await this.tasks.auth.revoke();
 
       //#DEBUG TSID1
-      console.log("TID-1(REVOKE)", response.data?.revoke.revoked);
+      //console.log("TID-1(REVOKE)", response.data?.revoke.revoked);
     }
 
     /* Reset token */
