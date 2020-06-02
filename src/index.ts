@@ -63,9 +63,6 @@ class Client implements IClient {
 
 /** @class A client implementation for SNEK interaction */
 class SnekClient extends Client {
-  //#LEGACY
-  /** @deprecated Will be removed in the upcoming release */
-  endpoint: ApolloEndpoint;
   gql: ApolloEndpoint;
   template: IMainTemplate;
   session: SnekSession;
@@ -89,16 +86,12 @@ class SnekClient extends Client {
 
     this.template = new MainTemplate();
     this.gql = new Apollo(url, { headers });
-    this.endpoint = this.gql;
     this.session = new SnekSession("snek", this.gql, this.template.snek);
   }
 }
 
 /** @class A client implementation for github interaction */
 class GithubClient extends Client {
-  //#LEGACY
-  /** @deprecated Will be removed in the upcoming release */
-  endpoint: ApolloEndpoint;
   gql: ApolloEndpoint;
   template: IMainTemplate;
   session: GithubSession;
@@ -122,7 +115,6 @@ class GithubClient extends Client {
 
     this.template = new MainTemplate();
     this.gql = new Apollo(url, { headers });
-    this.endpoint = this.gql;
     this.session = new GithubSession("github", this.gql, this.template);
   }
 }
