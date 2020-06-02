@@ -24,7 +24,7 @@ import { DocumentNode } from "graphql";
 // Contains the interface for the Apollo endpoint and the Apollo options
 import { ApolloEndpoint, Options } from "./index";
 //> Types
-// Contains the type declaration for apollo results
+// Contains the type declarations for Apollo results
 import { ApolloResult } from "./index";
 //#endregion
 
@@ -40,6 +40,8 @@ class Apollo implements ApolloEndpoint {
   desc: string = "A endpoint used for APIv4 requests";
 
   /**
+   * Initializes a Apollo client.
+   *
    * @constructor
    * @author Nico Schett <contact@schett.net>
    * @param uri A uri of a graphql endpoint
@@ -80,27 +82,6 @@ class Apollo implements ApolloEndpoint {
     } catch {
       //#ERROR
       throw new Error("An error occurred while initializing the headers!");
-    }
-  }
-  //#LEGACY
-  /** @deprecated Will be removed in the upcoming release */
-  async send(
-    type: string,
-    data: DocumentNode,
-    variables?: object,
-    headers?: object
-  ) {
-    if (type === "query") {
-      return this.sendQuery(data, variables, headers);
-    } else if (type === "mutation") {
-      return this.sendMutation(data, variables, headers);
-    } else {
-      console.warn(
-        "No query type specified! Please re-check." +
-          "Selecting type 'query' as default"
-      );
-
-      return this.sendQuery(data, variables, headers);
     }
   }
 

@@ -3,7 +3,7 @@
 // Contains the SNEK session
 import { SnekSession } from "../../../session/sessions";
 //> Types
-// Contains the type declaration for apollo results
+// Contains the type declarations for Apollo results
 import { ApolloResult } from "./index";
 //#endregion
 
@@ -11,6 +11,8 @@ import { ApolloResult } from "./index";
 /** @class A set of session aware tasks */
 class TaskError {
   /**
+   * Initializes session aware Tasks.
+   *
    * @constructor
    * @author Nico Schett <contact@schett.net>
    * @param {SnekSession} session A session for the task

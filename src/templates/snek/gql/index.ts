@@ -4,7 +4,7 @@ import { SnekGqlQuery } from "./queries/index";
 //> Mutations
 import { SnekGqlMutation } from "./mutations/index";
 //> Types
-// Contains the type declaration for apollo results
+// Contains the type declarations for Apollo results
 import { ApolloResult } from "../../../endpoints/index";
 //#endregion
 

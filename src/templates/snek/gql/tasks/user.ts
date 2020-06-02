@@ -3,7 +3,7 @@
 // Contains the SNEK parent task
 import SnekTasks from "./index";
 //> Types
-// Contains the type declaration for apollo results
+// Contains the type declarations for Apollo results
 import { ApolloResult } from "./index";
 //#endregion
 

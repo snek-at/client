@@ -3,7 +3,7 @@
 // Contains the SNEK parent task
 import SnekTasks from "./index";
 //> Types
-// Contains the type declaration for apollo results
+// Contains the type declarations for Apollo results
 import { ApolloResult } from "./index";
 //#endregion
 
@@ -31,6 +31,7 @@ interface AllPageUrlData {
 /** @class A set of session aware tasks */
 class SnekGqlGeneralTasks {
   /**
+   * Initializes SnekGqlGeneral tasks.
    * @constructor
    * @author Nico Schett <contact@schett.net>
    * @param {string} parent The parent task
@@ -48,7 +49,7 @@ class SnekGqlGeneralTasks {
       "query",
       this.parent.template.queries.general.gitlabServer,
       {
-        token: await this.parent.session.upToDateToken(),
+        token: await this.parent.session.upToDateToken()
       }
     );
 
@@ -66,7 +67,7 @@ class SnekGqlGeneralTasks {
       "query",
       this.parent.template.queries.general.allPageUrls,
       {
-        token: await this.parent.session.upToDateToken(),
+        token: await this.parent.session.upToDateToken()
       }
     );
 

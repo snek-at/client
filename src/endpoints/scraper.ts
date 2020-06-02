@@ -16,6 +16,8 @@ class Scraper implements ScraperEndpoint {
   proxy: string = "https://cors.snek.at/";
 
   /**
+   * Initializes a Scraper.
+   *
    * @constructor
    * @author Nico Schett <contact@schett.net>
    * @param root Root url of endpoint. Specify it like "https://foo.bar".

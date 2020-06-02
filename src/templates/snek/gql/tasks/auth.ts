@@ -6,7 +6,7 @@ import SnekTasks from "./index";
 // Contains the user interface for authentication
 import { User } from "../../../../session";
 //> Types
-// Contains the type declaration for apollo results
+// Contains the type declarations for Apollo results
 import { ApolloResult } from "./index";
 //#endregion
 
@@ -49,6 +49,8 @@ interface RevokeData {
 /** @class A set of session aware tasks */
 class SnekGqlAuthTasks {
   /**
+   * Initializes session aware SnekGqlAuth Task.
+   *
    * @constructor
    * @author Nico Schett <contact@schett.net>
    * @param {string} session A session for the tasks

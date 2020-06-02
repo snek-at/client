@@ -30,6 +30,8 @@ import { User } from "./index";
 /** @class A Github SubSession */
 class GithubSession extends Session {
   /**
+   * Initializes a Github session.
+   *
    * @constructor
    * @author Nico Schett <contact@schett.net>
    * @param {string} sId A session name
@@ -68,6 +70,8 @@ class SnekSession extends Session {
   public tasks: SnekTasks;
 
   /**
+   * Initializes a SNEK session.
+   *
    * @constructor
    * @author Nico Schett <contact@schett.net>
    * @param {string} sId A session name

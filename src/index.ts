@@ -19,8 +19,8 @@ import { IMainTemplate } from "./templates/index";
 
 //#region > Interfaces
 /**
- * @interface Endpoint defines the structure of object a endpoint requirers to
- *                     initialize.
+ * @interface Endpoint Endpoint defines the structure of object which an
+ * endpoint requires to.
  */
 interface Endpoint {
   /**
@@ -71,6 +71,8 @@ class SnekClient extends Client {
   session: SnekSession;
 
   /**
+   * Initializes a SNEK client.
+   *
    * @constructor
    * @author Nico Schett <contact@schett.net>
    * @param url The base URL the SnekClient should be working on.
@@ -102,6 +104,8 @@ class GithubClient extends Client {
   session: GithubSession;
 
   /**
+   * Initializes a Github client.
+   *
    * @constructor
    * @author Nico Schett <contact@schett.net>
    * @param url The base URL the GithubClient should be working on.
@@ -131,6 +135,8 @@ class WebClient extends Client {
   public scraper: ScraperEndpoint;
 
   /**
+   * Initializes a Web client.
+   *
    * @constructor
    * @author Nico Schett <contact@schett.net>
    * @param url The base URL the WebClient should be working on

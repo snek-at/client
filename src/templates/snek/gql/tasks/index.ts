@@ -20,7 +20,7 @@ import { TaskError } from "../errors";
 // Contains the snek template
 import { SnekGqlTemplate } from "../index";
 //> Types
-// Contains the type declaration for apollo results
+// Contains the type declarations for Apollo results
 import { ApolloResult } from "../index";
 //#endregion
 
@@ -33,6 +33,8 @@ class SnekTasks extends TaskError {
   public user!: SnekGqlUserTasks;
 
   /**
+   * Initializes a SnekSession.
+   * 
    * @constructor
    * @author Nico Schett <contact@schett.net>
    * @param {string} session A session to initialize all corresponding tasks
