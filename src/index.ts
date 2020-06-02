@@ -20,7 +20,7 @@ import { IMainTemplate } from "./templates/index";
 //#region > Interfaces
 /**
  * @interface Endpoint Endpoint defines the structure of object which an
- * endpoint requires to.
+ *                     endpoint requires to.
  */
 interface Endpoint {
   /**
