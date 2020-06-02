@@ -25,16 +25,15 @@ The client unifies the way external data is handled and unites it under a clean,
 
 ## Table of contents
 
-- [Table of contents](#table-of-contents)
-- [Quick start](#quick-start)
-- [Status](#status)
-- [Bugs and feature requests](#bugs-and-feature-requests)
-- [Contributing](#contributing)
-- [Community](#community)
-- [Versioning](#versioning)
-- [Creators](#creators)
-- [Thanks](#thanks)
-- [Copyright and license](#copyright-and-license)
+-   [Table of contents](#table-of-contents)
+-   [Quick start](#quick-start)
+-   [Status](#status)
+-   [Bugs and feature requests](#bugs-and-feature-requests)
+-   [Contributing](#contributing)
+-   [Versioning](#versioning)
+-   [Contributers](#contributers)
+-   [Thanks](#thanks)
+-   [Copyright and license](#copyright-and-license)
 
 ## [](#quick-start)Quick start
 
@@ -61,8 +60,8 @@ Please read through our
 [contributing guidelines](https://github.com/snek-at/client/blob/master/CONTRIBUTING.md). Included are
 directions for opening issues, coding standards, and notes on development.
 
-All HTML and CSS should conform to the [Code Guide](https://github.com/mdo/code-guide), maintained by
-[Mark Otto](https://github.com/mdo).
+All code should conform to the [Code Guide](https://github.com/snek-at/tonic/blob/master/STYLE_GUIDE.md), maintained by
+[SNEK](https://github.com/snek-at).
 
 ## [](#versioning)Versioning
 
@@ -72,12 +71,25 @@ For transparency into our release cycle and in striving to maintain backward com
 maintained under [the Semantic Versioning guidelines](https://semver.org/). Sometimes we screw up, but we adhere to
 those rules whenever possible.
 
-## [](#creators)Creators
+## [](#contributers)Contributers
 
 **Schett Nico**
 
 -   <https://twitter.com/sxct4>
 -   <https://github.com/schettn>
+
+**Pinterics David**
+
+-   <https://github.com/pinterid>
+-   <https://twitter.com/Deff_IT>
+
+**Kleber Florian**
+
+-   <https://github.com/kleberbaum>
+
+**Aichner Christian**
+
+-   <https://github.com/aichnerc>
 
 ## [](#thanks)Thanks
 
