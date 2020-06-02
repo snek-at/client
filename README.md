@@ -89,7 +89,9 @@ those rules whenever possible.
 
 **Aichner Christian**
 
--   <https://github.com/aichnerc>
+-   <https://twitter.com/realaichner>
+-   <https://www.facebook.com/aichner.christian>
+-   <https://github.com/Aichnerc>
 
 ## [](#thanks)Thanks
 
