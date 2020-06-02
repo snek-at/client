@@ -64,12 +64,6 @@ directions for opening issues, coding standards, and notes on development.
 All HTML and CSS should conform to the [Code Guide](https://github.com/mdo/code-guide), maintained by
 [Mark Otto](https://github.com/mdo).
 
-## [](#community)Community
-
-Get updates on our development and chat/talk with the project maintainers and community members.
-
-[![Discord][discord-badge]][discord]
-
 ## [](#versioning)Versioning
 
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/snek-at/client)
@@ -96,7 +90,3 @@ to [contribute to our project](#contributing).
 
 SPDX-License-Identifier: (EUPL-1.2)
 Copyright © Simon Prast
-
-[discord-badge]: https://img.shields.io/badge/Discord-Join%20chat%20%E2%86%92-738bd7.svg
-
-[discord]: https://discord.gg/dnxUJmk
