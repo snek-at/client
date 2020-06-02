@@ -9,7 +9,7 @@ import { ScraperEndpoint, Options } from "./index";
 class Scraper implements ScraperEndpoint {
   //> Fields
   headers: object = {
-    accept: "application/json, text/plain, */*"
+    accept: "application/json, text/plain, */*",
   };
 
   desc: string = "A endpoint to fetch page DOM";
@@ -50,14 +50,14 @@ class Scraper implements ScraperEndpoint {
     return fetch(this.url + path, {
       headers: {
         ...this.headers,
-        "x-requested-with": "XMLHttpRequest"
-      }
-    }).then(async response => {
+        "x-requested-with": "XMLHttpRequest",
+      },
+    }).then(async (response) => {
       if (!response.ok) {
         throw new Error(response.statusText);
       }
 
-      return response.json().then(data => data as T);
+      return response.json().then((data) => data as T);
     });
   }
 
@@ -71,10 +71,10 @@ class Scraper implements ScraperEndpoint {
   async getDom(path: string): Promise<Document> {
     return fetch(this.url + path, {
       headers: {
-        ...this.headers
-      }
+        ...this.headers,
+      },
     })
-      .then(response => {
+      .then((response) => {
         if (!response.ok) {
           //#ERROR
           throw new Error(response.statusText);
@@ -82,7 +82,7 @@ class Scraper implements ScraperEndpoint {
 
         return response.text();
       })
-      .then(text => {
+      .then((text) => {
         return new DOMParser().parseFromString(text, "text/html");
       });
   }
@@ -112,15 +112,15 @@ class Scraper implements ScraperEndpoint {
       method: "POST",
       body: data,
       headers: {
-        ...this.headers
-      }
-    }).then(async response => {
+        ...this.headers,
+      },
+    }).then(async (response) => {
       if (!response.ok) {
         //#ERROR
         throw new Error(response.statusText);
       }
 
-      return response.json().then(data => data as T);
+      return response.json().then((data) => data as T);
     });
   }
 }

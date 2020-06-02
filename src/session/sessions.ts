@@ -56,7 +56,7 @@ class GithubSession extends Session {
    */
   async send(token: string, data: DocumentNode, variables?: object) {
     let headers = {
-      authorization: token
+      authorization: token,
     };
 
     return this.ep.sendQuery(data, variables, headers);
@@ -124,7 +124,7 @@ class SnekSession extends Session {
     if (value) {
       Cookies.set(this.tokenName, value ? value : "", {
         /* Expire time is set to 4 minutes */
-        expires: 4 / 1440
+        expires: 4 / 1440,
       });
     } else {
       Cookies.remove(this.tokenName);
@@ -143,7 +143,7 @@ class SnekSession extends Session {
     if (value) {
       Cookies.set(this.refreshTokenName, value, {
         /* Expire time is set to 6 days */
-        expires: 6
+        expires: 6,
       });
     } else {
       Cookies.remove(this.refreshTokenName);
@@ -178,7 +178,7 @@ class SnekSession extends Session {
    */
   async send(token: string, data: DocumentNode, variables?: object) {
     let headers = {
-      authorization: token
+      authorization: token,
     };
 
     return this.ep.sendQuery(data, variables, headers);
@@ -271,7 +271,7 @@ class SnekSession extends Session {
     return this.tasks.run<T>(type, data, {
       ...variables,
       token: this.token,
-      refreshToken: this.refreshToken
+      refreshToken: this.refreshToken,
     });
   }
 }

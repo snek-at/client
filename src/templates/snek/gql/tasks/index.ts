@@ -34,7 +34,7 @@ class SnekTasks extends TaskError {
 
   /**
    * Initializes a SnekSession.
-   * 
+   *
    * @constructor
    * @author Nico Schett <contact@schett.net>
    * @param {string} session A session to initialize all corresponding tasks

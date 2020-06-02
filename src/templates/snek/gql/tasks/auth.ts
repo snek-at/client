@@ -69,7 +69,7 @@ class SnekGqlAuthTasks {
       this.parent.template.mutations.jwtAuth.auth,
       {
         username: "cisco",
-        password: "ciscocisco"
+        password: "ciscocisco",
       }
     );
 
@@ -89,7 +89,7 @@ class SnekGqlAuthTasks {
       this.parent.template.mutations.jwtAuth.auth,
       {
         username: user.username,
-        password: user.password
+        password: user.password,
       }
     );
 
@@ -107,7 +107,7 @@ class SnekGqlAuthTasks {
       "mutation",
       this.parent.template.mutations.jwtAuth.refresh,
       {
-        refreshToken: this.parent.session.refreshToken
+        refreshToken: this.parent.session.refreshToken,
       }
     );
 
@@ -125,7 +125,7 @@ class SnekGqlAuthTasks {
       "mutation",
       this.parent.template.mutations.jwtAuth.revoke,
       {
-        refreshToken: this.parent.session.refreshToken
+        refreshToken: this.parent.session.refreshToken,
       }
     );
 

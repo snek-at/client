@@ -49,7 +49,7 @@ class SnekGqlGeneralTasks {
       "query",
       this.parent.template.queries.general.gitlabServer,
       {
-        token: await this.parent.session.upToDateToken()
+        token: await this.parent.session.upToDateToken(),
       }
     );
 
@@ -67,7 +67,7 @@ class SnekGqlGeneralTasks {
       "query",
       this.parent.template.queries.general.allPageUrls,
       {
-        token: await this.parent.session.upToDateToken()
+        token: await this.parent.session.upToDateToken(),
       }
     );
 

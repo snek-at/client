@@ -27,7 +27,7 @@ class Session implements ISession {
 
   /**
    * Initializes a base Session.
-   * 
+   *
    * @constructor
    * @author Nico Schett <contact@schett.net>
    * @param {string} sId Session identifier

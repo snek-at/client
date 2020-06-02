@@ -13,7 +13,7 @@ import { HttpLink } from "apollo-link-http";
 import {
   InMemoryCache,
   IntrospectionFragmentMatcher,
-  NormalizedCacheObject
+  NormalizedCacheObject,
 } from "apollo-cache-inmemory";
 //#PACKAGE "graphql"
 //## npm install "graphql"@14.6.0
@@ -52,9 +52,9 @@ class Apollo implements ApolloEndpoint {
     const fragmentMatcher = new IntrospectionFragmentMatcher({
       introspectionQueryResultData: {
         __schema: {
-          types: []
-        }
-      }
+          types: [],
+        },
+      },
     });
 
     try {
@@ -67,7 +67,7 @@ class Apollo implements ApolloEndpoint {
     try {
       this.link = new HttpLink({
         uri,
-        headers: options.headers
+        headers: options.headers,
       });
     } catch {
       //#ERROR
@@ -77,7 +77,7 @@ class Apollo implements ApolloEndpoint {
     try {
       this.client = new ApolloClient({
         cache: this.cache,
-        link: this.link
+        link: this.link,
       });
     } catch {
       //#ERROR
@@ -105,8 +105,8 @@ class Apollo implements ApolloEndpoint {
       errorPolicy: "all",
       variables,
       context: {
-        headers: { ...this.headers, ...headers }
-      }
+        headers: { ...this.headers, ...headers },
+      },
     });
   }
 
@@ -130,8 +130,8 @@ class Apollo implements ApolloEndpoint {
       errorPolicy: "all",
       variables,
       context: {
-        headers: { ...this.headers, ...headers }
-      }
+        headers: { ...this.headers, ...headers },
+      },
     });
   }
 }
