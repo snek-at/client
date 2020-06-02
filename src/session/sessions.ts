@@ -54,7 +54,7 @@ class GithubSession extends Session {
    */
   async send(token: string, data: DocumentNode, variables?: object) {
     let headers = {
-      authorization: token,
+      authorization: token
     };
 
     return this.ep.sendQuery(data, variables, headers);
@@ -120,7 +120,7 @@ class SnekSession extends Session {
     if (value) {
       Cookies.set(this.tokenName, value ? value : "", {
         /* Expire time is set to 4 minutes */
-        expires: 4 / 1440,
+        expires: 4 / 1440
       });
     } else {
       Cookies.remove(this.tokenName);
@@ -139,7 +139,7 @@ class SnekSession extends Session {
     if (value) {
       Cookies.set(this.refreshTokenName, value, {
         /* Expire time is set to 6 days */
-        expires: 6,
+        expires: 6
       });
     } else {
       Cookies.remove(this.refreshTokenName);
@@ -148,7 +148,7 @@ class SnekSession extends Session {
 
   //> Methods
   /**
-   * Get a valid session token. If there is not the session will be refreshed.
+   * Get a valid session token. If there is none the session will be refreshed.
    *
    * @returns {Promise<string | undefined>} The session token if set
    */
@@ -174,7 +174,7 @@ class SnekSession extends Session {
    */
   async send(token: string, data: DocumentNode, variables?: object) {
     let headers = {
-      authorization: token,
+      authorization: token
     };
 
     return this.ep.sendQuery(data, variables, headers);
@@ -217,9 +217,8 @@ class SnekSession extends Session {
   /**
    * Refreshes a session based on its history.
    *
-   * @description When there is no token the refresh task is called. When there
-   *              is no token and refresh token session begin as equivalent to
-   *              an anonymous login is called.
+   * @description If there is no token the refresh token is used to get a new one.
+   *              If none of both is provided begin a new session as an anonymous user.
    */
   async refresh() {
     if (!this.token) {
@@ -238,7 +237,7 @@ class SnekSession extends Session {
   /**
    * Ends a session.
    *
-   * @description The token and refresh token are revoked and deleted
+   * @description The token and refresh token get revoked and deleted
    */
   async end() {
     /* Revoke token if it is set */
@@ -268,7 +267,7 @@ class SnekSession extends Session {
     return this.tasks.run<T>(type, data, {
       ...variables,
       token: this.token,
-      refreshToken: this.refreshToken,
+      refreshToken: this.refreshToken
     });
   }
 }

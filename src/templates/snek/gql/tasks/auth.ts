@@ -67,7 +67,7 @@ class SnekGqlAuthTasks {
       this.parent.template.mutations.jwtAuth.auth,
       {
         username: "cisco",
-        password: "ciscocisco",
+        password: "ciscocisco"
       }
     );
 
@@ -78,8 +78,8 @@ class SnekGqlAuthTasks {
    * User login.
    *
    * @param {string} user A User defined by username and password
-   * @description Authenticates a real user to obtain a JWT
    * @returns {Promise<ApolloResult<AuthData>>} Authentication data
+   * @description Authenticates a real user to obtain a JWT
    */
   async nonanon(user: User): Promise<ApolloResult<AuthData>> {
     const response = await this.parent.run<AuthData>(
@@ -87,7 +87,7 @@ class SnekGqlAuthTasks {
       this.parent.template.mutations.jwtAuth.auth,
       {
         username: user.username,
-        password: user.password,
+        password: user.password
       }
     );
 
@@ -105,7 +105,7 @@ class SnekGqlAuthTasks {
       "mutation",
       this.parent.template.mutations.jwtAuth.refresh,
       {
-        refreshToken: this.parent.session.refreshToken,
+        refreshToken: this.parent.session.refreshToken
       }
     );
 
@@ -123,7 +123,7 @@ class SnekGqlAuthTasks {
       "mutation",
       this.parent.template.mutations.jwtAuth.revoke,
       {
-        refreshToken: this.parent.session.refreshToken,
+        refreshToken: this.parent.session.refreshToken
       }
     );
 

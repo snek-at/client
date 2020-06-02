@@ -75,7 +75,7 @@ class SnekGqlUserTasks {
       this.parent.template.mutations.user.registration,
       {
         token: await this.parent.session.upToDateToken(),
-        values,
+        values
       }
     );
 
@@ -94,7 +94,7 @@ class SnekGqlUserTasks {
       this.parent.template.mutations.user.cache,
       {
         token: await this.parent.session.upToDateToken(),
-        platformData,
+        platformData
       }
     );
 
@@ -105,7 +105,7 @@ class SnekGqlUserTasks {
    * Get profile.
    *
    * @param {string} url A url of a page
-   * @returns {Promise<ApolloResult<ProfileData>>} The page profile of a user
+   * @returns {Promise<ApolloResult<ProfileData>>} The profile page of a user
    */
   async profile(url: string): Promise<ApolloResult<ProfileData>> {
     const response = await this.parent.run<ProfileData>(
@@ -113,7 +113,7 @@ class SnekGqlUserTasks {
       this.parent.template.queries.user.profile,
       {
         url,
-        token: await this.parent.session.upToDateToken(),
+        token: await this.parent.session.upToDateToken()
       }
     );
 
@@ -130,7 +130,7 @@ class SnekGqlUserTasks {
       "query",
       this.parent.template.queries.user.whoami,
       {
-        token: await this.parent.session.upToDateToken(),
+        token: await this.parent.session.upToDateToken()
       }
     );
 

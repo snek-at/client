@@ -4,9 +4,9 @@
 //## npm install "graphql"@14.6.0
 // Contains the interface for gql queries, mutations and subscriptions
 import { DocumentNode } from "graphql";
-//#endregion
 import { FetchResult } from "apollo-link";
 import { ApolloQueryResult } from "apollo-client";
+//#endregion
 
 //#region > Types
 /** @type ApolloResult defines the types of a mutation and query response  */
@@ -19,7 +19,7 @@ type ApolloResult<T> =
 /** @interface Endpoint defines the basic endpoint structure */
 interface Endpoint {
   /**
-   * Hedaers: A object which contains the headers as key value pair.
+   * Headers: A object which contains the headers as key value pair.
    */
   headers: {};
   /**

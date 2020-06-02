@@ -152,3 +152,8 @@ class WebClient extends Client {
 //#region > Exports
 export { SnekClient, GithubClient, WebClient };
 //#endregion
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © Simon Prast
+ */

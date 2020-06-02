@@ -55,3 +55,8 @@ class TaskError {
 //#region > Exports
 export { TaskError };
 //#endregion
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © Simon Prast
+ */

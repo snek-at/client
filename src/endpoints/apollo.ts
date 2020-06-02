@@ -13,12 +13,13 @@ import { HttpLink } from "apollo-link-http";
 import {
   InMemoryCache,
   IntrospectionFragmentMatcher,
-  NormalizedCacheObject,
+  NormalizedCacheObject
 } from "apollo-cache-inmemory";
 //#PACKAGE "graphql"
 //## npm install "graphql"@14.6.0
 // Contains the interface for gql queries, mutations and subscriptions
 import { DocumentNode } from "graphql";
+
 //> Interfaces
 // Contains the interface for the Apollo endpoint and the Apollo options
 import { ApolloEndpoint, Options } from "./index";
@@ -49,32 +50,35 @@ class Apollo implements ApolloEndpoint {
     const fragmentMatcher = new IntrospectionFragmentMatcher({
       introspectionQueryResultData: {
         __schema: {
-          types: [],
-        },
-      },
+          types: []
+        }
+      }
     });
 
     try {
       this.cache = new InMemoryCache({ fragmentMatcher });
     } catch {
+      //#ERROR
       throw new Error("An error occurred while initializing the cache!");
     }
 
     try {
       this.link = new HttpLink({
         uri,
-        headers: options.headers,
+        headers: options.headers
       });
     } catch {
+      //#ERROR
       throw new Error("An error occurred while initializing the API link!");
     }
 
     try {
       this.client = new ApolloClient({
         cache: this.cache,
-        link: this.link,
+        link: this.link
       });
     } catch {
+      //#ERROR
       throw new Error("An error occurred while initializing the headers!");
     }
   }
@@ -120,8 +124,8 @@ class Apollo implements ApolloEndpoint {
       errorPolicy: "all",
       variables,
       context: {
-        headers: { ...this.headers, ...headers },
-      },
+        headers: { ...this.headers, ...headers }
+      }
     });
   }
 
@@ -145,8 +149,8 @@ class Apollo implements ApolloEndpoint {
       errorPolicy: "all",
       variables,
       context: {
-        headers: { ...this.headers, ...headers },
-      },
+        headers: { ...this.headers, ...headers }
+      }
     });
   }
 }
