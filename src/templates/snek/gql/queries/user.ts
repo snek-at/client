@@ -9,7 +9,6 @@ import gql from "graphql-tag";
 /**
  * Whoami.
  *
- * @deprecated since 1.0 use jwtAuth instead
  * @param {string} token A users JWT
  * @returns {string} A username
  * @description A query to fetch the username of the according token
