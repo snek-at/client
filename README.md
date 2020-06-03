@@ -69,7 +69,7 @@ All code should conform to the [Code Guide](https://github.com/snek-at/tonic/blo
 
 For reasons of transparency concering our release cycle and in striving to maintain backward compatibility, this
 repository is maintained under [the Semantic Versioning guidelines](https://semver.org/). Some minor screw ups
-those rules whenever possible.
+aside, we try to adhere to those rules whenever possible.
 
 ## [](#contributers)Contributers
 
