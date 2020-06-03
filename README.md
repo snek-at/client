@@ -48,7 +48,7 @@ Several quick start options are available:
 ## [](#bug-and-feature-requests)Bugs and feature requests
 
 Do you have a bug or a feature request? Please first search for existing and closed issues. If your problem or idea has
-addressed yet, [please open a new issue](https://github.com/snek-at/client/issues/new/choose).
+not been addressed yet, [please open a new issue](https://github.com/snek-at/client/issues/new/choose).
 
 ## [](#contributing)Contributing
 
