@@ -36,7 +36,6 @@ The client unifies the way external data is handled and unites it under a clean,
 
 ## [](#quick-start)Quick start
 
-
 -   Clone the repo: `https://github.com/snek-at/client.git`
 
 ## [](#status)Status
