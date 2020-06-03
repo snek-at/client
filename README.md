@@ -68,7 +68,7 @@ All code should conform to the [Code Guide](https://github.com/snek-at/tonic/blo
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/snek-at/client)
 
 For reasons of transparency concering our release cycle and in striving to maintain backward compatibility, this
-maintained under [the Semantic Versioning guidelines](https://semver.org/). Sometimes we screw up, but we adhere to
+repository is maintained under [the Semantic Versioning guidelines](https://semver.org/). Some minor screw ups
 those rules whenever possible.
 
 ## [](#contributers)Contributers
