@@ -84,6 +84,7 @@ aside, we try to adhere to those rules whenever possible.
 
 **Kleber Florian**
 
+-   <https://twitter.com/kleberbaum>
 -   <https://github.com/kleberbaum>
 
 **Aichner Christian**
