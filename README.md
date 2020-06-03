@@ -25,7 +25,6 @@ The client unifies the way external data is handled and unites it under a clean,
 
 ## Table of contents
 
--   [Table of contents](#table-of-contents)
 -   [Quick start](#quick-start)
 -   [Status](#status)
 -   [Bugs and feature requests](#bugs-and-feature-requests)
