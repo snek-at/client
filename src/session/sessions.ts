@@ -21,7 +21,7 @@ import SnekTemplate from "../templates/snek/index";
 import SnekTasks from "../templates/snek/gql/tasks/index";
 //> Interfaces
 // Contains the interface for the apollo endpoint
-import { ApolloEndpoint } from "../../src/endpoints/index";
+import { ApolloEndpoint } from "../endpoints/index";
 // Contains basic session interfaces
 import { User } from "./index";
 //#endregion
