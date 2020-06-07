@@ -9,7 +9,8 @@
     "build": "npx tsc"
   },
   "files": [
-    "lib"
+    "lib",
+    "LICENSES"
   ],
   "repository": {
     "type": "git",
