@@ -103,6 +103,7 @@ class Apollo implements ApolloEndpoint {
     return this.client.query<T>({
       query: data,
       errorPolicy: "all",
+      fetchPolicy: "network-only",
       variables,
       context: {
         headers: { ...this.headers, ...headers },
