@@ -31,15 +31,17 @@ interface CacheData {
  *                        data.
  */
 interface ProfileData {
-  username: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  verified: string;
-  platformData: string;
-  sources: string;
-  bids: string;
-  tids: string;
+  profile: {
+    username: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    verified: string;
+    platformData: string;
+    sources: string;
+    bids: string;
+    tids: string;
+  };
 }
 
 /**
