@@ -179,7 +179,7 @@ class CustomSession extends CookieSession {
 class CustomClient extends Client {
   gql: ApolloEndpoint;
   template: IMainTemplate;
-  session: SnekSession;
+  session: CustomSession;
 
   /**
    * Initializes a SNEK client.
@@ -255,4 +255,3 @@ We do not have any external contributors yet, but if you want your name to be he
 
 SPDX-License-Identifier: (EUPL-1.2)
 Copyright © 2019-2020 Simon Prast
-Copyright © Simon Prast
