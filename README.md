@@ -175,7 +175,7 @@ class CustomSession extends CookieSession {
 }
 
 
-/* Custom Client*/
+/* Custom Client */
 class CustomClient extends Client {
   gql: ApolloEndpoint;
   template: IMainTemplate;
