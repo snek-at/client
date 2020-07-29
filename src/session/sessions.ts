@@ -63,31 +63,19 @@ class GithubSession extends Session {
   }
 }
 
-/** @class A SNEK SubSession */
-class SnekSession extends Session {
+/** @class CookieSession extends token session handling with cookies */
+class CookieSession extends Session {
   refreshTokenName: string = "refresh";
-  /* Define tasks */
-  public tasks: SnekTasks;
 
   /**
-   * Initializes a SNEK session.
+   * Initializes a cookie session.
    *
    * @constructor
    * @author Nico Schett <contact@schett.net>
    * @param {string} sId A session name
-   * @param {Endpoint} ep A endpoint
-   * @param {SnekTemplate} template A template set
    */
-  constructor(
-    sId: string,
-    public ep: ApolloEndpoint,
-    public template: SnekTemplate
-  ) {
+  constructor(sId: string) {
     super(sId);
-
-    this.tokenName = sId + "-" + this.tokenName;
-    this.refreshTokenName = sId + "-" + this.refreshTokenName;
-    this.tasks = new SnekTasks(this);
   }
 
   //> Getter
@@ -148,6 +136,33 @@ class SnekSession extends Session {
     } else {
       Cookies.remove(this.refreshTokenName);
     }
+  }
+}
+
+/** @class A SNEK SubSession */
+class SnekSession extends CookieSession {
+  /* Define tasks */
+  public tasks: SnekTasks;
+
+  /**
+   * Initializes a SNEK session.
+   *
+   * @constructor
+   * @author Nico Schett <contact@schett.net>
+   * @param {string} sId A session name
+   * @param {Endpoint} ep A endpoint
+   * @param {SnekTemplate} template A template set
+   */
+  constructor(
+    sId: string,
+    public ep: ApolloEndpoint,
+    public template: SnekTemplate
+  ) {
+    super(sId);
+
+    this.tokenName = sId + "-" + this.tokenName;
+    this.refreshTokenName = sId + "-" + this.refreshTokenName;
+    this.tasks = new SnekTasks(this);
   }
 
   //> Methods
