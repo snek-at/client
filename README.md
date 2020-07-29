@@ -25,80 +25,233 @@ The client unifies the way external data is handled and unites it under a clean,
 
 ## Table of contents
 
--   [Quick start](#quick-start)
--   [Status](#status)
--   [Bugs and feature requests](#bugs-and-feature-requests)
--   [Contributing](#contributing)
--   [Versioning](#versioning)
--   [Contributers](#contributers)
--   [Thanks](#thanks)
--   [Copyright and license](#copyright-and-license)
+- [Table of contents](#table-of-contents)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Set up](#set-up)
+  - [Sessions](#sessions)
+  - [Tasks](#tasks)
+  - [Custom Tasks](#custom-tasks)
+- [Extend Project (Add new specific session with template set)](#extend-project-add-new-specific-session-with-template-set)
+- [Contributing](#contributing)
+- [Bugs and feature requests](#bugs-and-feature-requests)
+- [Versioning](#versioning)
+- [Creators](#creators)
+- [Thanks](#thanks)
+- [Copyright and license](#copyright-and-license)
 
-## [](#quick-start)Quick start
+## [](#installation)Installation
+The system can be installed using the ```npm install``` command:
+```bash
+$ npm install snek-client
+```
 
--   Clone the repo: `https://github.com/snek-at/client.git`
+## [](#usage)Usage
+### Set up
+```typescript
+import SnekClient from "snek-client";
 
-## [](#status)Status
+const headers = {}
+const type = "testclient"
 
-![Website](https://img.shields.io/website/https/snek.at?label=website)
+/* Init snekclient */
+const snekclient = new SnekClient(""https://engine.snek.at/api/graphiql", headers, type)
+```
+
+### Sessions
+Session are completely handled by the Intel. 
+```typescript
+/* 
+ * Starts the session for an anonymous user or maintains the session if
+ * a user is logged in.
+ */
+await snekclient.session.begin();
+
+/*
+ * Overrides an active session with a new session using the credential
+ * pair.
+ */
+await snekclient.session.begin({
+  username: "schettn",
+  password: "tschischkotschicko",
+});
+
+/* Ends the session */
+await snekclient.session.end();
+```
+### Tasks
+All tasks are session aware! Every task has the capability of token handling. Modifying a token is not suggested.
+```typescript
+/** Authorization Tasks */
+/* Login an anonymous user on the snek-engine */
+let userData =
+    await snekclient.session.tasks.auth.anon();
+
+/* Login a real user on the snek-engine */
+let userData =
+    await snekclient.session.tasks.auth.nonanon();
+
+/* Refresh the user tokens on the snek-engine */
+let refreshState =
+    await snekclient.session.tasks.auth.refresh();
+
+/* Revoke the user tokens on the snek-engine */
+let revokeState =
+    await snekclient.session.tasks.auth.revoke();
+
+
+/** General Tasks */
+/* Get all profile pages from snek-engine */
+let pagesData =
+    await snekclient.session.tasks.general.allPageUrls();
+
+/* Get all GitLab servers from the snek-engine */
+let gitlabServerData =
+    await snekclient.session.tasks.general.gitlabServer();
+
+/** User Tasks */
+/* Get all GitLab servers from the snek-engine */
+let cachePageData =
+    await snekclient.session.tasks.user.cache();
+
+/* Get the profile page data from the snek-engine */
+let profilePageData =
+    await snekclient.session.tasks.user.profile();
+
+/* Get the registration data from snek-engine */
+let registrationData =
+    await snekclient.session.tasks.user.registration();
+
+/* Get the whoami data from snek-engine */
+let whoamiData =
+    await snekclient.session.tasks.user.whoami();
+```
+
+### Custom Tasks
+```typescript
+/* 
+ * Performs a custom session aware task. Authorization is handled via the session.
+ */
+await snekclient.session.customTask<{ data: { foo: string; bar: string } }>(
+      "query",
+      documentNode,
+      variables
+    );
+```
+
+## Extend Project (Add new specific session with template set)
+Ref: github.com/snek-at/client/blob/master/src/session/sessions.ts
+```typescript
+//> Tasks
+// Contains SNEK tasks
+import CustomTasks from "../templates/customsnek/gql/tasks/index";
+
+class CustomSession extends CookieSession {
+  public tasks = CustomTasks;
+
+  /**
+   * Initializes a custom session.
+   *
+   * @constructor
+   * @extends CookieSession Tokens are handled via cookies
+   * @author Nico Schett <contact@schett.net>
+   * @param {string} sId A session name
+   * @param {Endpoint} ep A endpoint
+   * @param {SnekTemplate} template A template set
+   */
+  constructor(
+    sId: string,
+    public ep: ApolloEndpoint,
+    public template: SnekTemplate
+  ) {
+    super(sId);
+
+    this.tokenName = sId + "-" + this.tokenName;
+    this.refreshTokenName = sId + "-" + this.refreshTokenName;
+    this.tasks = new CustomTasks(this);
+  }
+
+  //> Methods
+}
+
+
+/* Custom Client */
+class CustomClient extends Client {
+  gql: ApolloEndpoint;
+  template: IMainTemplate;
+  session: CustomSession;
+
+  /**
+   * Initializes a SNEK client.
+   *
+   * @constructor
+   * @author Nico Schett <contact@schett.net>
+   * @param url The base URL the SnekClient should be working on.
+   *            Default: "https://engine.snek.at/api/graphiql".
+   * @param headers A object containing various request headers
+   * @param type A type description to differ between multiple instances
+   */
+  constructor(
+    url: string = "https://engine.snek.at/api/graphiql",
+    headers: object = {},
+    type: string = "graphql"
+  ) {
+    super({ type, url, headers });
+
+    this.template = new MainTemplate();
+    this.gql = new Apollo(url, { headers });
+    this.session = new CustomSession("snek", this.gql, this.template.snek);
+  }
+}
+```
+
+## [](#contributing)Contributing
+![GitHub last commit](https://img.shields.io/github/last-commit/snek-at/intel) ![GitHub issues](https://img.shields.io/github/issues-raw/snek-at/intel) ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/snek-at/intel?color=green)
+
+Please read through our [contributing guidelines](https://github.com/snek-at/front/blob/master/CONTRIBUTING.md). Included are directions for opening issues, coding standards, and notes on development.
+
+All code should conform to the [Code Guide](https://github.com/snek-at/tonic/blob/master/STYLE_GUIDE.md), maintained by [SNEK](https://github.com/snek-at).
 
 ## [](#bug-and-feature-requests)Bugs and feature requests
 
-Do you have a bug or a feature request? Please first search for existing and closed issues. If your problem or idea has
-not been addressed yet, [please open a new issue](https://github.com/snek-at/client/issues/new/choose).
-
-## [](#contributing)Contributing
-
-![GitHub last commit](https://img.shields.io/github/last-commit/snek-at/client)
-![GitHub issues](https://img.shields.io/github/issues-raw/snek-at/client)
-![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/snek-at/client?color=green)
-
-Please read through our
-[contributing guidelines](https://github.com/snek-at/client/blob/master/CONTRIBUTING.md). Included are
-directions for opening issues, coding standards, and notes on development.
-
-All code should conform to the [Code Guide](https://github.com/snek-at/tonic/blob/master/STYLE_GUIDE.md), maintained by
-[SNEK](https://github.com/snek-at).
+Do you have a bug or a feature request? Please first search for existing and closed issues. If your problem or idea has not been addressed yet, [please open a new issue](https://github.com/snek-at/package-template/issues/new/choose).
 
 ## [](#versioning)Versioning
+![GitHub package.json version](https://img.shields.io/github/package-json/v/snek-at/intel)
 
-![GitHub package.json version](https://img.shields.io/github/package-json/v/snek-at/client)
+For reasons of transparency concering our release cycle and in striving to maintain backward compatibility, this repository is maintained under [the Semantic Versioning guidelines](https://semver.org/). Some minor screw ups aside, we try to adhere to those rules whenever possible.
 
-For reasons of transparency concering our release cycle and in striving to maintain backward compatibility, this
-repository is maintained under [the Semantic Versioning guidelines](https://semver.org/). Some minor screw ups
-aside, we try to adhere to those rules whenever possible.
-
-## [](#contributers)Contributers
-
-**Schett Nico**
-
--   <https://twitter.com/sxct4>
--   <https://github.com/schettn>
-
-**Pinterics David**
-
--   <https://github.com/pinterid>
--   <https://twitter.com/Deff_IT>
-
-**Kleber Florian**
-
--   <https://twitter.com/kleberbaum>
--   <https://github.com/kleberbaum>
-
-**Aichner Christian**
-
--   <https://twitter.com/realaichner>
--   <https://www.facebook.com/aichner.christian>
--   <https://github.com/Aichnerc>
+## [](#creators)Creators
+<table border="0">
+	<tr>
+		<td>
+		<a href="https://github.com/schettn">
+			<img src="https://avatars.githubusercontent.com/schettn?s=100" alt="Avatar schettn">
+		</a>
+		</td>
+		<td>
+			<a href="https://github.com/pinterid">
+				<img src="https://avatars.githubusercontent.com/pinterid?s=100" alt="Avatar pinterid">
+			</a>
+		</td>	
+		<td>
+			<a href="https://github.com/kleberbaum">
+				<img src="https://avatars.githubusercontent.com/kleberbaum?s=100" alt="Avatar kleberbaum">
+			</a>
+		</td>
+	</tr>
+	<tr>
+		<td><a href="https://github.com/schettn">Nico Schett</a></td>
+		<td><a href="https://github.com/pinterid">David Pinterics</a></td>
+		<td><a href="https://github.com/kleberbaum">Florian Kleber</a></td>
+	</tr>
+</table>
 
 ## [](#thanks)Thanks
-
-We do not have any external contributors yet, but if you want your name to be here, feel free
-to [contribute to our project](#contributing).
+We do not have any external contributors yet, but if you want your name to be here, feel free to [contribute to our project](#contributing).
 
 ## [](#copyright-and-license)Copyright and license
-
 ![GitHub repository license](https://img.shields.io/badge/license-EUPL--1.2-blue)
 
 SPDX-License-Identifier: (EUPL-1.2)
-Copyright © Simon Prast
+Copyright © 2019-2020 Simon Prast
