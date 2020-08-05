@@ -58,6 +58,7 @@ const allUserPageUrls = gql`
         url
       }
     }
+  }
 `;
 //#endregion
 
