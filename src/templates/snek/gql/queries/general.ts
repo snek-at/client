@@ -55,7 +55,8 @@ const allUserPageUrls = gql`
   query userPages($token: String!) {
     page(slug: "user", token: $token) {
       children {
-        url
+        slug
+        title
       }
     }
   }
