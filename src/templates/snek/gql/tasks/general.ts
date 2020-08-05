@@ -25,6 +25,14 @@ interface GitlabServerData {
 interface AllPageUrlData {
   pages: { urlPath: string }[];
 }
+
+/**
+ * @interface AllUserPageUrlsData defines the types of the response of the
+ *                                allUserPageUrls query.  
+ */
+interface AllUserPageUrlsData {
+  page: { children: { url: string }[] };
+}
 //#endregion
 
 //#region > Classes
@@ -66,6 +74,25 @@ class SnekGqlGeneralTasks {
     const response = await this.parent.run<AllPageUrlData>(
       "query",
       this.parent.template.queries.general.allPageUrls,
+      {
+        token: await this.parent.session.upToDateToken(),
+      }
+    );
+
+    return response;
+  }
+
+  /**
+   * All user page urls.
+   *
+   * @returns {Promise<ApolloResult<AllUserPageUrlsData>>} A list of all user
+   *                                                       page urls.
+   * @description Get a list of all pages
+   */
+  async allUserPageUrls(): Promise<ApolloResult<AllUserPageUrlsData>> {
+    const response = await this.parent.run<AllUserPageUrlsData>(
+      "query",
+      this.parent.template.queries.general.allUserPageUrls,
       {
         token: await this.parent.session.upToDateToken(),
       }
