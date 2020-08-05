@@ -15,13 +15,13 @@ import gql from "graphql-tag";
  */
 const gitlabServer = gql`
   query gitLabServers($token: String!) {
-    page(url: "/registration", token: $token) {
-      ... on RegistrationRegistrationFormPage {
+    page(slug: "registration", token: $token) {
+      ... on RegistrationFormPage {
         supportedGitlabs {
-          ... on RegistrationGitlab_Server {
+          ... on Gitlab_Server {
+            id
             organisation
             domain
-            field
           }
         }
       }
@@ -43,10 +43,28 @@ const allPageUrls = gql`
     }
   }
 `;
+
+/**
+ * List of user page urls.
+ *
+ * @param {string} JWT A users JWT
+ * @returns {string} A serialized JSON object with a list of all page urls
+ * @description A query to fetch all user page urls
+ */
+const allUserPageUrls = gql`
+  query userPages($token: String!) {
+    page(slug: "user", token: $token) {
+      children {
+        slug
+        title
+      }
+    }
+  }
+`;
 //#endregion
 
 //#region > Exports
-export { gitlabServer, allPageUrls };
+export { gitlabServer, allPageUrls, allUserPageUrls };
 //#endregion
 
 /**
