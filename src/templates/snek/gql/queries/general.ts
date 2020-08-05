@@ -15,13 +15,13 @@ import gql from "graphql-tag";
  */
 const gitlabServer = gql`
   query gitLabServers($token: String!) {
-    page(url: "/registration", token: $token) {
-      ... on RegistrationRegistrationFormPage {
+    page(slug: "registration", token: $token) {
+      ... on RegistrationFormPage {
         supportedGitlabs {
-          ... on RegistrationGitlab_Server {
+          ... on Gitlab_Server {
+            id
             organisation
             domain
-            field
           }
         }
       }
