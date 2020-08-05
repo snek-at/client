@@ -43,10 +43,26 @@ const allPageUrls = gql`
     }
   }
 `;
+
+/**
+ * List of user page urls.
+ *
+ * @param {string} JWT A users JWT
+ * @returns {string} A serialized JSON object with a list of all page urls
+ * @description A query to fetch all user page urls
+ */
+const allUserPageUrls = gql`
+  query userPages($token: String!) {
+    page(slug: "user", token: $token) {
+      children {
+        url
+      }
+    }
+`;
 //#endregion
 
 //#region > Exports
-export { gitlabServer, allPageUrls };
+export { gitlabServer, allPageUrls, allUserPageUrls };
 //#endregion
 
 /**
