@@ -14,7 +14,7 @@ import { ApolloResult } from "./index";
  */
 interface GitlabServerData {
   page: {
-    supportedGitlabs: [];
+    supportedGitlabs: { id: string; organisation: string; domain: string; }[];
   };
 }
 
