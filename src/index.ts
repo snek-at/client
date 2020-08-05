@@ -78,7 +78,7 @@ class SnekClient extends Client {
    * @param type A type description to differ between multiple instances
    */
   constructor(
-    url: string = "https://engine.snek.at/graphiql",
+    url: string = "https://engine.snek.at/graphql",
     headers: object = {},
     type: string = "graphql"
   ) {
