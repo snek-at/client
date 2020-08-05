@@ -24,6 +24,8 @@ import SnekTasks from "../templates/snek/gql/tasks/index";
 import { ApolloEndpoint } from "../endpoints/index";
 // Contains basic session interfaces
 import { User } from "./index";
+//> Config
+import Config from "../config.json";
 //#endregion
 
 //#region > Classes
@@ -206,31 +208,38 @@ class SnekSession extends CookieSession {
    * @returns {Promise<any>} A UserData object
    */
   async begin(user?: User): Promise<any> {
-    let response;
+    let anonymous = false;
 
     if (!user && this.refreshToken) {
       /* Refresh token and retrieve a new refreshToken if necessary */
       this.refresh();
     } else {
+      let authData;
+
       if (!user) {
         /* Authenticate anonymous user */
-        response = await this.tasks.auth.anon();
+        authData = (await this.tasks.auth.anon()).data?.auth;
+        anonymous = true;
       } else {
         /* Authenticate real user */
-        response = await this.tasks.auth.nonanon(user);
+        authData = (await this.tasks.auth.nonanon(user)).data?.auth;
       }
 
       /* Set tokens */
-      this.token = response.data?.auth.token;
-      this.refreshToken = response.data?.auth.refreshToken;
+      this.token = authData?.token;
+      this.refreshToken = authData?.refreshToken;
 
-      return response.data?.auth.user;
+      return { anonymous, ...authData?.user };
     }
 
     /* Get user data */
-    response = await this.tasks.user.whoami();
+    const userData = (await this.tasks.user.whoami()).data?.whoami;
 
-    return response.data?.whoami;
+    if (userData?.username === Config.anonUser.username) {
+      anonymous = true;
+    }
+
+    return { anonymous, ...userData };
   }
 
   /**
