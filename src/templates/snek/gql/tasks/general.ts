@@ -23,7 +23,7 @@ interface GitlabServerData {
  *                           data.
  */
 interface AllPageUrlData {
-  pages: [];
+  pages: { urlPath: string }[];
 }
 //#endregion
 
