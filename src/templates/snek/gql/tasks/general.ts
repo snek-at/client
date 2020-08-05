@@ -36,7 +36,7 @@ class SnekGqlGeneralTasks {
    * @author Nico Schett <contact@schett.net>
    * @param {string} parent The parent task
    */
-  constructor(private parent: SnekTasks) {}
+  constructor(private parent: SnekTasks) { }
 
   /**
    * Gitlab Server.
