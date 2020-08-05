@@ -17,17 +17,16 @@ import gql from "graphql-tag";
  */
 const registration = gql`
   mutation registration($token: String!, $values: GenericScalar!) {
-    registration: registrationRegistrationFormPage(
-      token: $token
-      url: "/registration"
-      values: $values
-    ) {
-      result
-      errors {
-        name
-        errors
+    registration: registrationFormPage(
+      url: "/registration/",
+      token: $token,
+      values: $values) {
+        result
+        errors {
+          name
+          errors
+        }
       }
-    }
   }
 `;
 
