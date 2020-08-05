@@ -29,15 +29,15 @@ const whoami = gql`
 /**
  * Get user profile.
  *
- * @param {string} url PageUrl of a user profile
+ * @param {string} slug Slug: <user_<username>>
  * @param {string} token A users JWT
  * @returns {string} A profile page of a user
  * @description A query to fetch profile data
  */
 const profile = gql`
-  query profile($url: String!, $token: String!) {
-    profile: page(url: $url, token: $token) {
-      ... on ProfileProfilePage {
+  query profile($slug: String!, $token: String!) {
+    profile: page(slug: $slug, token: $token) {
+      ... on ProfilePage {
         username
         firstName
         lastName
