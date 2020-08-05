@@ -8,6 +8,8 @@ import { User } from "../../../../session";
 //> Types
 // Contains the type declarations for Apollo results
 import { ApolloResult } from "./index";
+//> Config
+import Config from "../../../../config.json";
 //#endregion
 
 //#region > Interfaces
@@ -68,8 +70,8 @@ class SnekGqlAuthTasks {
       "mutation",
       this.parent.template.mutations.jwtAuth.auth,
       {
-        username: "cisco",
-        password: "ciscocisco",
+        username: Config.anonUser.username,
+        password: Config.anonUser.password,
       }
     );
 
