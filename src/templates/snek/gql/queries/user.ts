@@ -30,19 +30,20 @@ const whoami = gql`
  * @description A query to fetch profile data
  */
 const profile = gql`
-  query profile($slug: String!, $token: String!) {
-    profile: page(slug: $slug, token: $token) {
-      ... on ProfilePage {
-        username
-        firstName
-        lastName
-        email
-        verified
-        platformData
-        sources
-        bids
+  query profile($username: String!, $token: String!) {
+    profile: user(username: $username, token: $token) {
+      username
+      firstName
+      lastName
+      email
+      verified: isActive
+      personpage {
+        title
         tids
+        bids
       }
+      platformData: cache
+      sources
     }
   }
 `;
