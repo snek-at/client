@@ -53,7 +53,7 @@ const allPageUrls = gql`
  */
 const allUserPageUrls = gql`
   query userPages($token: String!) {
-    page(slug: "user", token: $token) {
+    page(slug: "people", token: $token) {
       children {
         slug
         title
