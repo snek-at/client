@@ -87,16 +87,16 @@ class SnekGqlUserTasks {
   /**
    * Cache a user.
    *
-   * @param {string} platformData A serialized JSON object to be cached
+   * @param {string} cache A serialized JSON object to be cached
    * @returns {Promise<ApolloResult<CacheData>>} Cache data
    */
-  async cache(platformData: string): Promise<ApolloResult<CacheData>> {
+  async cache(cache: string): Promise<ApolloResult<CacheData>> {
     const response = await this.parent.run<CacheData>(
       "mutation",
       this.parent.template.mutations.user.cache,
       {
         token: await this.parent.session.upToDateToken(),
-        platformData,
+        cache,
       }
     );
 
