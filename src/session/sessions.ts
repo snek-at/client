@@ -294,7 +294,7 @@ class SnekSession extends CookieSession {
   async customTask<T>(type: string, data: DocumentNode, variables: object) {
     return this.tasks.run<T>(type, data, {
       ...variables,
-      token: this.token,
+      token: await this.upToDateToken(),
       refreshToken: this.refreshToken,
     });
   }
