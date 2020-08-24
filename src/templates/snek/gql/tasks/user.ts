@@ -32,15 +32,39 @@ interface CacheData {
  */
 interface ProfileData {
   profile: {
-    username: string;
+    profileName: string;
     firstName: string;
     lastName: string;
     email: string;
-    verified: string;
     platformData: string;
     sources: string;
     bids: string;
     tids: string;
+    person: {
+      cache: string;
+      sources: string;
+    };
+    follows: {
+      personName: string;
+    }[];
+    followedBy: {
+      personName: string;
+    }[];
+    likes: {
+      personName: string;
+    }[];
+    likedBy: {
+      personName: string;
+    }[];
+    achievements: {
+      id: string;
+      title: string;
+      image: {
+        src: string;
+        imageSourceUrl: string;
+      };
+      points: string;
+    };
   };
 }
 
@@ -106,15 +130,15 @@ class SnekGqlUserTasks {
   /**
    * Get profile.
    *
-   * @param {string} username Username: <username>
+   * @param {string} slug Slug: <p-<personName>>
    * @returns {Promise<ApolloResult<ProfileData>>} The profile page of a user
    */
-  async profile(username: string): Promise<ApolloResult<ProfileData>> {
+  async profile(slug: string): Promise<ApolloResult<ProfileData>> {
     const response = await this.parent.run<ProfileData>(
       "query",
       this.parent.template.queries.user.profile,
       {
-        username,
+        slug,
         token: await this.parent.session.upToDateToken(),
       }
     );

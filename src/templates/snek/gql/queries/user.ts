@@ -24,26 +24,49 @@ const whoami = gql`
 /**
  * Get user profile.
  *
- * @param {string} slug Slug: <user_<username>>
+ * @param {string} slug Slug: <p-<personName>>
  * @param {string} token A users JWT
  * @returns {string} A profile page of a user
  * @description A query to fetch profile data
  */
 const profile = gql`
-  query profile($username: String!, $token: String!) {
-    profile: user(username: $username, token: $token) {
-      username
-      firstName
-      lastName
-      email
-      verified: isActive
-      personpage {
-        title
+  query profile($slug: String!, $token: String!) {
+    page(slug: $slug, token: $token) {
+      ... on PersonFormPage {
+        personName: title
+        firstName
+        lastName
+        email
+        platformData: cache
+        sources
+        person {
+          cache
+          sources
+        }
         tids
         bids
+        follows {
+          personName: slug
+        }
+        followedBy {
+          personName: slug
+        }
+        likes {
+          personName: slug
+        }
+        likedBy {
+          personName: slug
+        }
+        achievements {
+          id
+          title
+          image {
+            src
+            imageSourceUrl
+          }
+          points
+        }
       }
-      platformData: cache
-      sources
     }
   }
 `;
