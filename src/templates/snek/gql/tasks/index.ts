@@ -50,7 +50,11 @@ class SnekTasks extends TaskError {
     this.user = new SnekGqlUserTasks(this);
   }
 
-  async run<T>(type: string, query: DocumentNode, variables: object) {
+  async run<T>(
+    type: string,
+    query: DocumentNode,
+    variables: object
+  ): Promise<ApolloResult<T>> {
     let response: ApolloResult<T>;
 
     if (type === "query") {
