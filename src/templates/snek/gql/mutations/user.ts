@@ -41,9 +41,9 @@ const registration = gql`
  * @description A mutation to cache user information server side
  */
 const cache = gql`
-  mutation cache($token: String!, $cache: String!) {
-    cache: cacheUser(token: $token, cache: $cache) {
-      user {
+  mutation cache($token: String!, $personName: String!, $cache: String!) {
+    cache: cacheUser(token: $token, personName: $personName, cache: $cache) {
+      personPage {
         id
       }
     }
