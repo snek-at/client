@@ -130,15 +130,15 @@ class SnekGqlUserTasks {
   /**
    * Get profile.
    *
-   * @param {string} slug Slug: <p-<personName>>
+   * @param {string} personName personName: <schettn>
    * @returns {Promise<ApolloResult<ProfileData>>} The profile page of a user
    */
-  async profile(slug: string): Promise<ApolloResult<ProfileData>> {
+  async profile(personName: string): Promise<ApolloResult<ProfileData>> {
     const response = await this.parent.run<ProfileData>(
       "query",
       this.parent.template.queries.user.profile,
       {
-        slug,
+        slug: `p-${personName}`,
         token: await this.parent.session.upToDateToken(),
       }
     );
