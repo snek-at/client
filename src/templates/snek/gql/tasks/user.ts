@@ -32,15 +32,39 @@ interface CacheData {
  */
 interface ProfileData {
   profile: {
-    username: string;
+    profileName: string;
     firstName: string;
     lastName: string;
     email: string;
-    verified: string;
     platformData: string;
     sources: string;
     bids: string;
     tids: string;
+    person: {
+      cache: string;
+      sources: string;
+    };
+    follows: {
+      personName: string;
+    }[];
+    followedBy: {
+      personName: string;
+    }[];
+    likes: {
+      personName: string;
+    }[];
+    likedBy: {
+      personName: string;
+    }[];
+    achievements: {
+      id: string;
+      title: string;
+      image: {
+        src: string;
+        imageSourceUrl: string;
+      };
+      points: string;
+    };
   };
 }
 
@@ -87,16 +111,21 @@ class SnekGqlUserTasks {
   /**
    * Cache a user.
    *
-   * @param {string} platformData A serialized JSON object to be cached
+   * @param {string} personName The name of a users person page
+   * @param {string} cache A serialized JSON object to be cached
    * @returns {Promise<ApolloResult<CacheData>>} Cache data
    */
-  async cache(platformData: string): Promise<ApolloResult<CacheData>> {
+  async cache(
+    personName: string,
+    cache: string
+  ): Promise<ApolloResult<CacheData>> {
     const response = await this.parent.run<CacheData>(
       "mutation",
       this.parent.template.mutations.user.cache,
       {
         token: await this.parent.session.upToDateToken(),
-        platformData,
+        personName,
+        cache,
       }
     );
 
@@ -106,15 +135,15 @@ class SnekGqlUserTasks {
   /**
    * Get profile.
    *
-   * @param {string} slug Slug: <user_<username>>
+   * @param {string} personName personName: <schettn>
    * @returns {Promise<ApolloResult<ProfileData>>} The profile page of a user
    */
-  async profile(slug: string): Promise<ApolloResult<ProfileData>> {
+  async profile(personName: string): Promise<ApolloResult<ProfileData>> {
     const response = await this.parent.run<ProfileData>(
       "query",
       this.parent.template.queries.user.profile,
       {
-        slug,
+        slug: `p-${personName}`,
         token: await this.parent.session.upToDateToken(),
       }
     );

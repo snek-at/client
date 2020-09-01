@@ -15,10 +15,10 @@ import gql from "graphql-tag";
  */
 const gitlabServer = gql`
   query gitLabServers($token: String!) {
-    page(slug: "registration", token: $token) {
-      ... on RegistrationFormPage {
+    page(slug: "person-registration-form", token: $token) {
+      ... on PersonRegistrationFormPage {
         supportedGitlabs {
-          ... on Gitlab_Server {
+          ... on GitlabServer {
             id
             organisation
             domain
@@ -53,7 +53,7 @@ const allPageUrls = gql`
  */
 const allUserPageUrls = gql`
   query userPages($token: String!) {
-    page(slug: "user", token: $token) {
+    page(slug: "people", token: $token) {
       children {
         slug
         title

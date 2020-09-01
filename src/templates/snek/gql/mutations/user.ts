@@ -17,16 +17,17 @@ import gql from "graphql-tag";
  */
 const registration = gql`
   mutation registration($token: String!, $values: GenericScalar!) {
-    registration: registrationFormPage(
-      url: "/registration/",
-      token: $token,
-      values: $values) {
-        result
-        errors {
-          name
-          errors
-        }
+    registration: personRegistrationFormPage(
+      url: "/person-registration-form/"
+      token: $token
+      values: $values
+    ) {
+      result
+      errors {
+        name
+        errors
       }
+    }
   }
 `;
 
@@ -40,9 +41,9 @@ const registration = gql`
  * @description A mutation to cache user information server side
  */
 const cache = gql`
-  mutation cache($token: String!, $platformData: String!) {
-    cache: cacheUser(token: $token, platformData: $platformData) {
-      user {
+  mutation cache($token: String!, $personName: String!, $cache: String!) {
+    cache: cacheUser(token: $token, personName: $personName, cache: $cache) {
+      personPage {
         id
       }
     }
