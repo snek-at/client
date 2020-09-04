@@ -20,12 +20,13 @@ import SnekTemplate from "../templates/snek/index";
 // Contains SNEK tasks
 import SnekTasks from "../templates/snek/gql/tasks/index";
 //> Interfaces
-// Contains the interface for the apollo endpoint
-import { ApolloEndpoint } from "../endpoints/index";
+// Contains the interface for the apollo and scraper endpoint
+import { ApolloEndpoint, ScraperEndpoint } from "../endpoints/index";
 // Contains basic session interfaces
 import { User } from "./index";
 //> Config
 import Config from "../config.json";
+import { InstagramTasks } from "../templates/instagram";
 //#endregion
 
 //#region > Classes
@@ -138,6 +139,64 @@ class CookieSession extends Session {
     } else {
       Cookies.remove(this.refreshTokenName);
     }
+  }
+}
+
+class InstagramSession extends Session {
+  /* Define tasks */
+  public tasks: InstagramTasks;
+
+  /**
+   * Initializes a Instagram session.
+   *
+   * @constructor
+   * @author Nico Schett <contact@schett.net>
+   * @param {string} sId A session name
+   * @param {string} token A instagram access token
+   * @param {Endpoint} ep A endpoint
+   * @param {SnekTemplate} template A template set
+   */
+  constructor(sId: string, token: string, public ep: ScraperEndpoint) {
+    super(sId);
+
+    this.tokenName = sId + "-" + this.tokenName;
+
+    this.token = token;
+    this.tasks = new InstagramTasks(this);
+  }
+
+  //> Methods
+  /**
+   * Refreshes the current set access token.
+   *
+   * @returns {Promise<string | undefined>} The session token if set
+   */
+  async upToDateToken(): Promise<string | undefined> {
+    let token = super.token;
+
+    /* Refresh token if there is none */
+    if (!token) {
+      await this.refresh();
+
+      token = super.token;
+    }
+
+    return token;
+  }
+
+  /**
+   * Refreshes a session.
+   */
+  async refresh() {
+    this.token = await this.tasks.refreshToken();
+  }
+
+  /**
+   * The runner allows to access every endpoint of the instagram api without
+   * caring about refreshing the access tokens.
+   */
+  getRunner() {
+    return this.tasks.getScraper();
   }
 }
 
@@ -302,7 +361,7 @@ class SnekSession extends CookieSession {
 //#endregion
 
 //#region > Exports
-export { GithubSession, SnekSession };
+export { GithubSession, InstagramSession, SnekSession };
 //#endregion
 
 /**
