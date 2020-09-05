@@ -2,8 +2,8 @@ import Scraper from "../../endpoints/scraper";
 //> Sessions
 // Contains the SNEK session
 import { InstagramSession } from "../../session/sessions";
-
-import * as urls from "./urls";
+//> Instagram Endpoint paths
+import * as paths from "./paths";
 
 //#region > Classes
 /** @class A Template with initializes all tasks */
@@ -31,7 +31,7 @@ class InstagramTasks {
     });
 
     const res = await scraper.getJson<{ access_token: string }>(
-      urls.TOKEN_REFRESH_URI
+      paths.TOKEN_REFRESH_PATH
     );
 
     return res.access_token;
