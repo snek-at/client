@@ -1,4 +1,3 @@
-import Scraper from "../../endpoints/scraper";
 //> Sessions
 // Contains the SNEK session
 import { InstagramSession } from "../../session/sessions";
@@ -17,20 +16,10 @@ class InstagramTasks {
    */
   constructor(public session: InstagramSession) {}
 
-  async getScraper() {
-    const scraper = new Scraper("https://graph.instagram.com", {
-      headers: { Authorization: `Bearer ${this.session.upToDateToken()}` },
-    });
-
-    return scraper;
-  }
-
   async refreshToken() {
-    const scraper = new Scraper("https://graph.instagram.com", {
-      headers: { Authorization: `Bearer ${this.session.token}` },
-    });
+    const runner = this.session.getRunner();
 
-    const res = await scraper.getJson<{ access_token: string }>(
+    const res = await runner.getJson<{ access_token: string }>(
       paths.TOKEN_REFRESH_PATH
     );
 

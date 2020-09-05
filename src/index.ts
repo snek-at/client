@@ -4,17 +4,16 @@
 import Apollo from "./endpoints/apollo";
 // Contains the scraper endpoint
 import Scraper from "./endpoints/scraper";
-//> Templates
-// Contains the main template
-import { MainTemplate } from "./templates/index";
 //> Sessions
 // Contains the SNEK and github session
-import { SnekSession, GithubSession } from "./session/sessions";
+import {
+  SnekSession,
+  GithubSession,
+  InstagramSession,
+} from "./session/sessions";
 //> Interfaces
 // Contains interfaces for scraper and apollo
 import { ScraperEndpoint, ApolloEndpoint } from "./endpoints/index";
-// Contains the interface for the main template
-import { IMainTemplate } from "./templates/index";
 //#endregion
 
 //#region > Interfaces
@@ -64,7 +63,6 @@ class Client implements IClient {
 /** @class A client implementation for SNEK interaction */
 class SnekClient extends Client {
   gql: ApolloEndpoint;
-  template: IMainTemplate;
   session: SnekSession;
 
   /**
@@ -84,16 +82,14 @@ class SnekClient extends Client {
   ) {
     super({ type, url, headers });
 
-    this.template = new MainTemplate();
     this.gql = new Apollo(url, { headers });
-    this.session = new SnekSession("snek", this.gql, this.template.snek);
+    this.session = new SnekSession("snek", this.gql);
   }
 }
 
 /** @class A client implementation for github interaction */
 class GithubClient extends Client {
   gql: ApolloEndpoint;
-  template: IMainTemplate;
   session: GithubSession;
 
   /**
@@ -113,9 +109,42 @@ class GithubClient extends Client {
   ) {
     super({ type, url, headers });
 
-    this.template = new MainTemplate();
     this.gql = new Apollo(url, { headers });
-    this.session = new GithubSession("github", this.gql, this.template);
+    this.session = new GithubSession("github", this.gql);
+  }
+}
+
+/** @class A client implementation for instagram interaction */
+class InstagramClient extends Client {
+  ep: ScraperEndpoint;
+  session: InstagramSession;
+
+  /**
+   * Initializes a Github client.
+   *
+   * @constructor
+   * @author Nico Schett <contact@schett.net>
+   * @param url The base URL the GithubClient should be working on.
+   *            Default: "https://api.github.com/graphql".
+   * @param headers A object containing various request headers
+   * @param type A type description to differ between multiple instances
+   */
+  constructor(
+    url: string = "https://api.github.com/graphql",
+    headers: { accessToken: string },
+    type: string = "scraper"
+  ) {
+    super({ type, url, headers });
+
+    this.ep = new Scraper("https://graph.instagram.com", {
+      headers: { Authorization: `Bearer ${headers.accessToken}` },
+    });
+
+    this.session = new InstagramSession(
+      "instagram",
+      headers.accessToken,
+      this.ep
+    );
   }
 }
 
@@ -148,7 +177,7 @@ class WebClient extends Client {
 //#endregion
 
 //#region > Exports
-export { SnekClient, GithubClient, WebClient };
+export { SnekClient, GithubClient, InstagramClient, WebClient };
 //#endregion
 
 /**
