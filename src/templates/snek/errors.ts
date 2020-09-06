@@ -1,10 +1,10 @@
 //#region > Imports
 //> Sessions
 // Contains the SNEK session
-import { SnekSession } from "../../../session/sessions";
+import { SnekSession } from "../../session/sessions";
 //> Types
 // Contains the type declarations for Apollo results
-import { ApolloResult } from "./index";
+import * as types from "./types";
 //#endregion
 
 //#region > Classes
@@ -25,7 +25,7 @@ class TaskError {
    * @param {Response} response A SNEK-client graphql response
    * @returns {boolean} "false" if an error occurs. Otherwise "true"
    */
-  handleErrors(response: ApolloResult<any>): boolean {
+  handleErrors(response: types.ApolloResult<any>): boolean {
     const errors = response.errors;
 
     if (errors && errors.length > 0) {

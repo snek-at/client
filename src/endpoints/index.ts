@@ -75,21 +75,21 @@ interface ScraperEndpoint extends Endpoint {
   /**
    * GetJson: A method which gets json data from a specific url.
    *
-   * @param url A web url
+   * @param path Path to the endpoint
    * @returns {Promise<T>} Json data in the given format <T>
    */
   getJson<T>(url: string): Promise<T>;
   /**
    * GetDom: A method which gets DOM data from a specific url.
    *
-   * @param url A web url
+   * @param path Path to the endpoint
    * @returns {Promise<Document>} A DOM Document
    */
   getDom(url: string): Promise<Document>;
   /**
    * Post: A method to post data to a specific url.
    *
-   * @param {string} url A web url
+   * @param {string} path Path to the endpoint
    * @param data Data which is filled into the body of a post request
    * @returns {Promise<Document>} A DOM Document
    */

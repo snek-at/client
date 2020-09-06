@@ -11,22 +11,19 @@ import Cookies from "js-cookie";
 //> Session
 // Contains the base session
 import Session from "./index";
-//> Templates
-// Contains the main template for the sessions
-import { IMainTemplate } from "../templates/index";
-// Contains the SNEK template
-import SnekTemplate from "../templates/snek/index";
 //> Tasks
 // Contains SNEK tasks
-import SnekTasks from "../templates/snek/gql/tasks/index";
+import SnekTasks from "../templates/snek/tasks/index";
+import InstagramTasks from "../templates/instagram/tasks";
 //> Interfaces
 // Contains the interface for the apollo and scraper endpoint
 import { ApolloEndpoint, ScraperEndpoint } from "../endpoints/index";
 // Contains basic session interfaces
 import { User } from "./index";
+// Contains the snek template types
+import { TaskTypes } from "../templates/snek/types";
 //> Config
 import Config from "../config.json";
-import { InstagramTasks } from "../templates/instagram";
 //#endregion
 
 //#region > Classes
@@ -39,14 +36,8 @@ class GithubSession extends Session {
    * @author Nico Schett <contact@schett.net>
    * @param {string} sId A session name
    * @param {Endpoint} ep A endpoint
-   * @param {IMainTemplate} template A template set
    */
-  constructor(
-    sId: string,
-    public ep: ApolloEndpoint,
-    public template: IMainTemplate
-  ) {
-    /** @todo Change template set to dedicated github template set */
+  constructor(sId: string, public ep: ApolloEndpoint) {
     super(sId);
   }
 
@@ -154,7 +145,6 @@ class InstagramSession extends Session {
    * @param {string} sId A session name
    * @param {string} token A instagram access token
    * @param {Endpoint} ep A endpoint
-   * @param {SnekTemplate} template A template set
    */
   constructor(sId: string, token: string, public ep: ScraperEndpoint) {
     super(sId);
@@ -196,7 +186,9 @@ class InstagramSession extends Session {
    * caring about refreshing the access tokens.
    */
   getRunner() {
-    return this.tasks.getScraper();
+    this.ep.headers = { Authorization: `Bearer ${this.upToDateToken()}` };
+
+    return this.ep;
   }
 }
 
@@ -212,13 +204,8 @@ class SnekSession extends CookieSession {
    * @author Nico Schett <contact@schett.net>
    * @param {string} sId A session name
    * @param {Endpoint} ep A endpoint
-   * @param {SnekTemplate} template A template set
    */
-  constructor(
-    sId: string,
-    public ep: ApolloEndpoint,
-    public template: SnekTemplate
-  ) {
+  constructor(sId: string, public ep: ApolloEndpoint) {
     super(sId);
 
     this.tokenName = sId + "-" + this.tokenName;
@@ -277,11 +264,12 @@ class SnekSession extends CookieSession {
 
       if (!user) {
         /* Authenticate anonymous user */
-        authData = (await this.tasks.auth.anon()).data?.auth;
+
+        authData = (await this.tasks.set.auth.anon()).data?.auth;
         anonymous = true;
       } else {
         /* Authenticate real user */
-        authData = (await this.tasks.auth.nonanon(user)).data?.auth;
+        authData = (await this.tasks.set.auth.nonanon(user)).data?.auth;
       }
 
       /* Set tokens */
@@ -292,7 +280,7 @@ class SnekSession extends CookieSession {
     }
 
     /* Get user data */
-    const userData = (await this.tasks.user.whoami()).data?.whoami;
+    const userData = (await this.tasks.set.user.whoami()).data?.whoami;
 
     if (userData?.username === Config.anonUser.username) {
       anonymous = true;
@@ -310,7 +298,7 @@ class SnekSession extends CookieSession {
   async refresh() {
     if (!this.token) {
       if (this.refreshToken) {
-        let response = await this.tasks.auth.refresh();
+        let response = await this.tasks.set.auth.refresh();
 
         this.token = response.data?.refresh.token;
         this.refreshToken = response.data?.refresh.refreshToken;
@@ -329,7 +317,7 @@ class SnekSession extends CookieSession {
   async end() {
     /* Revoke token if it is set */
     if (this.refreshToken !== "") {
-      let response = await this.tasks.auth.revoke();
+      let response = await this.tasks.set.auth.revoke();
 
       //#DEBUG TSID1
       //console.log("TID-1(REVOKE)", response.data?.revoke.revoked);
@@ -350,7 +338,7 @@ class SnekSession extends CookieSession {
    *              are set by default!
    *              When no type is specified, query is set as default.
    */
-  async customTask<T>(type: string, data: DocumentNode, variables: object) {
+  async runner<T>(type: TaskTypes, data: DocumentNode, variables: object) {
     return this.tasks.run<T>(type, data, {
       ...variables,
       token: await this.upToDateToken(),
