@@ -20,6 +20,8 @@ import InstagramTasks from "../templates/instagram/tasks";
 import { ApolloEndpoint, ScraperEndpoint } from "../endpoints/index";
 // Contains basic session interfaces
 import { User } from "./index";
+// Contains the session types
+import { SNEKAuth } from "./types";
 // Contains the snek template types
 import { TaskTypes } from "../templates/snek/types";
 //> Config
@@ -251,9 +253,9 @@ class SnekSession extends CookieSession {
    * Begin session.
    *
    * @param {string} user A User defined by username and password
-   * @returns {Promise<any>} A UserData object
+   * @returns {Promise<SNEKAuth>} A SNEKAuth object
    */
-  async begin(user?: User): Promise<any> {
+  async begin(user?: User): Promise<SNEKAuth> {
     let anonymous = false;
 
     if (!user && this.refreshToken) {
