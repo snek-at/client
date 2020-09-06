@@ -124,27 +124,24 @@ class InstagramClient extends Client {
    *
    * @constructor
    * @author Nico Schett <contact@schett.net>
-   * @param url The base URL the GithubClient should be working on.
-   *            Default: "https://api.github.com/graphql".
+   * @param url The base URL the InstagramClient should be working on.
+   *            Default: "https://graph.instagram.com"
    * @param headers A object containing various request headers
    * @param type A type description to differ between multiple instances
    */
   constructor(
-    url: string = "https://api.github.com/graphql",
-    headers: { accessToken: string },
+    accessToken: string,
+    url: string = "https://graph.instagram.com",
+    headers: {} = {},
     type: string = "scraper"
   ) {
     super({ type, url, headers });
 
-    this.ep = new Scraper("https://graph.instagram.com", {
-      headers: { Authorization: `Bearer ${headers.accessToken}` },
+    this.ep = new Scraper(url, {
+      headers: { Authorization: `Bearer ${accessToken}` },
     });
 
-    this.session = new InstagramSession(
-      "instagram",
-      headers.accessToken,
-      this.ep
-    );
+    this.session = new InstagramSession("instagram", accessToken, this.ep);
   }
 }
 
