@@ -185,8 +185,8 @@ class InstagramSession extends Session {
    * The runner allows to access every endpoint of the instagram api without
    * caring about refreshing the access tokens.
    */
-  getRunner() {
-    this.ep.headers = { Authorization: `Bearer ${this.upToDateToken()}` };
+  async getRunner() {
+    this.ep.headers = { Authorization: `Bearer ${await this.upToDateToken()}` };
 
     return this.ep;
   }
