@@ -106,6 +106,52 @@ interface ScraperEndpoint extends Endpoint {
       | null
       | undefined
   ): Promise<T>;
+  /**
+   * Send fetch request to a endpoint and get the respective result.
+   *
+   * @param {string} path Path to the endpoint. Specify it like "/foo/bar".
+   *                      The correct placement of the slashes is essential!
+   * @param {"GET" | "POST" | "PUT" | "PATCH" | "DELETE"} type HTTP methods
+   * @param data Data which is filled into the body of a post request
+   * @returns {Promise<Response>} A DOM Document
+   */
+  fetch(
+    path: string,
+    type: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+    data?:
+      | string
+      | Blob
+      | ArrayBufferView
+      | ArrayBuffer
+      | FormData
+      | URLSearchParams
+      | ReadableStream<Uint8Array>
+      | null
+      | undefined
+  ): Promise<Response>;
+  /**
+   * Send fetch request to a endpoint and get the respective JSON result.
+   *
+   * @param {string} path Path to the endpoint. Specify it like "/foo/bar".
+   *                      The correct placement of the slashes is essential!
+   * @param {"GET" | "POST" | "PUT" | "PATCH" | "DELETE"} type HTTP methods
+   * @param data Data which is filled into the body of a post request
+   * @returns {Promise<Response>} A DOM Document
+   */
+  fetchJson<T>(
+    path: string,
+    type: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+    data?:
+      | string
+      | Blob
+      | ArrayBufferView
+      | ArrayBuffer
+      | FormData
+      | URLSearchParams
+      | ReadableStream<Uint8Array>
+      | null
+      | undefined
+  ): Promise<T>;
 }
 //#endregion
 
