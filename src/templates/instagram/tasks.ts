@@ -17,7 +17,7 @@ class InstagramTasks {
   constructor(public session: InstagramSession) {}
 
   async refreshToken() {
-    const runner = this.session.getRunner();
+    const runner = await this.session.getRunner();
 
     const res = await runner.getJson<{ access_token: string }>(
       paths.TOKEN_REFRESH_PATH

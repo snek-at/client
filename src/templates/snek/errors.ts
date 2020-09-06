@@ -23,9 +23,11 @@ class TaskError {
    * Handle specific errors which could occur on SNEK tasks.
    *
    * @param {Response} response A SNEK-client graphql response
-   * @returns {boolean} "false" if an error occurs. Otherwise "true"
+   * @returns {boolean} "false" if a token error occurs.
+   *                    "undefined" if other errors occurs.
+   *                    "true" otherwise.
    */
-  handleErrors(response: types.ApolloResult<any>): boolean {
+  handleErrors(response: types.ApolloResult<any>): boolean | undefined {
     const errors = response.errors;
 
     if (errors && errors.length > 0) {
@@ -45,7 +47,7 @@ class TaskError {
 
         return false;
       } else {
-        return false;
+        return undefined;
       }
     }
 
