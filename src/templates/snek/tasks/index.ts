@@ -46,12 +46,6 @@ class MainTask extends TaskError {
       response = await this.session.ep.sendQuery<T>(query, variables);
     }
 
-    if (this.handleErrors(response) == false) {
-      await this.session.refresh();
-
-      return this.run<T>(type, query, variables);
-    }
-
     return response;
   }
 }

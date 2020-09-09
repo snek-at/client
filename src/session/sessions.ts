@@ -17,7 +17,11 @@ import SnekTasks from "../templates/snek/tasks/index";
 import InstagramTasks from "../templates/instagram/tasks";
 //> Interfaces
 // Contains the interface for the apollo and scraper endpoint
-import { ApolloEndpoint, ScraperEndpoint } from "../endpoints/index";
+import {
+  ApolloEndpoint,
+  ScraperEndpoint,
+  ApolloResult,
+} from "../endpoints/index";
 // Contains basic session interfaces
 import { User } from "./index";
 // Contains the session types
@@ -336,16 +340,33 @@ class SnekSession extends CookieSession {
    * @param type
    * @param data
    * @param variables
+   * @param {boolean} retry Retry on error
    * @description Perform a session aware custom task. Token and refreshToken
    *              are set by default!
    *              When no type is specified, query is set as default.
    */
-  async runner<T>(type: TaskTypes, data: DocumentNode, variables: object) {
-    return this.tasks.run<T>(type, data, {
+  async runner<T>(
+    type: TaskTypes,
+    data: DocumentNode,
+    variables: object,
+    retry: boolean = true
+  ): Promise<ApolloResult<T>> {
+    variables = {
       ...variables,
       token: await this.upToDateToken(),
       refreshToken: this.refreshToken,
+    };
+
+    const response = await this.tasks.run<T>(type, data, {
+      ...variables,
     });
+
+    if (this.tasks.handleErrors(response) == false && retry) {
+      await this.refresh();
+
+      return this.runner<T>(type, data, variables, false);
+    }
+    return response;
   }
 }
 //#endregion
