@@ -1,20 +1,15 @@
 //#region > Imports
-//#PACKAGE "apollo-client"
-//## npm install "apollo-client"@2.6.8
-// Contains the client for graphql handling
-import { ApolloClient } from "apollo-client";
-//#PACKAGE "apollo-link-http"
-//## npm install "apollo-link-http"@1.5.16
-// Contains the link for the apollo client
-import { HttpLink } from "apollo-link-http";
-//#PACKAGE "apollo-cache-inmemory"
-//## npm install "apollo-cache-inmemory"@1.6.5
-// Contains cache handling for apollo
+//#PACKAGE "@apollo/client"
 import {
+  ApolloClient,
+  ApolloLink,
   InMemoryCache,
-  IntrospectionFragmentMatcher,
   NormalizedCacheObject,
-} from "apollo-cache-inmemory";
+  HttpLink,
+} from "@apollo/client";
+//#PACKAGE "'apollo-upload-client"
+// Contains the link for the apollo client
+import { createUploadLink } from "apollo-upload-client";
 //#PACKAGE "graphql"
 //## npm install "graphql"@14.6.0
 // Contains the interface for gql queries, mutations and subscriptions
@@ -32,7 +27,7 @@ import { ApolloResult } from "./index";
 /** @class Apollo client for graphql handling */
 class Apollo implements ApolloEndpoint {
   //> Fields
-  private link: HttpLink;
+  private link: ApolloLink;
   private cache: InMemoryCache;
   private client: ApolloClient<NormalizedCacheObject>;
 
@@ -49,26 +44,18 @@ class Apollo implements ApolloEndpoint {
    */
   constructor(uri: string, options: Options) {
     this.headers = options.headers;
-    const fragmentMatcher = new IntrospectionFragmentMatcher({
-      introspectionQueryResultData: {
-        __schema: {
-          types: [],
-        },
-      },
-    });
 
     try {
-      this.cache = new InMemoryCache({ fragmentMatcher });
+      this.cache = new InMemoryCache();
     } catch {
       //#ERROR
       throw new Error("An error occurred while initializing the cache!");
     }
 
     try {
-      this.link = new HttpLink({
-        uri,
-        headers: options.headers,
-      });
+      const uploadLink = createUploadLink({ uri, headers: options.headers });
+
+      this.link = ApolloLink.from([uploadLink]);
     } catch {
       //#ERROR
       throw new Error("An error occurred while initializing the API link!");

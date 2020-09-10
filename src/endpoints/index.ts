@@ -4,8 +4,7 @@
 //## npm install "graphql"@14.6.0
 // Contains the interface for gql queries, mutations and subscriptions
 import { DocumentNode } from "graphql";
-import { FetchResult } from "apollo-link";
-import { ApolloQueryResult } from "apollo-client";
+import { ApolloQueryResult, FetchResult } from "@apollo/client";
 //#endregion
 
 //#region > Types
