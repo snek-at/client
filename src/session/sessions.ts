@@ -361,7 +361,7 @@ class SnekSession extends CookieSession {
       ...variables,
     });
 
-    if (this.tasks.handleErrors(response) == false && retry) {
+    if (this.tasks.handleErrors(response) === false && retry) {
       await this.refresh();
 
       return this.runner<T>(type, data, variables, false);

@@ -24,10 +24,10 @@ class TaskError {
    *
    * @param {Response} response A SNEK-client graphql response
    * @returns {boolean} "false" if a token error occurs.
-   *                    "undefined" if other errors occurs.
+   *                    "null" if other errors occurs.
    *                    "true" otherwise.
    */
-  handleErrors(response: types.ApolloResult<any>): boolean | undefined {
+  handleErrors(response: types.ApolloResult<any>): boolean | null {
     const errors = response.errors;
 
     if (errors && errors.length > 0) {
@@ -43,7 +43,7 @@ class TaskError {
 
         return false;
       } else {
-        return undefined;
+        return null;
       }
     }
 
