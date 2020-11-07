@@ -31,10 +31,6 @@ class TaskError {
     const errors = response.errors;
 
     if (errors && errors.length > 0) {
-      //#LEGACY
-      //#ERROR
-      console.error("An error occurred" + JSON.stringify(response));
-
       if (errors[0].message === "Invalid refresh token") {
         /* Delete token and refresh token if refresh token is invalid */
         this.session.token = undefined;

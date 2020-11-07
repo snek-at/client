@@ -6,10 +6,10 @@ export { ApolloResult } from "../../endpoints/index";
 export { User } from "../../session";
 
 export type TaskTypes = "query" | "mutation";
+
 /**
  * All graphql response types for authentication related requests.
  */
-
 //#region > Interfaces
 /**
  * @interface GraphQLAuthentication defines the structure of the authentication
@@ -26,8 +26,7 @@ export interface GraphQLAuthentication {
 }
 
 /**
- * @interface GraphQLRefresh defines the structure of the refresh
- *                                         result data.
+ * @interface GraphQLRefresh defines the structure of the refresh  result data
  */
 export interface GraphQLRefresh {
   refresh: {
@@ -38,8 +37,7 @@ export interface GraphQLRefresh {
 }
 
 /**
- * @interface GraphQLRevoke defines the structure of the revoke
- *                                        result data.
+ * @interface GraphQLRevoke defines the structure of the revoke result data
  */
 export interface GraphQLRevoke {
   revoke: {
@@ -47,7 +45,7 @@ export interface GraphQLRevoke {
   };
 }
 
-/** @interface GraphQLWhoami defines the structure of a whoami data. */
+/** @interface GraphQLWhoami defines the structure of a whoami data */
 export interface GraphQLWhoami {
   whoami: { username: string };
 }

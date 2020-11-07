@@ -47,7 +47,6 @@ class Scraper implements ScraperEndpoint {
    * @returns {T} JSON object passed to given structure
    */
   async getJson<T>(path: string): Promise<T> {
-    console.log("HEADERS", this.headers);
     return fetch(this.url + path, {
       headers: {
         ...this.headers,

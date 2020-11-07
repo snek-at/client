@@ -9,8 +9,6 @@ import { ApolloResult, GraphQLWhoami } from "../types";
 
 //#region > Classes
 /** @class A set of session aware tasks */
-//#region > Classes
-/** @class A set of session aware Tasks */
 class UserTasks {
   /**
    * Creates an instance of a SessionTasks.
