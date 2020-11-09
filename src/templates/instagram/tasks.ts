@@ -1,8 +1,10 @@
+//#region > Imports
 //> Sessions
 // Contains the SNEK session
 import { InstagramSession } from "../../session/sessions";
 //> Instagram Endpoint paths
 import * as paths from "./paths";
+//#endregion
 
 //#region > Classes
 /** @class A Template with initializes all tasks */

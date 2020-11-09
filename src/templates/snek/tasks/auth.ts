@@ -50,7 +50,7 @@ class AuthTask {
    * User login.
    *
    * @param {string} user A User defined by username and password
-   * @returns {Promise<ApolloResult<GraphQLAuthentication>>} Authentication data.
+   * @returns {Promise<ApolloResult<GraphQLAuthentication>>} Authentication data
    * @description Authenticates a real user to obtain a JWT
    */
   async nonanon(user: User): Promise<ApolloResult<GraphQLAuthentication>> {

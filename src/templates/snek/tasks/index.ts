@@ -14,7 +14,9 @@ import { ApolloResult, TaskTypes } from "../types";
 import { TaskError } from "../errors";
 import AuthTask from "./auth";
 import UserTask from "./user";
+//#endregion
 
+//#region > Classes
 class MainTask extends TaskError {
   public mutations: { jwtAuth: typeof mutationsAuth } = {
     jwtAuth: require("../mutations/auth"),
@@ -51,6 +53,7 @@ class MainTask extends TaskError {
     return response;
   }
 }
+//#endregion
 
 //#region > Exports
 export default MainTask;

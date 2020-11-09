@@ -156,7 +156,6 @@ class InstagramSession extends Session {
     super(sId);
 
     this.tokenName = sId + "-" + this.tokenName;
-
     this.token = token;
     this.tasks = new InstagramTasks(this);
   }
