@@ -1,16 +1,11 @@
-/**
- * All types
- */
-
+//#region > General Types
 export { ApolloResult } from "../../endpoints/index";
 export { User } from "../../session";
 
 export type TaskTypes = "query" | "mutation";
+//#endregion
 
-/**
- * All graphql response types for authentication related requests.
- */
-//#region > Interfaces
+//#region > Graphql Response Types for Authentication Related Requests
 /**
  * @interface GraphQLAuthentication defines the structure of the authentication
  *                                  result data.
