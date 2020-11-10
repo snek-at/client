@@ -269,7 +269,6 @@ class SnekSession extends CookieSession {
 
       if (!user) {
         /* Authenticate anonymous user */
-
         authData = (await this.tasks.set.auth.anon()).data?.auth;
         anonymous = true;
       } else {
