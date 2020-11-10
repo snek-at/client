@@ -5,7 +5,8 @@ export { User } from "../../session";
 export type TaskTypes = "query" | "mutation";
 //#endregion
 
-//#region > Graphql Response Types for Authentication Related Requests
+//#region > Graphql Response Types
+//> Authentication
 /**
  * @interface GraphQLAuthentication defines the structure of the authentication
  *                                  result data.
