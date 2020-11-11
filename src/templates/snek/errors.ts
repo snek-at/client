@@ -1,10 +1,10 @@
 //#region > Imports
 //> Sessions
 // Contains the SNEK session
-import { SnekSession } from "../../../session/sessions";
+import { SnekSession } from "../../session/sessions";
 //> Types
 // Contains the type declarations for Apollo results
-import { ApolloResult } from "./index";
+import * as types from "./types";
 //#endregion
 
 //#region > Classes
@@ -23,16 +23,14 @@ class TaskError {
    * Handle specific errors which could occur on SNEK tasks.
    *
    * @param {Response} response A SNEK-client graphql response
-   * @returns {boolean} "false" if an error occurs. Otherwise "true"
+   * @returns {boolean} "false" if a token error occurs.
+   *                    "null" if other errors occurs.
+   *                    "true" otherwise.
    */
-  handleErrors(response: ApolloResult<any>): boolean {
+  handleErrors(response: types.ApolloResult<any>): boolean | null {
     const errors = response.errors;
 
     if (errors && errors.length > 0) {
-      //#LEGACY
-      //#ERROR
-      console.error("An error occurred" + JSON.stringify(response));
-
       if (errors[0].message === "Invalid refresh token") {
         /* Delete token and refresh token if refresh token is invalid */
         this.session.token = undefined;
@@ -45,7 +43,7 @@ class TaskError {
 
         return false;
       } else {
-        return false;
+        return null;
       }
     }
 

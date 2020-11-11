@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --require ts-node/register src/test/**/*.ts",
     "build": "npx tsc"
   },
   "files": [
@@ -24,17 +24,17 @@
   },
   "homepage": "https://github.com/snek-at/client#readme",
   "dependencies": {
-    "apollo-cache-inmemory": "^1.6.5",
-    "apollo-client": "^2.6.8",
-    "apollo-link-http": "^1.5.16",
-    "graphql": "^14.6.0",
+    "@apollo/client": "^3.1.5",
+    "apollo-upload-client": "^14.1.1",
+    "graphql": "^14.7.0",
     "graphql-tag": "^2.10.3",
     "js-cookie": "^2.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@types/apollo-upload-client": "^14.1.0",
     "@types/js-cookie": "^2.2.6",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.7"
   }
 }

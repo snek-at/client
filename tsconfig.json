@@ -33,7 +33,11 @@
     /**
      * Allow json modules.
      */
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    /**
+     * Skip type checking of declaration files.
+     */
+    "skipLibCheck": true
   },
   /**
    * The files to not type check.

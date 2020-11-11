@@ -56,7 +56,7 @@ class Session implements ISession {
    */
   set token(value: string | undefined) {
     if (value) {
-      Cookies.set(this.tokenName, value);
+      Cookies.set(this.tokenName, value, { secure: true, sameSite: "Lax" });
     } else {
       Cookies.remove(this.tokenName);
     }
