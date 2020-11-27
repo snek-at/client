@@ -66,6 +66,7 @@ class GithubSession extends Session {
 /** @class CookieSession extends token session handling with cookies */
 class CookieSession extends Session {
   refreshTokenName: string = "refresh";
+  _refreshToken: string | undefined = undefined;
 
   /**
    * Initializes a cookie session.
@@ -94,9 +95,11 @@ class CookieSession extends Session {
    * @returns {string | undefined} A users JWT if set
    */
   get refreshToken(): string | undefined {
-    const token = Cookies.get(this.refreshTokenName);
-
-    return token ? token : undefined;
+    if (this.checkPlatform() === "WEB") {
+      return Cookies.get(this.refreshTokenName);
+    } else {
+      return this._token;
+    }
   }
 
   //> Setter
@@ -109,14 +112,7 @@ class CookieSession extends Session {
    *              minutes.
    */
   set token(value: string | undefined) {
-    if (value) {
-      Cookies.set(this.tokenName, value ? value : "", {
-        /* Expire time is set to 4 minutes */
-        expires: 4 / 1440,
-      });
-    } else {
-      Cookies.remove(this.tokenName);
-    }
+    super.token = value;
   }
 
   /**
@@ -128,13 +124,17 @@ class CookieSession extends Session {
    *              set to six days.
    */
   set refreshToken(value: string | undefined) {
-    if (value) {
-      Cookies.set(this.refreshTokenName, value, {
-        /* Expire time is set to 6 days */
-        expires: 6,
-      });
+    if (this.checkPlatform() === "WEB") {
+      if (value) {
+        Cookies.set(this.refreshTokenName, value ? value : "", {
+          /* Expire time is set to 6 days */
+          expires: 6,
+        });
+      } else {
+        Cookies.remove(this.refreshTokenName);
+      }
     } else {
-      Cookies.remove(this.refreshTokenName);
+      this._refreshToken = value;
     }
   }
 }
