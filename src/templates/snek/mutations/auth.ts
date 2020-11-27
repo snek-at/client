@@ -21,11 +21,6 @@ const auth = gql`
       refreshToken
       user {
         username
-        firstName
-        lastName
-        email
-        dateJoined
-        lastLogin
       }
     }
   }

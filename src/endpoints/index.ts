@@ -4,8 +4,7 @@
 //## npm install "graphql"@14.6.0
 // Contains the interface for gql queries, mutations and subscriptions
 import { DocumentNode } from "graphql";
-import { FetchResult } from "apollo-link";
-import { ApolloQueryResult } from "apollo-client";
+import { ApolloQueryResult, FetchResult } from "@apollo/client";
 //#endregion
 
 //#region > Types
@@ -75,27 +74,73 @@ interface ScraperEndpoint extends Endpoint {
   /**
    * GetJson: A method which gets json data from a specific url.
    *
-   * @param url A web url
+   * @param path Path to the endpoint
    * @returns {Promise<T>} Json data in the given format <T>
    */
   getJson<T>(url: string): Promise<T>;
   /**
    * GetDom: A method which gets DOM data from a specific url.
    *
-   * @param url A web url
+   * @param path Path to the endpoint
    * @returns {Promise<Document>} A DOM Document
    */
   getDom(url: string): Promise<Document>;
   /**
    * Post: A method to post data to a specific url.
    *
-   * @param {string} url A web url
+   * @param {string} path Path to the endpoint
    * @param data Data which is filled into the body of a post request
    * @returns {Promise<Document>} A DOM Document
    */
   post<T>(
     url: string,
     data:
+      | string
+      | Blob
+      | ArrayBufferView
+      | ArrayBuffer
+      | FormData
+      | URLSearchParams
+      | ReadableStream<Uint8Array>
+      | null
+      | undefined
+  ): Promise<T>;
+  /**
+   * Send fetch request to a endpoint and get the respective result.
+   *
+   * @param {string} path Path to the endpoint. Specify it like "/foo/bar".
+   *                      The correct placement of the slashes is essential!
+   * @param {"GET" | "POST" | "PUT" | "PATCH" | "DELETE"} type HTTP methods
+   * @param data Data which is filled into the body of a post request
+   * @returns {Promise<Response>} A DOM Document
+   */
+  fetch(
+    path: string,
+    type: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+    data?:
+      | string
+      | Blob
+      | ArrayBufferView
+      | ArrayBuffer
+      | FormData
+      | URLSearchParams
+      | ReadableStream<Uint8Array>
+      | null
+      | undefined
+  ): Promise<Response>;
+  /**
+   * Send fetch request to a endpoint and get the respective JSON result.
+   *
+   * @param {string} path Path to the endpoint. Specify it like "/foo/bar".
+   *                      The correct placement of the slashes is essential!
+   * @param {"GET" | "POST" | "PUT" | "PATCH" | "DELETE"} type HTTP methods
+   * @param data Data which is filled into the body of a post request
+   * @returns {Promise<Response>} A DOM Document
+   */
+  fetchJson<T>(
+    path: string,
+    type: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+    data?:
       | string
       | Blob
       | ArrayBufferView

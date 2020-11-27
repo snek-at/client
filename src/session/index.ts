@@ -24,6 +24,7 @@ interface ISession {
 class Session implements ISession {
   sessions: { [id: string]: ISession } = {};
   tokenName: string = "token";
+  _token: string | undefined = undefined;
 
   /**
    * Initializes a base Session.
@@ -41,9 +42,11 @@ class Session implements ISession {
    * @returns {string | undefined} A users JWT if set
    */
   get token(): string | undefined {
-    const token = Cookies.get(this.tokenName);
-
-    return token ? token : undefined;
+    if (this.checkPlatform() === "WEB") {
+      return Cookies.get(this.tokenName);
+    } else {
+      return this._token;
+    }
   }
 
   //> Setter
@@ -55,14 +58,31 @@ class Session implements ISession {
    *              the cookie will be removed.
    */
   set token(value: string | undefined) {
-    if (value) {
-      Cookies.set(this.tokenName, value);
+    if (this.checkPlatform() === "WEB") {
+      if (value) {
+        Cookies.set(this.tokenName, value ? value : "", {
+          /* Expire time is set to 4 minutes */
+          expires: 4 / 1440,
+        });
+      } else {
+        Cookies.remove(this.tokenName);
+      }
     } else {
-      Cookies.remove(this.tokenName);
+      this._token = value;
     }
   }
 
   //> Methods
+  /**
+   * Check if snek-client is used by node or web.
+   */
+  checkPlatform() {
+    if (typeof window === "undefined") {
+      return "NODE";
+    } else {
+      return "WEB";
+    }
+  }
   /**
    * Add a subSession to a session.
    *

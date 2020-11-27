@@ -69,22 +69,9 @@ class Scraper implements ScraperEndpoint {
    * @returns {object} DOM object
    */
   async getDom(path: string): Promise<Document> {
-    return fetch(this.url + path, {
-      headers: {
-        ...this.headers,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          //#ERROR
-          throw new Error(response.statusText);
-        }
+    const text = await (await this.fetch(path, "GET")).text();
 
-        return response.text();
-      })
-      .then((text) => {
-        return new DOMParser().parseFromString(text, "text/html");
-      });
+    return new DOMParser().parseFromString(text, "text/html");
   }
 
   /**
@@ -115,6 +102,78 @@ class Scraper implements ScraperEndpoint {
         ...this.headers,
       },
     }).then(async (response) => {
+      if (!response.ok) {
+        //#ERROR
+        throw new Error(response.statusText);
+      }
+
+      return response.json().then((data) => data as T);
+    });
+  }
+
+  /**
+   * Send fetch request to a endpoint and get the respective result.
+   *
+   * @param {string} path Path to the endpoint. Specify it like "/foo/bar".
+   *                      The correct placement of the slashes is essential!
+   * @param {"GET" | "POST" | "PUT" | "PATCH" | "DELETE"} type HTTP methods
+   * @param data Data which is filled into the body of a post request
+   * @returns {Promise<Response>} A DOM Document
+   */
+  async fetch(
+    path: string,
+    type: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+    data?:
+      | string
+      | Blob
+      | ArrayBufferView
+      | ArrayBuffer
+      | FormData
+      | URLSearchParams
+      | ReadableStream<Uint8Array>
+      | null
+      | undefined
+  ): Promise<Response> {
+    return fetch(this.url + path, {
+      method: type,
+      body: data,
+      headers: {
+        ...this.headers,
+      },
+    }).then(async (response) => {
+      if (!response.ok) {
+        //#ERROR
+        throw new Error(response.statusText);
+      }
+
+      return response;
+    });
+  }
+
+  /**
+   * Send fetch request to a endpoint and get the respective JSON result.
+   *
+   * @param {string} path Path to the endpoint. Specify it like "/foo/bar".
+   *                      The correct placement of the slashes is essential!
+   * @param {"GET" | "POST" | "PUT" | "PATCH" | "DELETE"} type HTTP methods
+   * @param data Data which is filled into the body of a post request
+   * @returns {Promise<Response>} A DOM Document
+   */
+  async fetchJson<T>(
+    path: string,
+    type: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+    data?:
+      | string
+      | Blob
+      | ArrayBufferView
+      | ArrayBuffer
+      | FormData
+      | URLSearchParams
+      | ReadableStream<Uint8Array>
+      | null
+      | undefined
+  ): Promise<T> {
+    return this.fetch(path, type, data).then(async (response) => {
       if (!response.ok) {
         //#ERROR
         throw new Error(response.statusText);

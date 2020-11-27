@@ -11,19 +11,25 @@ import Cookies from "js-cookie";
 //> Session
 // Contains the base session
 import Session from "./index";
-//> Templates
-// Contains the main template for the sessions
-import { IMainTemplate } from "../templates/index";
-// Contains the SNEK template
-import SnekTemplate from "../templates/snek/index";
 //> Tasks
 // Contains SNEK tasks
-import SnekTasks from "../templates/snek/gql/tasks/index";
+import SnekTasks from "../templates/snek/tasks/index";
+import InstagramTasks from "../templates/instagram/tasks";
 //> Interfaces
-// Contains the interface for the apollo endpoint
-import { ApolloEndpoint } from "../endpoints/index";
+// Contains the interface for the apollo and scraper endpoint
+import {
+  ApolloEndpoint,
+  ScraperEndpoint,
+  ApolloResult,
+} from "../endpoints/index";
 // Contains basic session interfaces
 import { User } from "./index";
+// Contains the session types
+import { SNEKAuth } from "./types";
+// Contains the snek template types
+import { TaskTypes } from "../templates/snek/types";
+//> Config
+import Config from "../config.json";
 //#endregion
 
 //#region > Classes
@@ -36,14 +42,8 @@ class GithubSession extends Session {
    * @author Nico Schett <contact@schett.net>
    * @param {string} sId A session name
    * @param {Endpoint} ep A endpoint
-   * @param {IMainTemplate} template A template set
    */
-  constructor(
-    sId: string,
-    public ep: ApolloEndpoint,
-    public template: IMainTemplate
-  ) {
-    /** @todo Change template set to dedicated github template set */
+  constructor(sId: string, public ep: ApolloEndpoint) {
     super(sId);
   }
 
@@ -66,6 +66,7 @@ class GithubSession extends Session {
 /** @class CookieSession extends token session handling with cookies */
 class CookieSession extends Session {
   refreshTokenName: string = "refresh";
+  _refreshToken: string | undefined = undefined;
 
   /**
    * Initializes a cookie session.
@@ -94,9 +95,11 @@ class CookieSession extends Session {
    * @returns {string | undefined} A users JWT if set
    */
   get refreshToken(): string | undefined {
-    const token = Cookies.get(this.refreshTokenName);
-
-    return token ? token : undefined;
+    if (this.checkPlatform() === "WEB") {
+      return Cookies.get(this.refreshTokenName);
+    } else {
+      return this._token;
+    }
   }
 
   //> Setter
@@ -109,14 +112,7 @@ class CookieSession extends Session {
    *              minutes.
    */
   set token(value: string | undefined) {
-    if (value) {
-      Cookies.set(this.tokenName, value ? value : "", {
-        /* Expire time is set to 4 minutes */
-        expires: 4 / 1440,
-      });
-    } else {
-      Cookies.remove(this.tokenName);
-    }
+    super.token = value;
   }
 
   /**
@@ -128,14 +124,76 @@ class CookieSession extends Session {
    *              set to six days.
    */
   set refreshToken(value: string | undefined) {
-    if (value) {
-      Cookies.set(this.refreshTokenName, value, {
-        /* Expire time is set to 6 days */
-        expires: 6,
-      });
+    if (this.checkPlatform() === "WEB") {
+      if (value) {
+        Cookies.set(this.refreshTokenName, value ? value : "", {
+          /* Expire time is set to 6 days */
+          expires: 6,
+        });
+      } else {
+        Cookies.remove(this.refreshTokenName);
+      }
     } else {
-      Cookies.remove(this.refreshTokenName);
+      this._refreshToken = value;
     }
+  }
+}
+
+class InstagramSession extends Session {
+  /* Define tasks */
+  public tasks: InstagramTasks;
+
+  /**
+   * Initializes a Instagram session.
+   *
+   * @constructor
+   * @author Nico Schett <contact@schett.net>
+   * @param {string} sId A session name
+   * @param {string} token A instagram access token
+   * @param {Endpoint} ep A endpoint
+   */
+  constructor(sId: string, token: string, public ep: ScraperEndpoint) {
+    super(sId);
+
+    this.tokenName = sId + "-" + this.tokenName;
+    this.token = token;
+    this.tasks = new InstagramTasks(this);
+  }
+
+  //> Methods
+  /**
+   * Refreshes the current set access token.
+   *
+   * @returns {Promise<string | undefined>} The session token if set
+   */
+  async upToDateToken(): Promise<string | undefined> {
+    let token = super.token;
+
+    /* Refresh token if there is none */
+    if (!token) {
+      await this.refresh();
+
+      token = super.token;
+    }
+
+    return token;
+  }
+
+  /**
+   * Refreshes a session.
+   */
+  async refresh() {
+    this.token = await this.tasks.refreshToken();
+  }
+
+  /**
+   * The runner allows to access every endpoint of the instagram api without
+   * caring about refreshing the access tokens.
+   */
+  async getRunner() {
+    this.ep.headers = { Authorization: `Bearer ${await this.upToDateToken()}` };
+
+    return this.ep;
   }
 }
 
@@ -151,13 +209,8 @@ class SnekSession extends CookieSession {
    * @author Nico Schett <contact@schett.net>
    * @param {string} sId A session name
    * @param {Endpoint} ep A endpoint
-   * @param {SnekTemplate} template A template set
    */
-  constructor(
-    sId: string,
-    public ep: ApolloEndpoint,
-    public template: SnekTemplate
-  ) {
+  constructor(sId: string, public ep: ApolloEndpoint) {
     super(sId);
 
     this.tokenName = sId + "-" + this.tokenName;
@@ -203,34 +256,41 @@ class SnekSession extends CookieSession {
    * Begin session.
    *
    * @param {string} user A User defined by username and password
-   * @returns {Promise<any>} A UserData object
+   * @returns {Promise<SNEKAuth>} A SNEKAuth object
    */
-  async begin(user?: User): Promise<any> {
-    let response;
+  async begin(user?: User): Promise<SNEKAuth> {
+    let anonymous = false;
 
     if (!user && this.refreshToken) {
       /* Refresh token and retrieve a new refreshToken if necessary */
       this.refresh();
     } else {
+      let authData;
+
       if (!user) {
         /* Authenticate anonymous user */
-        response = await this.tasks.auth.anon();
+        authData = (await this.tasks.set.auth.anon()).data?.auth;
+        anonymous = true;
       } else {
         /* Authenticate real user */
-        response = await this.tasks.auth.nonanon(user);
+        authData = (await this.tasks.set.auth.nonanon(user)).data?.auth;
       }
 
       /* Set tokens */
-      this.token = response.data?.auth.token;
-      this.refreshToken = response.data?.auth.refreshToken;
+      this.token = authData?.token;
+      this.refreshToken = authData?.refreshToken;
 
-      return response.data?.auth.user;
+      return { anonymous, ...authData?.user };
     }
 
     /* Get user data */
-    response = await this.tasks.user.whoami();
+    const userData = (await this.tasks.set.user.whoami()).data?.whoami;
 
-    return response.data?.whoami;
+    if (userData?.username === Config.anonUser.username) {
+      anonymous = true;
+    }
+
+    return { anonymous, ...userData };
   }
 
   /**
@@ -242,7 +302,7 @@ class SnekSession extends CookieSession {
   async refresh() {
     if (!this.token) {
       if (this.refreshToken) {
-        let response = await this.tasks.auth.refresh();
+        let response = await this.tasks.set.auth.refresh();
 
         this.token = response.data?.refresh.token;
         this.refreshToken = response.data?.refresh.refreshToken;
@@ -261,7 +321,7 @@ class SnekSession extends CookieSession {
   async end() {
     /* Revoke token if it is set */
     if (this.refreshToken !== "") {
-      let response = await this.tasks.auth.revoke();
+      let response = await this.tasks.set.auth.revoke();
 
       //#DEBUG TSID1
       //console.log("TID-1(REVOKE)", response.data?.revoke.revoked);
@@ -278,22 +338,39 @@ class SnekSession extends CookieSession {
    * @param type
    * @param data
    * @param variables
+   * @param {boolean} retry Retry on error
    * @description Perform a session aware custom task. Token and refreshToken
    *              are set by default!
    *              When no type is specified, query is set as default.
    */
-  async customTask<T>(type: string, data: DocumentNode, variables: object) {
-    return this.tasks.run<T>(type, data, {
+  async runner<T>(
+    type: TaskTypes,
+    data: DocumentNode,
+    variables: object,
+    retry: boolean = true
+  ): Promise<ApolloResult<T>> {
+    variables = {
       ...variables,
-      token: this.token,
+      token: await this.upToDateToken(),
       refreshToken: this.refreshToken,
+    };
+
+    const response = await this.tasks.run<T>(type, data, {
+      ...variables,
     });
+
+    if (this.tasks.handleErrors(response) === false && retry) {
+      await this.refresh();
+
+      return this.runner<T>(type, data, variables, false);
+    }
+    return response;
   }
 }
 //#endregion
 
 //#region > Exports
-export { GithubSession, SnekSession };
+export { GithubSession, InstagramSession, SnekSession };
 //#endregion
 
 /**
